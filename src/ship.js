@@ -16,10 +16,32 @@ class Ship {
 	}
 }
 
-
 export class Carrier extends Ship {
 	constructor() {
 		super(5)
 	}
 }
 
+export class Battleship extends Ship {
+	constructor() {
+		super(4)
+	}
+}
+
+export class Destroyer extends Ship {
+	constructor() {
+		super(3)
+	}
+}
+
+export class Submarine extends Ship {
+	constructor() {
+		super(3)
+	}
+}
+
+export class Patrol extends Ship {
+	constructor() {
+		super(2)
+	}
+}
