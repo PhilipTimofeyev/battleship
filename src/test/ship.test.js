@@ -81,3 +81,9 @@ test('patrol sunk', () => {
 	patrol.hit()
   expect(patrol.isSunk()).toBe(true);
 });
+
+test('patrol sunk', () => {
+	patrol.hit()
+	patrol.hit()
+  expect(patrol.sunk).toBe(true);
+});
