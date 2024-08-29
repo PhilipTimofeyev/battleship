@@ -40,9 +40,11 @@ export class Gameboard {
 	}
 
 	receiveAttack(coord) {
-		const squareObj = this.squares[coord]
-		if (squareObj instanceof Ship) {
-			squareObj.hit()
+		const ship = this.squares[coord]
+		if (ship instanceof Ship) {
+			ship.hit()
+		} else {
+			this.squares[coord] = "X"
 		}
 	}
 

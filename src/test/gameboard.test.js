@@ -57,3 +57,21 @@ test('receiving attack', () => {
 
 	expect(ship.hits).toBe(1)
 });
+
+test('receiving multiple attacks', () => {
+	const ship = new Carrier
+
+	gameboard.placeShip(ship, "A1", "C1")
+
+	gameboard.receiveAttack("D1")
+	gameboard.receiveAttack("A1")
+	gameboard.receiveAttack("B1")
+
+	expect(ship.hits).toBe(3)
+});
+
+test('missed attack marks board', () => {
+	gameboard.receiveAttack("D1")
+
+	expect(gameboard.squares.D1).toBe("X")
+});
