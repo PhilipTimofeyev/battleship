@@ -30,7 +30,11 @@ export class Gameboard {
 
 		const result =  options.filter((squares) => {return squares.includes(nextSquare)}).flat()
 
-		return result.length === 0 ? null : result
+		if (result.length === 0) return null
+
+		result.forEach((square) => {
+			this.squares[square] = ship
+		})
 	}
 
 	 showValidSquares(ship, coordStart) {
@@ -52,9 +56,11 @@ export class Gameboard {
 		let startLet = coordStart[0]
 		let startNum = parseInt(coordStart[1])
 
-		for (let i = startNum; i < startNum + ship ; i++) {
+		for (let i = startNum; i < startNum + ship.length ; i++) {
 			activeSquares.push(`${startLet}${i}`)
 		}
+
+		// console.log(activeSquares)
 
 		return this.validateSize(activeSquares) ? activeSquares : []
 	}
@@ -65,7 +71,7 @@ export class Gameboard {
 		let startLet = coordStart[0]
 		let startNum = parseInt(coordStart[1]) + 1
 
-		for (let i = startNum - ship; i < startNum ; i++) {
+		for (let i = startNum - ship.length; i < startNum ; i++) {
 			activeSquares.push(`${startLet}${i}`)
 		}
 
@@ -78,9 +84,9 @@ export class Gameboard {
 		let startLet = coordStart[0]
 		let startNum = coordStart[1]
 
-		for (let i = 1; i <= ship ; i++) {
+		for (let i = 1; i <= ship.length ; i++) {
 			activeSquares.push(`${startLet}${startNum}`)
-			startLet = incrementChar(startLet)
+			startLet = this.incrementChar(startLet)
 		}
 
 		return this.validateSize(activeSquares) ? activeSquares : []
@@ -92,24 +98,24 @@ export class Gameboard {
 		let startLet = coordStart[0]
 		let startNum = coordStart[1]
 
-		for (let i = 1; i <= ship ; i++) {
+		for (let i = 1; i <= ship.length ; i++) {
 			activeSquares.push(`${startLet}${startNum}`)
-			startLet = decrementChar(startLet)
+			startLet = this.decrementChar(startLet)
 		}
 
 		return this.validateSize(activeSquares) ? activeSquares : []
 	}
 
 	 incrementChar(char) {
-		charNum = char.charCodeAt(0)
-		nextChar = String.fromCharCode(charNum + 1)
+		const charNum = char.charCodeAt(0)
+		const nextChar = String.fromCharCode(charNum + 1)
 		return nextChar
 	}
 
 	 decrementChar(char) {
-		charNum = char.charCodeAt(0)
-		nextChar = String.fromCharCode(charNum - 1)
-		return nextChar
+		const charNum = char.charCodeAt(0)
+		const previousChar = String.fromCharCode(charNum - 1)
+		return previousChar
 	}
 
 	 validateSize(squares) {
