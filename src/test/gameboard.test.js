@@ -1,5 +1,6 @@
 import { Gameboard } from '../gameboard';
 import { Destroyer } from '../ship';
+import { Carrier } from '../ship';
 
 let gameboard
 
@@ -21,8 +22,28 @@ test('places ship basic', () => {
 
 test('places ship out of bounds', () => {
 	const ship = new Destroyer
-	gameboard.placeShip(ship, "A1", "A6")
 
 	expect(gameboard.placeShip(ship, "A1", "A6")).toBeNull()
+});
+
+test('places ship on rule breaking squares', () => {
+	const ship = new Destroyer
+
+	expect(gameboard.placeShip(ship, "C1", "D6")).toBeNull()
+});
+
+test('different ship out of bounds', () => {
+	const ship = new Carrier
+
+	expect(gameboard.placeShip(ship, "C4", "C1")).toBeNull()
+});
+
+test('cannot place ship on used square', () => {
+	const ship1 = new Carrier
+	const ship2 = new Destroyer
+
+	gameboard.placeShip(ship1, "A1", "A4")
+
+	expect(gameboard.placeShip(ship2, "A1", "C2")).toBeNull()
 });
 

@@ -28,6 +28,7 @@ export class Gameboard {
 
 		const options = [leftSquares, rightSquares, upSquares, downSquares]
 
+		// Only show squares that contain the initial square and next square.
 		const result =  options.filter((squares) => {return squares.includes(nextSquare)}).flat()
 
 		if (result.length === 0) return null
@@ -60,9 +61,7 @@ export class Gameboard {
 			activeSquares.push(`${startLet}${i}`)
 		}
 
-		// console.log(activeSquares)
-
-		return this.validateSize(activeSquares) ? activeSquares : []
+		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
 	 getLeftSquares(ship, coordStart) {
@@ -75,7 +74,7 @@ export class Gameboard {
 			activeSquares.push(`${startLet}${i}`)
 		}
 
-		return this.validateSize(activeSquares) ? activeSquares : []
+		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
 	 getUpSquares(ship, coordStart) {
@@ -89,7 +88,7 @@ export class Gameboard {
 			startLet = this.incrementChar(startLet)
 		}
 
-		return this.validateSize(activeSquares) ? activeSquares : []
+		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
 	 getDownSquares(ship, coordStart) {
@@ -103,7 +102,7 @@ export class Gameboard {
 			startLet = this.decrementChar(startLet)
 		}
 
-		return this.validateSize(activeSquares) ? activeSquares : []
+		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
 	 incrementChar(char) {
@@ -125,6 +124,11 @@ export class Gameboard {
 		const withinBounds = (square) => !!square.match(regex)
 
 		return squares.every(withinBounds)
+	}
+
+	checkIfEmptySquares(squares) {
+		let ifEmpty = (square) => this.squares[square] == null
+		return squares.every(ifEmpty)
 	}
 }
 
