@@ -17,28 +17,9 @@ class Ship {
 }
 
 
-class Carrier extends Ship {
+export class Carrier extends Ship {
 	constructor() {
 		super(5)
 	}
 }
 
-function sums(a, b) {
-  return a + b;
-}
-
-module.exports = sums;
-
-
-
-// let hmm = new Carrier
-
-// hmm.hit()
-// hmm.hit()
-// hmm.hit()
-// hmm.hit()
-// hmm.hit()
-
-// console.log(hmm)
-// console.log(hmm.isSunk())
-// console.log(hmm)

@@ -1,16 +1,17 @@
 
-const sums = require('../ship');
+import { Carrier } from '../ship';
 
-// const sum = require('./sum');
+let carrier
 
-test('adds 1 + 2 to equal 3', () => {
-  expect(sums(1, 2)).toBe(3);
+beforeEach(() => {
+  carrier = new Carrier;
 });
 
-// beforeEach(() => {
-//   const carrier = new Carrier;
-// });
+test('carrier length', () => {
+  expect(carrier.length).toBe(5);
+});
 
-// test('carrier length', () => {
-//   expect(carrier.length.toBe(5));
-// });
+test('hit', () => {
+	carrier.hit()
+  expect(carrier.hits).toBe(1);
+});
