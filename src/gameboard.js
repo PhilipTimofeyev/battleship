@@ -1,7 +1,8 @@
 import { Ship } from './ship';
+import { Square } from './square';
 
 
-export class Gameboard {
+ export class Gameboard {
 
 	constructor() {
 		this.squares = this.createSquares()
@@ -13,7 +14,7 @@ export class Gameboard {
 
 		letters.split("").forEach((letter) =>{
 			for (let i = 1; i < 11; i++) {
-				squares[`${letter}${i}`] = null
+				squares[`${letter}${i}`] = new Square
 			}
 		})
 		return squares
@@ -35,16 +36,16 @@ export class Gameboard {
 		if (result.length === 0) return null
 
 		result.forEach((square) => {
-			this.squares[square] = ship
+			this.squares[square].ship = ship
 		})
 	}
 
 	receiveAttack(coord) {
-		const ship = this.squares[coord]
+		const ship = this.squares[coord].ship
 		if (ship instanceof Ship) {
 			ship.hit()
 		} else {
-			this.squares[coord] = "X"
+			this.squares[coord].marked = true
 		}
 	}
 
@@ -137,8 +138,9 @@ export class Gameboard {
 	}
 
 	checkIfEmptySquares(squares) {
-		const  ifEmpty = (square) => this.squares[square] == null
+		const  ifEmpty = (square) => this.squares[square].ship == null && this.squares[square].marked == false
 		return squares.every(ifEmpty)
 	}
 }
+
 

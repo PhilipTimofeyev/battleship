@@ -1,5 +1,4 @@
 import { Gameboard } from '../gameboard';
-import { Ship } from '../ship';
 import { Destroyer } from '../ship';
 import { Carrier } from '../ship';
 
@@ -18,7 +17,7 @@ test('places ship basic', () => {
 	const ship = new Destroyer
 	gameboard.placeShip(ship, "A1", "A2")
 
-	expect(gameboard.squares.A3).toBe(ship)
+	expect(gameboard.squares.A3.ship).toBe(ship)
 });
 
 test('places ship out of bounds', () => {
@@ -73,5 +72,5 @@ test('receiving multiple attacks', () => {
 test('missed attack marks board', () => {
 	gameboard.receiveAttack("D1")
 
-	expect(gameboard.squares.D1).toBe("X")
+	expect(gameboard.squares.D1.marked).toBe(true)
 });
