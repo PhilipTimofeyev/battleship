@@ -15,3 +15,17 @@ test('hit', () => {
 	carrier.hit()
   expect(carrier.hits).toBe(1);
 });
+
+test('not sunk', () => {
+	carrier.hit()
+  expect(carrier.isSunk()).toBe(false);
+});
+
+test('sunk', () => {
+	carrier.hit()
+	carrier.hit()
+	carrier.hit()
+	carrier.hit()
+	carrier.hit()
+  expect(carrier.isSunk()).toBe(true);
+});
