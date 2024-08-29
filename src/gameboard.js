@@ -1,3 +1,4 @@
+import { Ship } from './ship';
 
 
 export class Gameboard {
@@ -36,6 +37,13 @@ export class Gameboard {
 		result.forEach((square) => {
 			this.squares[square] = ship
 		})
+	}
+
+	receiveAttack(coord) {
+		const squareObj = this.squares[coord]
+		if (squareObj instanceof Ship) {
+			squareObj.hit()
+		}
 	}
 
 	 showValidSquares(ship, coordStart) {
@@ -127,7 +135,7 @@ export class Gameboard {
 	}
 
 	checkIfEmptySquares(squares) {
-		let ifEmpty = (square) => this.squares[square] == null
+		const  ifEmpty = (square) => this.squares[square] == null
 		return squares.every(ifEmpty)
 	}
 }

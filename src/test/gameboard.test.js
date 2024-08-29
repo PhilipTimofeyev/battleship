@@ -1,4 +1,5 @@
 import { Gameboard } from '../gameboard';
+import { Ship } from '../ship';
 import { Destroyer } from '../ship';
 import { Carrier } from '../ship';
 
@@ -47,3 +48,12 @@ test('cannot place ship on used square', () => {
 	expect(gameboard.placeShip(ship2, "A1", "C2")).toBeNull()
 });
 
+test('receiving attack', () => {
+	const ship = new Carrier
+
+	gameboard.placeShip(ship, "A1", "A4")
+
+	gameboard.receiveAttack("A2")
+
+	expect(ship.hits).toBe(1)
+});
