@@ -25,10 +25,10 @@ function updateBoards() {
 }
 
 const carrier = new Carrier
-const battleship = new Battleship
+const patrol = new Patrol
 
-player1.gameboard.placeShip(carrier, "A2", "A5")
-player2.gameboard.placeShip(battleship, "F1", "D1")
+player1.gameboard.placeShip(patrol, "A1", "A2")
+player2.gameboard.placeShip(carrier, "F1", "D1")
 
 function beginTurn() {
 	addHandlers()
@@ -50,11 +50,15 @@ function removeHandlers() {
 function playerTurn(e) {
 	const square = e.target.dataset.coordinate;
 	players[0].gameboard.receiveAttack(square);
-	console.log("lol")
 	updateBoards()
 	removeHandlers()
+	if (gameOver()) return
 	players.reverse()
 	addHandlers()
+}
+
+function gameOver() {
+	return players[0].gameboard.allSunk()
 }
 
 beginTurn()
