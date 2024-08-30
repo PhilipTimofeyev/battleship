@@ -1,12 +1,17 @@
 
+.boards {
+	display: flex;
+	gap: 200px;
+	justify-content: center;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(10, 80px);
-  grid-gap: 10px;
+  grid-gap: 5px;
   background-color: #fff;
   color: #444;
   width: 800px;
-  margin: auto;
 }
 
 .square {
