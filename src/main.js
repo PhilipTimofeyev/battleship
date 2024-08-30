@@ -5,6 +5,9 @@ import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 const player1 = new Player
 const player2 = new Player
 
+const carrier = new Carrier
+const patrol = new Patrol
+
 let players = [player1, player2]
 
 // DOM Elements
@@ -24,6 +27,7 @@ document.addEventListener("dragover", function(event) {
     const coord = event.target.dataset.coordinate
     const squareEl = player1.domboard.querySelector(`[data-coordinate=${coord}]`)
     resetSquareColors()
+    markValidSquares(patrol, coord)
     squareEl.setAttribute("style", "background-color: red;")
 });
 
@@ -32,20 +36,23 @@ document.addEventListener("drop", function(event) {
     event.preventDefault();
     const data = event.dataTransfer.getData("Text");
     event.target.appendChild(document.getElementById(data));
-    console.log(event.target.dataset.coordinate)
+    // console.log(event.target.dataset.coordinate)
 });
 
+function markValidSquares(ship, coord) {
+	// console.log(ship)
+	const validSquares = player1.gameboard.showValidSquares(ship, coord)
+	return validSquares
+	// console.log(validSquares)
+	// console.log(validSquares)
+}
+
+markValidSquares(patrol, 'A1')
 
 // Set up board
-
+	
 setUpBoard(player1, player1.domboard)
 setUpBoard(player2, player2.domboard)
-
-function resetSquareColors() {
-	Array.from(player1.domboard.children).forEach((square) => {
-    square.setAttribute("style", "background-color: #444;")
-	})
-}
 
 // Update Board
 
@@ -54,11 +61,15 @@ function updateBoards() {
 	updatePlayerBoard(player2);
 }
 
-const carrier = new Carrier
-const patrol = new Patrol
+function resetSquareColors() {
+	Array.from(player1.domboard.children).forEach((square) => {
+    square.setAttribute("style", "background-color: #444;")
+	})
+}
 
-player1.gameboard.placeShip(patrol, "A1", "A2")
-player2.gameboard.placeShip(carrier, "F1", "D1")
+
+// player1.gameboard.placeShip(patrol, "A1", "A2")
+// player2.gameboard.placeShip(carrier, "F1", "D1")
 
 function beginTurn() {
 	addHandlers()

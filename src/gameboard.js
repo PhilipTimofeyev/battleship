@@ -61,10 +61,10 @@ import { Square } from './square';
 	 showValidSquares(ship, coordStart) {
 		let allSquares = []
 
-		allSquares.push(getRightSquares(ship, coordStart))
-		allSquares.push(getLeftSquares(ship, coordStart))
-		allSquares.push(getUpSquares(ship, coordStart))
-		allSquares.push(getDownSquares(ship, coordStart))
+		allSquares.push(this.getRightSquares(ship, coordStart))
+		allSquares.push(this.getLeftSquares(ship, coordStart))
+		allSquares.push(this.getUpSquares(ship, coordStart))
+		allSquares.push(this.getDownSquares(ship, coordStart))
 
 		// Remove duplicates and falsy
 		const result = [...new Set(allSquares.flat().filter(Boolean))]
@@ -147,7 +147,10 @@ import { Square } from './square';
 	}
 
 	checkIfEmptySquares(squares) {
-		const  ifEmpty = (square) => this.board[square].ship == null && this.board[square].miss == false
+		const  ifEmpty = (square) => this.board[square] != null && 
+																 this.board[square].ship == null && 
+																 this.board[square].miss == false
+		
 		return squares.every(ifEmpty)
 	}
 }

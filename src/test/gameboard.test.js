@@ -110,6 +110,13 @@ test('allSunk returns true when all ships sunk', () => {
 	expect(gameboard.allSunk()).toBe(true)
 });
 
+test('returns valid squares', () => {
+	const ship = new Destroyer
+	const result = gameboard.showValidSquares(ship, "A1")
+
+	expect(result).toEqual(['A1', 'A2', 'A3', 'B1', 'C1'])
+});
+
 
 
 
