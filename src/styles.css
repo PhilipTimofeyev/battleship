@@ -14,14 +14,14 @@ h1 {
   grid-template-columns: repeat(10, 80px);
   grid-gap: 5px;
   background-color: #fff;
-  color: #444;
+  color: lightgray;
   width: 800px;
 }
 
 .square {
 	display: flex;
 	box-sizing: border-box;
-  background-color: #444;
+  background-color: lightblue;
   color: #fff;
   padding: 10px;
   font-size: 1em;
@@ -30,10 +30,6 @@ h1 {
   text-align: center;
 }
 
-#battleship {
+.ship {
 	width: 100px;
-}
-
-.hmm:hover {
-  background-color: yellow;
 }

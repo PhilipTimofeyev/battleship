@@ -14,40 +14,51 @@ let players = [player1, player2]
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
+let dragged = null;
+
+function createShip(name) {
+	switch(name){  
+		case 'Carrier': return new Carrier; 
+		case 'Battleship': return new Battleship;      
+	}
+}
 
 document.addEventListener("dragstart", function(event) {
-    event.dataTransfer.setData("Text", event.target.id);
-    // console.log(event.target.id)
+  event.dataTransfer.setData("Text", event.target.id);
+  const shipType = event.target.id
+  
+  dragged = createShip(shipType)
 });
 
 document.addEventListener("dragover", function(event) {
-    event.preventDefault();
-    // Change to square instead of dataset?
-    if (!event.target.dataset.coordinate) return
-    const coord = event.target.dataset.coordinate
-    const squareEl = player1.domboard.querySelector(`[data-coordinate=${coord}]`)
-    resetSquareColors()
-    markValidSquares(patrol, coord)
-    squareEl.setAttribute("style", "background-color: red;")
+  event.preventDefault();
+  // const data = event.dataTransfer.getData("Text");
+  // console.log(dragged)
+  // Change to square instead of dataset?
+  if (!event.target.dataset.coordinate) return
+  const coord = event.target.dataset.coordinate
+  const squareEl = player1.domboard.querySelector(`[data-coordinate=${coord}]`)
+  resetSquareColors()
+  markValidSquares(dragged, coord)
 });
-
 
 document.addEventListener("drop", function(event) {
     event.preventDefault();
+    resetSquareColors() 
     const data = event.dataTransfer.getData("Text");
+    console.log(data)
     event.target.appendChild(document.getElementById(data));
-    // console.log(event.target.dataset.coordinate)
 });
 
 function markValidSquares(ship, coord) {
-	// console.log(ship)
 	const validSquares = player1.gameboard.showValidSquares(ship, coord)
-	return validSquares
-	// console.log(validSquares)
-	// console.log(validSquares)
+	validSquares.forEach((square) => {
+		const squareEl = player1.domboard.querySelector(`[data-coordinate=${square}]`)
+		squareEl.setAttribute("style", "background-color: red;")
+	})
 }
 
-markValidSquares(patrol, 'A1')
+// markValidSquares(patrol, 'A1')
 
 // Set up board
 	
@@ -63,7 +74,7 @@ function updateBoards() {
 
 function resetSquareColors() {
 	Array.from(player1.domboard.children).forEach((square) => {
-    square.setAttribute("style", "background-color: #444;")
+    square.setAttribute("style", "background-color: lightblue;")
 	})
 }
 
