@@ -19,12 +19,17 @@ h1 {
 }
 
 .square {
+	display: flex;
 	box-sizing: border-box;
   background-color: #444;
   color: #fff;
-  padding: 20px;
+  padding: 10px;
   font-size: 1em;
   width: 80px;
   height:80px;
   text-align: center;
+}
+
+#battleship {
+	width: 100px;
 }

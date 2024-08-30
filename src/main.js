@@ -11,6 +11,25 @@ let players = [player1, player2]
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
+
+document.addEventListener("dragstart", function(event) {
+    event.dataTransfer.setData("Text", event.target.id);
+    // console.log(event.target.id)
+});
+
+/* Events fired on the drop target */
+document.addEventListener("dragover", function(event) {
+    event.preventDefault();
+});
+
+document.addEventListener("drop", function(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("Text");
+    event.target.appendChild(document.getElementById(data));
+    // document.getElementById("demo").innerHTML = "The p element was dropped";
+});
+
+
 // Set up board
 
 setUpBoard(player1, player1.domboard)
