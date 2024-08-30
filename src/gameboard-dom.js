@@ -15,18 +15,18 @@ function addSquare(square, board) {
   board.appendChild(square)
 }
 
-export function setUpBoard(player, board) {
+export function setUpBoard(player) {
 	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
 		const newSquare = createSquare(coord, square)
-		addSquare(newSquare, board)
+		addSquare(newSquare, player.domboard)
 	})
 }
 
 // Update Board
 
-export function updatePlayerBoard(player, board) {
+export function updatePlayerBoard(player) {
 	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
-		const squareElement = board.querySelector(`[data-coordinate=${coord}]`)
+		const squareElement = player.domboard.querySelector(`[data-coordinate=${coord}]`)
 
 		squareElement.innerText = squareStatus(coord, square)
 	})
