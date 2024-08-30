@@ -1,5 +1,22 @@
 
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 80px);
+  grid-gap: 10px;
+  background-color: #fff;
+  color: #444;
+  width: 800px;
+  margin: auto;
+}
 
-body {
-/*	background: red;*/
+.square {
+	box-sizing: border-box;
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 1em;
+  width: 80px;
+  height:80px;
+  text-align: center;
 }
