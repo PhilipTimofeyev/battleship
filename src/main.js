@@ -35,7 +35,11 @@ function beginTurn() {
 }
 
 function addHandlers() {
-	players[0].domboard.childNodes.forEach((square) => square.addEventListener('click', playerTurn))
+	Array.from(players[0].domboard.children).forEach((square) => {
+		// Prevent a used square from being clicked
+		const playerSquare = players[0].gameboard.board[square.dataset.coordinate]
+		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', playerTurn)
+	})
 }
 
 function removeHandlers() {
@@ -46,6 +50,7 @@ function removeHandlers() {
 function playerTurn(e) {
 	const square = e.target.dataset.coordinate;
 	players[0].gameboard.receiveAttack(square);
+	console.log("lol")
 	updateBoards()
 	removeHandlers()
 	players.reverse()

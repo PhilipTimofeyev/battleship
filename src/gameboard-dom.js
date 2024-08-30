@@ -33,7 +33,6 @@ export function updatePlayerBoard(player) {
 }
 
 function squareStatus(coord, square){   
-	console.log(square.ship && square.ship.sunk)
   switch(true){  
   	case !!square.ship && square.ship.sunk: return "Sunk!"; 
     case !!square.ship && square.hit: return "Hit";
