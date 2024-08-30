@@ -20,29 +20,34 @@ export class Ship {
 export class Carrier extends Ship {
 	constructor() {
 		super(5)
+		this.name = "Carrier"
 	}
 }
 
 export class Battleship extends Ship {
 	constructor() {
 		super(4)
+		this.name = "Battleship"
 	}
 }
 
 export class Destroyer extends Ship {
 	constructor() {
 		super(3)
+		this.name = "Destroyer"
 	}
 }
 
 export class Submarine extends Ship {
 	constructor() {
 		super(3)
+		this.name = "Submarine"
 	}
 }
 
 export class Patrol extends Ship {
 	constructor() {
 		super(2)
+		this.name = "Patrol"
 	}
 }

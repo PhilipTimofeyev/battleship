@@ -28,14 +28,15 @@ Object.entries(player1.gameboard.board).forEach(([coord, square]) => {
 function updateBoard() {
 	Object.entries(player1.gameboard.board).forEach(([coord, square]) => {
 		const coordElement = boardContainer.querySelector(`[data-coordinate=${coord}]`)
-		coordElement.innerText = square.ship
+		coordElement.innerText = square.ship ? square.ship.name : coord
 	})
 }
-
 updateBoard()
 
 const carrier = new Carrier
 
-player1.gameboard.placeShip(carrier, "A1", "C1")
+console.log(carrier.name)
+
+player1.gameboard.placeShip(carrier, "A2", "A8")
 
 updateBoard()
