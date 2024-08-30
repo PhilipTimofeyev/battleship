@@ -5,23 +5,23 @@ import { Square } from './square';
  export class Gameboard {
 
 	constructor() {
-		this.squares = this.createSquares()
+		this.board = this.createSquares()
 	}
 
 	createSquares() {
 		const letters = 'ABCDEFGHIJ'
-		let squares = {}
+		let board = {}
 
 		letters.split("").forEach((letter) =>{
 			for (let i = 1; i < 11; i++) {
-				squares[`${letter}${i}`] = new Square
+				board[`${letter}${i}`] = new Square
 			}
 		})
-		return squares
+		return board
 	}
 
 	allSunk() {
-		const squaresWithShips = Object.values(this.squares).filter((square) => (square.ship))
+		const squaresWithShips = Object.values(this.board).filter((square) => (square.ship))
 
 		const isSunk = (square) => square.ship.sunk
 		return squaresWithShips.every(isSunk)
@@ -43,16 +43,16 @@ import { Square } from './square';
 		if (result.length === 0) return null
 
 		result.forEach((square) => {
-			this.squares[square].ship = ship
+			this.board[square].ship = ship
 		})
 	}
 
 	receiveAttack(coord) {
-		const ship = this.squares[coord].ship
+		const ship = this.board[coord].ship
 		if (ship instanceof Ship) {
 			ship.hit()
 		} else {
-			this.squares[coord].missed = true
+			this.board[coord].missed = true
 		}
 	}
 
@@ -145,7 +145,7 @@ import { Square } from './square';
 	}
 
 	checkIfEmptySquares(squares) {
-		const  ifEmpty = (square) => this.squares[square].ship == null && this.squares[square].missed == false
+		const  ifEmpty = (square) => this.board[square].ship == null && this.board[square].missed == false
 		return squares.every(ifEmpty)
 	}
 }

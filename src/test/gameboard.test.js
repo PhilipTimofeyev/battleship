@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 
 test('creates board with 100 squares', () => {
-	const squares = Object.keys(gameboard.squares)
+	const squares = Object.keys(gameboard.board)
   expect(squares.length).toBe(100);
 });
 
@@ -17,7 +17,7 @@ test('places ship basic', () => {
 	const ship = new Destroyer
 	gameboard.placeShip(ship, "A1", "A2")
 
-	expect(gameboard.squares.A3.ship).toBe(ship)
+	expect(gameboard.board.A3.ship).toBe(ship)
 });
 
 test('places ship out of bounds', () => {
@@ -72,7 +72,7 @@ test('receiving multiple attacks', () => {
 test('missed attack marks board', () => {
 	gameboard.receiveAttack("D1")
 
-	expect(gameboard.squares.D1.missed).toBe(true)
+	expect(gameboard.board.D1.missed).toBe(true)
 });
 
 test('allSunk returns false when all ships not sunk', () => {
