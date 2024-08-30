@@ -68,6 +68,7 @@ import { Square } from './square';
 
 		// Remove duplicates and falsy
 		const result = [...new Set(allSquares.flat().filter(Boolean))]
+		console.log(result)
 		return result
 	}
 
@@ -75,7 +76,7 @@ import { Square } from './square';
 		let activeSquares = []
 
 		let startLet = coordStart[0]
-		let startNum = parseInt(coordStart[1])
+		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) : 10
 
 		for (let i = startNum; i < startNum + ship.length ; i++) {
 			activeSquares.push(`${startLet}${i}`)
@@ -88,9 +89,9 @@ import { Square } from './square';
 		let activeSquares = []
 
 		let startLet = coordStart[0]
-		let startNum = parseInt(coordStart[1]) + 1
+		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) : 10
 
-		for (let i = startNum - ship.length; i < startNum ; i++) {
+		for (let i = (startNum + 1) - ship.length; i < startNum ; i++) {
 			activeSquares.push(`${startLet}${i}`)
 		}
 
@@ -101,7 +102,7 @@ import { Square } from './square';
 		let activeSquares = []
 
 		let startLet = coordStart[0]
-		let startNum = coordStart[1]
+		let startNum = coordStart.length == 2 ? coordStart[1] : 10
 
 		for (let i = 1; i <= ship.length ; i++) {
 			activeSquares.push(`${startLet}${startNum}`)
@@ -115,7 +116,7 @@ import { Square } from './square';
 		let activeSquares = []
 
 		let startLet = coordStart[0]
-		let startNum = coordStart[1]
+		let startNum = coordStart.length == 2 ? coordStart[1] : 10
 
 		for (let i = 1; i <= ship.length ; i++) {
 			activeSquares.push(`${startLet}${startNum}`)

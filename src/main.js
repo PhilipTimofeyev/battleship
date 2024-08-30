@@ -10,6 +10,8 @@ const patrol = new Patrol
 
 let players = [player1, player2]
 
+// player1.gameboard.validateSize(["A8", "A9", "A11"])
+
 // DOM Elements
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
@@ -46,13 +48,13 @@ document.addEventListener("drop", function(event) {
     event.preventDefault();
     resetSquareColors() 
     const data = event.dataTransfer.getData("Text");
-    console.log(data)
     event.target.appendChild(document.getElementById(data));
 });
 
 function markValidSquares(ship, coord) {
 	const validSquares = player1.gameboard.showValidSquares(ship, coord)
 	validSquares.forEach((square) => {
+		console.log(square)
 		const squareEl = player1.domboard.querySelector(`[data-coordinate=${square}]`)
 		squareEl.setAttribute("style", "background-color: red;")
 	})
