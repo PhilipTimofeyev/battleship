@@ -72,7 +72,7 @@ test('receiving multiple attacks', () => {
 test('missed attack marks board', () => {
 	gameboard.receiveAttack("D1")
 
-	expect(gameboard.board.D1.missed).toBe(true)
+	expect(gameboard.board.D1.miss).toBe(true)
 });
 
 test('allSunk returns false when all ships not sunk', () => {

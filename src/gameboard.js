@@ -6,6 +6,7 @@ import { Square } from './square';
 
 	constructor() {
 		this.board = this.createSquares()
+		this.opponentBoard = this.createSquares()
 	}
 
 	createSquares() {
@@ -52,7 +53,7 @@ import { Square } from './square';
 		if (ship instanceof Ship) {
 			ship.hit()
 		} else {
-			this.board[coord].missed = true
+			this.board[coord].miss = true
 		}
 	}
 
@@ -145,7 +146,7 @@ import { Square } from './square';
 	}
 
 	checkIfEmptySquares(squares) {
-		const  ifEmpty = (square) => this.board[square].ship == null && this.board[square].missed == false
+		const  ifEmpty = (square) => this.board[square].ship == null && this.board[square].miss == false
 		return squares.every(ifEmpty)
 	}
 }
