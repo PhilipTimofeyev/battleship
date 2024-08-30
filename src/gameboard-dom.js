@@ -1,6 +1,4 @@
 
-
-
 // Create Board
 
 function createSquare(coord, square) {
@@ -29,6 +27,16 @@ export function setUpBoard(player, board) {
 export function updatePlayerBoard(player, board) {
 	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
 		const coordElement = board.querySelector(`[data-coordinate=${coord}]`)
-		coordElement.innerText = square.ship ? square.ship.name : coord
+
+		let result
+		if (square.ship) {
+			result = square.ship.name
+		} else if (square.miss) {
+			result = "Miss!"
+		} else {
+			result = coord
+		}
+
+		coordElement.innerText = result
 	})
 }

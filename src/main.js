@@ -29,3 +29,15 @@ player1.gameboard.placeShip(carrier, "A2", "A5")
 player2.gameboard.placeShip(battleship, "F1", "D1")
 
 updateBoard()
+
+
+function playerOneTurn() {
+	player2Board.childNodes.forEach((square) => square.addEventListener('click', function(e) {
+		const square = e.target.dataset.coordinate;
+		player2.gameboard.receiveAttack(square);
+		console.log(player2.gameboard)
+		updateBoard()
+	}))
+}
+
+playerOneTurn()
