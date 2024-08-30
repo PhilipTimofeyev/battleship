@@ -26,19 +26,16 @@ export function setUpBoard(player, board) {
 
 export function updatePlayerBoard(player, board) {
 	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
-		const coordElement = board.querySelector(`[data-coordinate=${coord}]`)
+		const squareElement = board.querySelector(`[data-coordinate=${coord}]`)
 
-		let result
-		if (square.ship && square.hit) {
-			result = "Hit!"
-		} else if (square.miss) {
-			result = "Miss!"
-		} else if (square.ship) {
-			result = square.ship.name
-		} else {
-			result = coord
-		}
-
-		coordElement.innerText = result
+		squareElement.innerText = squareStatus(coord, square)
 	})
+}
+
+function squareStatus(coord, square){   
+  switch(true){   
+    case !!square.ship && square.hit: return "Hit";
+    case square.miss: return "Miss!";
+    default: return coord;      
+  }
 }
