@@ -20,6 +20,13 @@ import { Square } from './square';
 		return squares
 	}
 
+	allSunk() {
+		const squaresWithShips = Object.values(this.squares).filter((square) => (square.ship))
+
+		const isSunk = (square) => square.ship.sunk
+		return squaresWithShips.every(isSunk)
+	}
+
 	 placeShip(ship, initalSquare, nextSquare) {
 		if (initalSquare === nextSquare) return
 
@@ -45,7 +52,7 @@ import { Square } from './square';
 		if (ship instanceof Ship) {
 			ship.hit()
 		} else {
-			this.squares[coord].marked = true
+			this.squares[coord].missed = true
 		}
 	}
 
@@ -138,7 +145,7 @@ import { Square } from './square';
 	}
 
 	checkIfEmptySquares(squares) {
-		const  ifEmpty = (square) => this.squares[square].ship == null && this.squares[square].marked == false
+		const  ifEmpty = (square) => this.squares[square].ship == null && this.squares[square].missed == false
 		return squares.every(ifEmpty)
 	}
 }

@@ -72,5 +72,47 @@ test('receiving multiple attacks', () => {
 test('missed attack marks board', () => {
 	gameboard.receiveAttack("D1")
 
-	expect(gameboard.squares.D1.marked).toBe(true)
+	expect(gameboard.squares.D1.missed).toBe(true)
 });
+
+test('allSunk returns false when all ships not sunk', () => {
+	const ship1 = new Carrier
+	const ship2 = new Destroyer
+
+	gameboard.placeShip(ship1, "A1", "C1")
+	gameboard.placeShip(ship2, "C2", "E2")
+
+	expect(gameboard.allSunk()).toBe(false)
+});
+
+test('allSunk returns false when not all ships not sunk', () => {
+	const ship1 = new Carrier
+	const ship2 = new Destroyer
+
+	ship1.sunk = true
+
+	gameboard.placeShip(ship1, "A1", "C1")
+	gameboard.placeShip(ship2, "C2", "E2")
+
+	expect(gameboard.allSunk()).toBe(false)
+});
+
+test('allSunk returns true when all ships sunk', () => {
+	const ship1 = new Carrier
+	const ship2 = new Destroyer
+
+	ship1.sunk = true
+	ship2.sunk = true
+
+	gameboard.placeShip(ship1, "A1", "C1")
+	gameboard.placeShip(ship2, "C2", "E2")
+
+	expect(gameboard.allSunk()).toBe(true)
+});
+
+
+
+
+
+
+
