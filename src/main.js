@@ -17,7 +17,7 @@ setUpBoard(player2, player2.domboard)
 
 // Update Board
 
-function updateBoard() {
+function updateBoards() {
 	updatePlayerBoard(player1);
 	updatePlayerBoard(player2);
 }
@@ -28,18 +28,44 @@ const battleship = new Battleship
 player1.gameboard.placeShip(carrier, "A2", "A5")
 player2.gameboard.placeShip(battleship, "F1", "D1")
 
-updateBoard()
+// updateBoard()
 
+let players = [player1, player2]
 
-function playerOneTurn() {
-	player2.domboard.childNodes.forEach((square) => square.addEventListener('click', function(e) {
-		const square = e.target.dataset.coordinate;
-		player2.gameboard.receiveAttack(square);
-		console.log(player2.gameboard)
-		updateBoard()
-	}))
+function addHandlers() {
+	players[0].domboard.childNodes.forEach((square) => square.addEventListener('click', myFunction))
 }
 
-let currentPlayer = [player1, player2]
+function removeHandlers() {
+	player1.domboard.childNodes.forEach((square) => square.removeEventListener('click', myFunction))
+	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', myFunction))
+}
 
-playerOneTurn()
+function myFunction(e) {
+	const square = e.target.dataset.coordinate;
+	players[0].gameboard.receiveAttack(square);
+	updateBoards()
+	removeHandlers()
+	players.reverse()
+	addHandlers()
+}
+
+addHandlers(player1)
+
+
+// function playerOneTurn() {
+// 	let players = [player1, player2]
+// 	// let currentPlayer = players[0]
+
+// 	players[0].domboard.childNodes.forEach((square) => square.addEventListener('click', function(e) {
+// 		const square = e.target.dataset.coordinate;
+// 		players[0].gameboard.receiveAttack(square);
+// 		updateBoards()
+// 		console.log(players[0])
+// 		players.reverse()
+// 	}))
+// }
+
+// let currentPlayer = [player1, player2]
+
+// playerOneTurn()

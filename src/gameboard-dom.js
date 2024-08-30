@@ -3,7 +3,7 @@
 
 function createSquare(coord, square) {
   const newDiv = document.createElement("div");
-  const newContent = document.createTextNode(coord);
+  const newContent = document.createTextNode("");
 
   newDiv.classList.add('square')
   newDiv.appendChild(newContent);
@@ -36,6 +36,6 @@ function squareStatus(coord, square){
   switch(true){   
     case !!square.ship && square.hit: return "Hit";
     case square.miss: return "Miss!";
-    default: return coord;      
+    default: return "";      
   }
 }
