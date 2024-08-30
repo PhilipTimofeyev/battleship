@@ -29,10 +29,12 @@ export function updatePlayerBoard(player, board) {
 		const coordElement = board.querySelector(`[data-coordinate=${coord}]`)
 
 		let result
-		if (square.ship) {
-			result = square.ship.name
+		if (square.ship && square.hit) {
+			result = "Hit!"
 		} else if (square.miss) {
 			result = "Miss!"
+		} else if (square.ship) {
+			result = square.ship.name
 		} else {
 			result = coord
 		}

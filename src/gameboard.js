@@ -51,7 +51,8 @@ import { Square } from './square';
 	receiveAttack(coord) {
 		const ship = this.board[coord].ship
 		if (ship instanceof Ship) {
-			ship.hit()
+			ship.hit();
+			this.board[coord].hit = true
 		} else {
 			this.board[coord].miss = true
 		}
