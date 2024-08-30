@@ -17,16 +17,22 @@ document.addEventListener("dragstart", function(event) {
     // console.log(event.target.id)
 });
 
-/* Events fired on the drop target */
 document.addEventListener("dragover", function(event) {
     event.preventDefault();
+    // Change to square instead of dataset?
+    if (!event.target.dataset.coordinate) return
+    const coord = event.target.dataset.coordinate
+    const squareEl = player1.domboard.querySelector(`[data-coordinate=${coord}]`)
+    resetSquareColors()
+    squareEl.setAttribute("style", "background-color: red;")
 });
+
 
 document.addEventListener("drop", function(event) {
     event.preventDefault();
-    var data = event.dataTransfer.getData("Text");
+    const data = event.dataTransfer.getData("Text");
     event.target.appendChild(document.getElementById(data));
-    // document.getElementById("demo").innerHTML = "The p element was dropped";
+    console.log(event.target.dataset.coordinate)
 });
 
 
@@ -35,6 +41,11 @@ document.addEventListener("drop", function(event) {
 setUpBoard(player1, player1.domboard)
 setUpBoard(player2, player2.domboard)
 
+function resetSquareColors() {
+	Array.from(player1.domboard.children).forEach((square) => {
+    square.setAttribute("style", "background-color: #444;")
+	})
+}
 
 // Update Board
 

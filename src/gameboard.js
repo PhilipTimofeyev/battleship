@@ -39,7 +39,7 @@ import { Square } from './square';
 		const options = [leftSquares, rightSquares, upSquares, downSquares]
 
 		// Only show squares that contain the initial square and next square.
-		const result =  options.filter((squares) => {return squares.includes(nextSquare)}).flat()
+		const result = options.filter((squares) => {return squares.includes(nextSquare)}).flat()
 
 		if (result.length === 0) return null
 

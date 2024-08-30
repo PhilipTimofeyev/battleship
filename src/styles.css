@@ -33,3 +33,7 @@ h1 {
 #battleship {
 	width: 100px;
 }
+
+.hmm:hover {
+  background-color: yellow;
+}
