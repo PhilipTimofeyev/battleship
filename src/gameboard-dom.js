@@ -23,30 +23,51 @@ export function setUpBoard(player) {
 	})
 }
 
-// Update Board
-
-export function updatePlayerBoard(player) {
+export function updatePlayerBoard(player, showShips) {
 	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
-		const squareElement = player.domboard.querySelector(`[data-coordinate=${coord}]`)
-		let ship = null
-		if (square.ship) ship = cloneShip(square.ship.name)
-
-		const result = squareStatus(ship, square)
-
-		if (result instanceof Node) {
-			squareElement.firstChild ? squareElement.firstChild.replaceWith(ship) : squareElement.appendChild(ship)
-		} else {
-			squareElement.innerText = result
-		}
+		displaySquare(coord, square, player, showShips)
 	})
 }
 
-function squareStatus(ship, square){   
+function displaySquare(coord, square, player, showShips) {
+	const squareElement = getDomSquare(coord, player)
+	const result = getSquareStatus(square, squareElement, showShips)
+
+	if (result instanceof Node) {
+		squareElement.appendChild(result)
+	} else {
+		squareElement.innerText = result
+	}
+}
+
+function getSquareStatus(square, squareElement, showShips) {
+	if (square.ship) {
+		// Clone ship and remove square children
+		const shipClone = cloneShip(square.ship.name)
+		removeAllChildren(squareElement)  
+		return squareShipStatus(square, shipClone, showShips)
+	} else {
+		return  squareNoShipStatus(square)
+	}
+}
+
+function getDomSquare(coord, player) {
+	return player.domboard.querySelector(`[data-coordinate=${coord}]`)
+}
+
+function removeAllChildren(element) {
+	while (element.firstChild) {element.removeChild(element.lastChild);}
+}
+
+function squareNoShipStatus(square){  
+	return square.miss ? "Miss!" : ""
+}
+
+function squareShipStatus(square, ship, showShips){ 
   switch(true){  
-  	case !!square.ship && square.ship.sunk: return "Sunk!"; 
-    case !!square.ship && square.hit: return ship;
-    case square.miss: return "Miss!";
-    case !!square.ship: return "SHIP"
-    default: return "";      
+  	case square.ship.sunk: return "Sunk!"; 
+    case square.hit: return ship;
+    case showShips: return ship  
+    default: return "SHIP"
   }
 }

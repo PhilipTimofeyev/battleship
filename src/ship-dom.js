@@ -26,32 +26,6 @@ export function addNewShipSet() {
 	shipNames.forEach((ship) => shipsDiv.appendChild(cloneShip(ship)))
 }
 
-export function showShips(player) {
-	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
-		displaySquare(coord, square, player)
-	})
-}
-
-// Helper Methods
-
-function displaySquare(coord, square, player) {
-	const squareElement = getDomSquare(coord, player)
-	if (square.ship){
-		const shipClone = cloneShip(square.ship.name)
-		removeAllChildren(squareElement)
-		squareElement.appendChild(shipClone) 
-	} else {
-		squareElement.innerText = ""
-	}
-}
-
-function getDomSquare(coord, player) {
-	return player.domboard.querySelector(`[data-coordinate=${coord}]`)
-}
-
-function removeAllChildren(element) {
-	while (element.firstChild) {element.removeChild(element.lastChild);}
-}
 
 
 

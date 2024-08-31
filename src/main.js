@@ -1,7 +1,6 @@
 import { Player } from './player';
-// import { dragStart } from './dom-handlers';
 import { setUpBoard, updatePlayerBoard } from './gameboard-dom';
-import { showShips, addNewShipSet } from './ship-dom';
+import { addNewShipSet } from './ship-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 
 const shipsDiv = document.querySelector('.ships')
@@ -86,7 +85,7 @@ function addListeners(startCoord, ship) {
 			const endCoord = e.target.dataset.coordinate
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
 			resetSquareColors()
-			showShips(players[0])
+			updateBoards(true)
 			console.log(players[0].gameboard.board)
 		})
 	})
@@ -101,9 +100,9 @@ setUpBoard(player2, player2.domboard)
 
 // Update Board
 
-function updateBoards() {
-	updatePlayerBoard(player1);
-	updatePlayerBoard(player2);
+function updateBoards(showShips) {
+	updatePlayerBoard(player1, showShips);
+	updatePlayerBoard(player2, showShips);
 }
 
 function resetSquareColors() {
