@@ -1,5 +1,5 @@
 import { cloneShip } from './ship-dom';
-
+import { getSquareDom } from './helper-methods';
 // Create Board
 
 function createSquare(coord, square) {
@@ -30,7 +30,7 @@ export function updatePlayerBoard(player, showShips) {
 }
 
 function displaySquare(coord, square, player, showShips) {
-	const squareElement = getDomSquare(coord, player)
+	const squareElement = getSquareDom(coord, player)
 	const result = getSquareStatus(square, squareElement, showShips)
 
 	if (result instanceof Node) {
@@ -51,10 +51,6 @@ function getSquareStatus(square, squareElement, showShips) {
 	}
 }
 
-function getDomSquare(coord, player) {
-	return player.domboard.querySelector(`[data-coordinate=${coord}]`)
-}
-
 function removeAllChildren(element) {
 	while (element.firstChild) {element.removeChild(element.lastChild);}
 }
@@ -71,3 +67,10 @@ function squareShipStatus(square, ship, showShips){
     default: return "SHIP"
   }
 }
+
+export function resetSquareColors(player) {
+	Array.from(player.domboard.children).forEach((square) => {
+    square.setAttribute("style", "background-color: lightblue;")
+	})
+}
+

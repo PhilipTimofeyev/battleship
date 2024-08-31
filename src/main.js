@@ -1,13 +1,10 @@
 import { Player } from './player';
-import { setUpBoard, updatePlayerBoard } from './gameboard-dom';
+import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet } from './ship-dom';
 import { Ship } from './ship';
+import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from './helper-methods';
 
-const shipsDiv = document.querySelector('.ships')
-const boardsDiv = document.querySelector('.boards')
-
-const startBtn = document.querySelector('#start-game')
-const switchPlayerBtn = document.querySelector('#switch-player')
+// Players
 
 const player1 = new Player
 const player2 = new Player
@@ -15,34 +12,73 @@ const player2 = new Player
 let players = [player1, player2]
 
 // DOM Elements
+
+const boardsDiv = document.querySelector('.boards')
+
+const startBtn = document.querySelector('#start-game')
+const switchPlayerBtn = document.querySelector('#switch-player')
+
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
-// player2.domboard.style.display = "none"
+// Set up board
+	
+setUpBoard(player1, player1.domboard)
+setUpBoard(player2, player2.domboard)
 
-let dragged = null;
-let draggedElement = null;
+// Button Listeners
+
+startBtn.addEventListener('click', beginTurn)
+switchPlayerBtn.addEventListener('click', function() {
+	// players[0].domboard.style.display = "none"
+	// players[1].domboard.style.display = "grid"
+	addNewShipSet()
+	// removePlayerTurnListener()
+	removeAllHandlers(player1, player2) 
+	players.reverse()
+})
+
+
+// Drag and Drop
+
+let draggedShip = null;
+let draggedShipElement = null;
+
+// Drag Start
 
 document.addEventListener("dragstart", dragStart);
 
 function dragStart(event) {
- 	event.dataTransfer.setData("Text", event.target.id);
  	const shipType = event.target.id
-	 
- 	draggedElement = event.target
- 	dragged = Ship.createShip(shipType)
+	
+	// Captures Ship element for future use
+ 	draggedShipElement = event.target
+ 	draggedShip = Ship.createShip(shipType)
+
+ 	// Removes the ship objects from the player's gameboard so there are no duplicates
 	players[0].gameboard.removeShips(shipType)
 }
 
 document.addEventListener("dragover", dragOver);
 
+// Drag Over
+
 function dragOver(event) {
 	event.preventDefault();
 	if (!event.target.dataset.coordinate) return
 	const coord = event.target.dataset.coordinate
-	const squareEl = players[0].domboard.querySelector(`[data-coordinate=${coord}]`)
-	resetSquareColors()
-	markValidSquares(dragged, coord)
+	const squareEl = getSquareDom(coord, players[0])
+	resetSquareColors(players[0])
+	markValidSquares(draggedShip, coord)
+}
+
+function markValidSquares(ship, coord) {
+	const validSquares = players[0].gameboard.showValidSquares(ship, coord)
+
+	validSquares.forEach((square) => {
+		const squareEl = getSquareDom(square, players[0])
+		squareEl.setAttribute("style", "background-color: red;")
+	})
 }
 
 // DROP
@@ -52,95 +88,63 @@ document.addEventListener("drop", drop);
 function drop(event) {
 	event.preventDefault();
 	const startCoord = event.target.dataset.coordinate
-	removeHandlers() 
-	addListeners(startCoord, dragged)
-	const data = event.dataTransfer.getData("Text");
-	event.target.appendChild(draggedElement);
+	addSecondCoordListeners(startCoord, draggedShip)
+	event.target.appendChild(draggedShipElement);
 }
 
-function markValidSquares(ship, coord) {
-	const validSquares = players[0].gameboard.showValidSquares(ship, coord)
-	validSquares.forEach((square) => {
-		const squareEl = players[0].domboard.querySelector(`[data-coordinate=${square}]`)
-		squareEl.setAttribute("style", "background-color: red;")
-	})
-}
-
-function addListeners(startCoord, ship) {
+function addSecondCoordListeners(startCoord, ship) {
 	const squares = players[0].gameboard.showValidSquares(ship, startCoord)
 
 	squares.forEach((square) => {
-		const squareEl = players[0].domboard.querySelector(`[data-coordinate=${square}]`)
+		const squareEl = getSquareDom(square, players[0])
 		squareEl.addEventListener('click', function(e) {
+
+			// Once player selects the 2nd square, the board places the ships accordingly
 			const endCoord = e.target.dataset.coordinate
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
-			resetSquareColors()
+			resetSquareColors(players[0])
 			updateBoards(true)
-			console.log(players[0].gameboard.board)
 		})
 	})
-	removeHandlers()
 }
-
-
-// Set up board
-	
-setUpBoard(player1, player1.domboard)
-setUpBoard(player2, player2.domboard)
-
-// Update Board
 
 function updateBoards(showShips) {
 	updatePlayerBoard(player1, showShips);
 	updatePlayerBoard(player2, showShips);
 }
 
-function resetSquareColors() {
-	Array.from(players[0].domboard.children).forEach((square) => {
-    square.setAttribute("style", "background-color: lightblue;")
-	})
-}
-
 function beginTurn() {
-	players[0].domboard.style.display = "grid"
-	players[1].domboard.style.display = "grid"
+	// players[0].domboard.style.display = "grid"
+	// players[1].domboard.style.display = "grid"
 	// players.reverse()
 	removeDraggable()
-	updateBoards()
-	addHandlers()
+	updateBoards(false)
+	addPlayerTurnListener(players[0])
 }
 
-function addHandlers() {
-	Array.from(players[0].domboard.children).forEach((square) => {
-		// Prevent a used square from being clicked
-		const playerSquare = players[0].gameboard.board[square.dataset.coordinate]
+function addPlayerTurnListener(player) {
+	Array.from(player.domboard.children).forEach((square) => {
+		// Only make non-used squares clickable
+		const playerSquare = getSquareObj(square, players[0]) 
 		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', playerTurn)
 	})
 }
 
-function removeHandlers() {
-	player1.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
-	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
-}
-
-function removeAllHandlers() {
-	player1.domboard.childNodes.forEach((square) => square.replaceWith(square.cloneNode(true)))
-	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
-}
-
-
 function playerTurn(e) {
-	const square = e.target.dataset.coordinate;
-	players[0].gameboard.receiveAttack(square);
+	const squareToAttack = e.target.dataset.coordinate;
+	players[0].gameboard.receiveAttack(squareToAttack);
 	updateBoards()
-	removeHandlers()
+	removeListener(players[0], playerTurn)
 	if (gameOver()) return
 	players.reverse()
-	addHandlers()
+	addPlayerTurnListener(players[0])
 }
 
 function gameOver() {
-	return players[0].gameboard.allSunk()
+	if (players[0].gameboard.allSunk()) {
+		alert("Game Over!")
+		return true
+	}
 }
 
 function removeDraggable() {
@@ -149,17 +153,5 @@ function removeDraggable() {
 	document.removeEventListener("drop", drop)
 }
 
-// player1.gameboard.placeShip(new Battleship, "A1", "A2")
-// player2.gameboard.placeShip(new Battleship, "A10", "A9")
 
 
-
-startBtn.addEventListener('click', beginTurn)
-switchPlayerBtn.addEventListener('click', function() {
-	// players[0].domboard.style.display = "none"
-	// players[1].domboard.style.display = "grid"
-	addNewShipSet()
-	// removeHandlers()
-	removeAllHandlers() 
-	players.reverse()
-})
