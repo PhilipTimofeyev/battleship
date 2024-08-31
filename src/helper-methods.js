@@ -17,8 +17,6 @@ export function removeAllHandlers(player1, player2) {
 	player2.domboard.childNodes.forEach((square) => square.replaceWith(square.cloneNode(true)))
 }
 
-export function removeDraggable() {
-	document.removeEventListener("dragstart", dragStart)
-	document.removeEventListener("dragover", dragOver)
-	document.removeEventListener("drop", drop)
+export function getRandomArrElement(array) {
+	return array[Math.floor(Math.random() * array.length)]
 }

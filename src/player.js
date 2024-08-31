@@ -1,5 +1,6 @@
 import { Gameboard } from './gameboard';
 import { Ship } from './ship';
+import { getRandomArrElement } from './helper-methods';
 
 export class Player {
 	constructor() {
@@ -17,9 +18,9 @@ export class Computer extends Player {
 
 
 	placeAllShips() {
-		const ship = Ship.createShip('Battleship')
+		const allShips = ['Carrier', 'Battleship', 'Destroyer', 'Patrol', 'Submarine']
 
-		this.placeShip(ship)
+		allShips.forEach((shipName) => this.placeShip(Ship.createShip(shipName)))
 	}
 
 	placeShip(ship) {
@@ -27,8 +28,6 @@ export class Computer extends Player {
 		const secondCoord = this.selectRandomSecondSquare(firstCoord, ship)
 
 		this.gameboard.placeShip(ship, firstCoord, secondCoord)
-
-		console.log(this.gameboard.board)
 	}
 
 
@@ -37,10 +36,9 @@ export class Computer extends Player {
 		const emptySquare = ([key, square]) => !square.ship
 		const emptySquares = Object.entries(this.gameboard.board).filter(emptySquare)
 
-		const randSquare = this.getRandomArrElement(emptySquares)
-		// Returns key which is coordinat
+		const randSquare = getRandomArrElement(emptySquares)
+		// Returns key which is coordinate
 		return randSquare[0]
-		// return "A1"
 	}
 
 	selectRandomSecondSquare(firstCoord, ship) {
@@ -49,11 +47,7 @@ export class Computer extends Player {
 		const removeFirstCoord = (square) => square != firstCoord
 		const validSquares = this.gameboard.showValidSquares(ship, firstCoord).filter(removeFirstCoord)
 
-		return this.getRandomArrElement(validSquares)
-	}
-
-	getRandomArrElement(array) {
-		return array[Math.floor(Math.random() * array.length)]
+		return getRandomArrElement(validSquares)
 	}
 
 

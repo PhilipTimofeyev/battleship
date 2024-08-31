@@ -9,7 +9,7 @@ import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from '.
 const player1 = new Player
 const player2 = new Computer
 
-console.log(player2.placeAllShips())
+// console.log(player2.placeAllShips())
 
 let players = [player1, player2]
 
