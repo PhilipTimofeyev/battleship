@@ -18,6 +18,13 @@ h1 {
   width: 800px;
 }
 
+.ships {
+	margin-top: 30px;
+	display: flex;
+	gap: 50px;
+	justify-content: center;
+}
+
 .square {
 	display: flex;
 	box-sizing: border-box;
