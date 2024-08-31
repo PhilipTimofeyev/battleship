@@ -10,8 +10,6 @@ const patrol = new Patrol
 
 let players = [player1, player2]
 
-// player1.gameboard.validateSize(["A8", "A9", "A11"])
-
 // DOM Elements
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
@@ -34,9 +32,6 @@ document.addEventListener("dragstart", function(event) {
 
 document.addEventListener("dragover", function(event) {
   event.preventDefault();
-  // const data = event.dataTransfer.getData("Text");
-  // console.log(dragged)
-  // Change to square instead of dataset?
   if (!event.target.dataset.coordinate) return
   const coord = event.target.dataset.coordinate
   const squareEl = player1.domboard.querySelector(`[data-coordinate=${coord}]`)
@@ -44,9 +39,14 @@ document.addEventListener("dragover", function(event) {
   markValidSquares(dragged, coord)
 });
 
+// DROP
+
 document.addEventListener("drop", function(event) {
     event.preventDefault();
-    resetSquareColors() 
+    // resetSquareColors() 
+    const startCoord = event.target.dataset.coordinate
+    removeHandlers() 
+    addListeners(startCoord, dragged)
     const data = event.dataTransfer.getData("Text");
     event.target.appendChild(document.getElementById(data));
 });
@@ -54,13 +54,31 @@ document.addEventListener("drop", function(event) {
 function markValidSquares(ship, coord) {
 	const validSquares = player1.gameboard.showValidSquares(ship, coord)
 	validSquares.forEach((square) => {
-		console.log(square)
 		const squareEl = player1.domboard.querySelector(`[data-coordinate=${square}]`)
 		squareEl.setAttribute("style", "background-color: red;")
 	})
 }
 
-// markValidSquares(patrol, 'A1')
+function addListeners(startCoord, ship) {
+	// console.log(startCoord)
+	const squares = player1.gameboard.showValidSquares(ship, startCoord)
+
+	// squares.forEach((square) => {
+	// 	squares.addEventListener('click', function(e) {
+	// 		console.log(e)
+	// 	})
+	// })
+
+	squares.forEach((square) => {
+		const squareEl = player1.domboard.querySelector(`[data-coordinate=${square}]`)
+		squareEl.addEventListener('click', function(e) {
+			const endCoord = e.target.dataset.coordinate
+			player1.gameboard.placeShip(ship, startCoord, endCoord)
+			console.log(player1.gameboard.board)
+		})
+	})
+}
+
 
 // Set up board
 	
@@ -116,4 +134,3 @@ function gameOver() {
 }
 
 beginTurn()
-

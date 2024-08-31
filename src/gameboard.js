@@ -41,9 +41,13 @@ import { Square } from './square';
 		// Only show squares that contain the initial square and next square.
 		const result = options.filter((squares) => {return squares.includes(nextSquare)}).flat()
 
+		// console.log(result)
+
 		if (result.length === 0) return null
 
+					console.log(leftSquares)
 		result.forEach((square) => {
+			console.log(square)
 			this.board[square].ship = ship
 		})
 	}
@@ -89,9 +93,9 @@ import { Square } from './square';
 		let activeSquares = []
 
 		let startLet = coordStart[0]
-		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) : 10
+		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) + 1 : 11
 
-		for (let i = (startNum + 1) - ship.length; i < startNum ; i++) {
+		for (let i = startNum - ship.length; i < startNum ; i++) {
 			activeSquares.push(`${startLet}${i}`)
 		}
 
