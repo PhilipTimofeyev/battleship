@@ -2,6 +2,7 @@ import { Player } from './player';
 import { setUpBoard, updatePlayerBoard } from './gameboard-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 
+const startBtn = document.querySelector('#start-game')
 const player1 = new Player
 const player2 = new Player
 
@@ -43,7 +44,7 @@ document.addEventListener("dragover", function(event) {
 
 document.addEventListener("drop", function(event) {
     event.preventDefault();
-    // resetSquareColors() 
+    console.log(event.target)
     const startCoord = event.target.dataset.coordinate
     removeHandlers() 
     addListeners(startCoord, dragged)
@@ -60,23 +61,16 @@ function markValidSquares(ship, coord) {
 }
 
 function addListeners(startCoord, ship) {
-	// console.log(startCoord)
 	const squares = player1.gameboard.showValidSquares(ship, startCoord)
-
-	// squares.forEach((square) => {
-	// 	squares.addEventListener('click', function(e) {
-	// 		console.log(e)
-	// 	})
-	// })
 
 	squares.forEach((square) => {
 		const squareEl = player1.domboard.querySelector(`[data-coordinate=${square}]`)
 		squareEl.addEventListener('click', function(e) {
 			const endCoord = e.target.dataset.coordinate
 			player1.gameboard.placeShip(ship, startCoord, endCoord)
-			console.log(player1.gameboard.board)
 		})
 	})
+	removeHandlers()
 }
 
 
@@ -99,8 +93,8 @@ function resetSquareColors() {
 }
 
 
-// player1.gameboard.placeShip(patrol, "A1", "A2")
-// player2.gameboard.placeShip(carrier, "F1", "D1")
+player1.gameboard.placeShip(patrol, "A1", "A2")
+player2.gameboard.placeShip(carrier, "F1", "D1")
 
 function beginTurn() {
 	addHandlers()
@@ -133,4 +127,4 @@ function gameOver() {
 	return players[0].gameboard.allSunk()
 }
 
-beginTurn()
+startBtn.addEventListener('click', beginTurn)
