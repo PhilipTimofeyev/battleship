@@ -7,7 +7,7 @@ const player1 = new Player
 const player2 = new Player
 
 const carrier = new Carrier
-const patrol = new Patrol
+const battleship = new Battleship
 
 let players = [player1, player2]
 
@@ -20,7 +20,10 @@ let dragged = null;
 function createShip(name) {
 	switch(name){  
 		case 'Carrier': return new Carrier; 
-		case 'Battleship': return new Battleship;      
+		case 'Battleship': return new Battleship;
+		case 'Destroyer': return new Destroyer; 
+		case 'Patrol': return new Patrol;    
+		case 'Submarine': return new Submarine;      
 	}
 }
 
@@ -44,7 +47,6 @@ document.addEventListener("dragover", function(event) {
 
 document.addEventListener("drop", function(event) {
     event.preventDefault();
-    console.log(event.target)
     const startCoord = event.target.dataset.coordinate
     removeHandlers() 
     addListeners(startCoord, dragged)
@@ -92,8 +94,7 @@ function resetSquareColors() {
 	})
 }
 
-
-player1.gameboard.placeShip(patrol, "A1", "A2")
+player1.gameboard.placeShip(battleship, "A1", "A2")
 player2.gameboard.placeShip(carrier, "F1", "D1")
 
 function beginTurn() {
@@ -128,3 +129,4 @@ function gameOver() {
 }
 
 startBtn.addEventListener('click', beginTurn)
+beginTurn()

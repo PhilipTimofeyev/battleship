@@ -41,13 +41,9 @@ import { Square } from './square';
 		// Only show squares that contain the initial square and next square.
 		const result = options.filter((squares) => {return squares.includes(nextSquare)}).flat()
 
-		// console.log(result)
-
 		if (result.length === 0) return null
 
-					console.log(leftSquares)
 		result.forEach((square) => {
-			console.log(square)
 			this.board[square].ship = ship
 		})
 	}
@@ -72,7 +68,6 @@ import { Square } from './square';
 
 		// Remove duplicates and falsy
 		const result = [...new Set(allSquares.flat().filter(Boolean))]
-		console.log(result)
 		return result
 	}
 
