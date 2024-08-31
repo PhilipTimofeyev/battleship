@@ -16,6 +16,23 @@ export class Human extends Player {
 
 export class Computer extends Player {
 
+// Attacking
+
+	sendAttack(opponentBoard) {
+		return this.shipsSunk(opponentBoard)
+	}
+
+	shipsSunk(opponentBoard) {
+		const sunkShip = (square) => square.ship && square.ship.sunk
+		const shipName = (square) => square.ship.name
+		
+		const sunkShips =  Object.values(opponentBoard).filter(sunkShip).map(shipName)
+
+		// Remove duplicates
+		return [...new Set(sunkShips)]
+	}
+
+// Placing Ships
 
 	placeAllShips() {
 		const allShips = ['Carrier', 'Battleship', 'Destroyer', 'Patrol', 'Submarine']
@@ -29,8 +46,6 @@ export class Computer extends Player {
 
 		this.gameboard.placeShip(ship, firstCoord, secondCoord)
 	}
-
-
 
 	selectRandomFirstSquare() {
 		const emptySquare = ([key, square]) => !square.ship
