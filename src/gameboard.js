@@ -153,6 +153,15 @@ import { Square } from './square';
 		
 		return squares.every(ifEmpty)
 	}
+
+	removeShips(name) {
+
+		const squareWithShip = (square) => !!square.ship
+
+		Object.values(this.board).filter(squareWithShip).forEach((square) => {
+			if (square.ship.name === name) square.ship = null
+		})
+	}
 }
 
 

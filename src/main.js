@@ -24,6 +24,7 @@ player2.domboard = document.querySelector(".player2")
 // player2.domboard.style.display = "none"
 
 let dragged = null;
+let draggedElement = null;
 
 function createShip(name) {
 	switch(name){  
@@ -39,7 +40,9 @@ document.addEventListener("dragstart", function(event) {
   event.dataTransfer.setData("Text", event.target.id);
   const shipType = event.target.id
   
+  draggedElement = event.target
   dragged = createShip(shipType)
+ 	players[0].gameboard.removeShips(shipType)
 });
 
 document.addEventListener("dragover", function(event) {
@@ -60,7 +63,8 @@ document.addEventListener("drop", function(event) {
     removeHandlers() 
     addListeners(startCoord, dragged)
     const data = event.dataTransfer.getData("Text");
-    event.target.appendChild(shipsDiv.querySelector(`.${data}`));
+    // event.target.appendChild(shipsDiv.querySelector(`.${data}`));
+    event.target.appendChild(draggedElement);
 });
 
 function markValidSquares(ship, coord) {
@@ -106,8 +110,8 @@ function resetSquareColors() {
 }
 
 function beginTurn() {
-	// players[0].domboard.style.display = "grid"
-	// players[1].domboard.style.display = "grid"
+	players[0].domboard.style.display = "grid"
+	players[1].domboard.style.display = "grid"
 	// players.reverse()
 	updateBoards()
 	addHandlers()
@@ -157,13 +161,9 @@ function gameOver() {
 	return players[0].gameboard.allSunk()
 }
 
-// updateBoards()
-
-// player1.gameboard.placeShip(new Battleship, "A1", "A2")
-// player2.gameboard.placeShip(new Carrier, "F1", "D1")
-
-// beginTurn()
-// console.log(player1.gameboard.board)
+function removeShips() {
+	players[0].gameboard
+}
 
 startBtn.addEventListener('click', beginTurn)
 switchPlayerBtn.addEventListener('click', function() {
