@@ -1,7 +1,7 @@
 import { Player } from './player';
 import { setUpBoard, updatePlayerBoard } from './gameboard-dom';
 import { addNewShipSet } from './ship-dom';
-import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
+import { Ship } from './ship';
 
 const shipsDiv = document.querySelector('.ships')
 const boardsDiv = document.querySelector('.boards')
@@ -23,16 +23,6 @@ player2.domboard = document.querySelector(".player2")
 let dragged = null;
 let draggedElement = null;
 
-function createShip(name) {
-	switch(name){  
-		case 'Carrier': return new Carrier; 
-		case 'Battleship': return new Battleship;
-		case 'Destroyer': return new Destroyer; 
-		case 'Patrol': return new Patrol;    
-		case 'Submarine': return new Submarine;      
-	}
-}
-
 document.addEventListener("dragstart", dragStart);
 
 function dragStart(event) {
@@ -40,7 +30,7 @@ function dragStart(event) {
  	const shipType = event.target.id
 	 
  	draggedElement = event.target
- 	dragged = createShip(shipType)
+ 	dragged = Ship.createShip(shipType)
 	players[0].gameboard.removeShips(shipType)
 }
 

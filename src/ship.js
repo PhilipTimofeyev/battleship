@@ -15,6 +15,16 @@ export class Ship {
 		this.sunk = this.hits >= this.length
 		return this.sunk
 	}
+
+	static createShip(name) {
+		switch(name){  
+			case 'Carrier': return new Carrier; 
+			case 'Battleship': return new Battleship;
+			case 'Destroyer': return new Destroyer; 
+			case 'Patrol': return new Patrol;    
+			case 'Submarine': return new Submarine;      
+		}
+	}
 }
 
 export class Carrier extends Ship {
