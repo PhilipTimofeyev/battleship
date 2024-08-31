@@ -1,6 +1,7 @@
 import { Player } from './player';
 // import { dragStart } from './dom-handlers';
-import { setUpBoard, updatePlayerBoard, showShips, cloneShip, addNewShipSet } from './gameboard-dom';
+import { setUpBoard, updatePlayerBoard } from './gameboard-dom';
+import { showShips, addNewShipSet } from './ship-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 
 const shipsDiv = document.querySelector('.ships')

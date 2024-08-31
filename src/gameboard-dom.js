@@ -1,10 +1,4 @@
-const shipsDiv = document.querySelector('.ships')
-
-const carrier = document.querySelector("#Carrier")
-const battleship = document.querySelector("#Battleship")
-const destroyer = document.querySelector("#Destroyer")
-const patrol = document.querySelector("#Patrol")
-const submarine = document.querySelector("#Submarine")
+import { cloneShip } from './ship-dom';
 
 // Create Board
 
@@ -47,20 +41,6 @@ export function updatePlayerBoard(player) {
 	})
 }
 
-export function showShips(player) {
-	Object.entries(player.gameboard.board).forEach(([coord, square]) => {
-		const squareElement = player.domboard.querySelector(`[data-coordinate=${coord}]`)
-		if (square.ship){
-			let ship = cloneShip(square.ship.name)
-			while (squareElement.firstChild) {squareElement.removeChild(squareElement.lastChild);}
-			squareElement.appendChild(ship) 
-		} else {
-			squareElement.innerText = ""
-		}
-	})
-}
-
-
 function squareStatus(ship, square){   
   switch(true){  
   	case !!square.ship && square.ship.sunk: return "Sunk!"; 
@@ -69,23 +49,4 @@ function squareStatus(ship, square){
     case !!square.ship: return "SHIP"
     default: return "";      
   }
-}
-
-export function cloneShip(ship) {
-	switch(ship) {
-	case "Carrier": return carrier.cloneNode(true);
-	case "Battleship": return battleship.cloneNode(true);
-	case "Destroyer": return destroyer.cloneNode(true);
-	case "Patrol": return patrol.cloneNode(true);
-	case "Submarine": return submarine.cloneNode(true);
-	}
-}
-
-export function addNewShipSet() {
-	const shipsDiv = document.querySelector('.ships')
-
-	let shipNames = ['Carrier', 'Battleship', 'Destroyer', 'Patrol', 'Submarine']
-
-	shipNames.forEach((ship) => shipsDiv.appendChild(cloneShip(ship)))
-
 }
