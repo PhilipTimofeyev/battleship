@@ -21,7 +21,7 @@ let players = [player1, player2]
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
-player2.domboard.style.display = "none"
+// player2.domboard.style.display = "none"
 
 let dragged = null;
 
@@ -53,14 +53,14 @@ document.addEventListener("dragover", function(event) {
 
 // DROP
 
-players[0].domboard.addEventListener("drop", function(event) {
+document.addEventListener("drop", function(event) {
+		const shipsDiv = document.querySelector('.ships')
     event.preventDefault();
     const startCoord = event.target.dataset.coordinate
     removeHandlers() 
     addListeners(startCoord, dragged)
     const data = event.dataTransfer.getData("Text");
-    console.log(data)
-    event.target.appendChild(document.getElementById(data));
+    event.target.appendChild(shipsDiv.querySelector(`.${data}`));
 });
 
 function markValidSquares(ship, coord) {
@@ -105,12 +105,11 @@ function resetSquareColors() {
 	})
 }
 
-// player1.gameboard.placeShip(battleship, "A1", "A2")
-// player2.gameboard.placeShip(carrier, "F1", "D1")
-
 function beginTurn() {
-	players[0].domboard.style.display = "grid"
-	players[1].domboard.style.display = "grid"
+	// players[0].domboard.style.display = "grid"
+	// players[1].domboard.style.display = "grid"
+	// players.reverse()
+	updateBoards()
 	addHandlers()
 }
 
@@ -158,10 +157,18 @@ function gameOver() {
 	return players[0].gameboard.allSunk()
 }
 
+// updateBoards()
+
+// player1.gameboard.placeShip(new Battleship, "A1", "A2")
+// player2.gameboard.placeShip(new Carrier, "F1", "D1")
+
+// beginTurn()
+// console.log(player1.gameboard.board)
+
 startBtn.addEventListener('click', beginTurn)
 switchPlayerBtn.addEventListener('click', function() {
-	players[0].domboard.style.display = "none"
-	players[1].domboard.style.display = "grid"
+	// players[0].domboard.style.display = "none"
+	// players[1].domboard.style.display = "grid"
 	cloneShipElements()
 	players.reverse()
 })

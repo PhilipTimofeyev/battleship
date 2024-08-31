@@ -64,6 +64,7 @@ function squareStatus(ship, square){
   	case !!square.ship && square.ship.sunk: return "Sunk!"; 
     case !!square.ship && square.hit: return ship;
     case square.miss: return "Miss!";
+    case !!square.ship: return "SHIP"
     default: return "";      
   }
 }
