@@ -19,7 +19,7 @@ h1 {
 }
 
 .ships {
-	margin-top: 30px;
+/*	margin-top: 30px;*/
 	display: flex;
 	gap: 50px;
 	justify-content: center;
