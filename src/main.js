@@ -1,4 +1,4 @@
-import { Player } from './player';
+import { Player, Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet } from './ship-dom';
 import { Ship } from './ship';
@@ -7,7 +7,9 @@ import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from '.
 // Players
 
 const player1 = new Player
-const player2 = new Player
+const player2 = new Computer
+
+console.log(player2.placeAllShips())
 
 let players = [player1, player2]
 
@@ -81,7 +83,7 @@ function markValidSquares(ship, coord) {
 	})
 }
 
-// DROP
+// Drop
 
 document.addEventListener("drop", drop);
 
