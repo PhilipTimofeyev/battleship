@@ -1,15 +1,19 @@
 import { Player } from './player';
-import { setUpBoard, updatePlayerBoard, showShips } from './gameboard-dom';
+import { setUpBoard, updatePlayerBoard, showShips, cloneShip } from './gameboard-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
+
+
+const carrier = document.querySelector("#Carrier")
+const battleship = document.querySelector("#Battleship")
+const destroyer = document.querySelector("#Destroyer")
+const patrol = document.querySelector("#Patrol")
+const submarine = document.querySelector("#Submarine")
 
 const startBtn = document.querySelector('#start-game')
 const switchPlayerBtn = document.querySelector('#switch-player')
 
 const player1 = new Player
 const player2 = new Player
-
-const carrier = new Carrier
-const battleship = new Battleship
 
 let players = [player1, player2]
 
@@ -49,13 +53,13 @@ document.addEventListener("dragover", function(event) {
 
 // DROP
 
-document.addEventListener("drop", function(event) {
+players[0].domboard.addEventListener("drop", function(event) {
     event.preventDefault();
     const startCoord = event.target.dataset.coordinate
     removeHandlers() 
     addListeners(startCoord, dragged)
     const data = event.dataTransfer.getData("Text");
-    console.log(event.target)
+    console.log(data)
     event.target.appendChild(document.getElementById(data));
 });
 
@@ -124,6 +128,22 @@ function removeHandlers() {
 
 }
 
+function cloneShipElements() {
+	const shipsDiv = document.querySelector('.ships')
+
+	const carrierClone = carrier.cloneNode(true);
+	const battleshipClone = battleship.cloneNode(true);
+	const destroyerClone = destroyer.cloneNode(true);
+	const patrolClone = patrol.cloneNode(true);
+	const submarineClone = submarine.cloneNode(true);
+
+	const clonedShips = [carrierClone, battleshipClone, destroyerClone, patrolClone, submarineClone]
+
+	clonedShips.forEach((ship) => {
+		shipsDiv.appendChild(ship)
+	})
+}
+
 function playerTurn(e) {
 	const square = e.target.dataset.coordinate;
 	players[0].gameboard.receiveAttack(square);
@@ -142,6 +162,6 @@ startBtn.addEventListener('click', beginTurn)
 switchPlayerBtn.addEventListener('click', function() {
 	players[0].domboard.style.display = "none"
 	players[1].domboard.style.display = "grid"
+	cloneShipElements()
 	players.reverse()
 })
-// beginTurn()

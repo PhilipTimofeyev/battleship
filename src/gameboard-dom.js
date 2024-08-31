@@ -68,7 +68,7 @@ function squareStatus(ship, square){
   }
 }
 
-function cloneShip(ship) {
+export function cloneShip(ship) {
 	switch(ship) {
 	case "Carrier": return carrier.cloneNode(true);
 	case "Battleship": return battleship.cloneNode(true);
