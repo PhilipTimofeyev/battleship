@@ -1,5 +1,5 @@
 import { Player } from './player';
-import { setUpBoard, updatePlayerBoard } from './gameboard-dom';
+import { setUpBoard, updatePlayerBoard, showShips } from './gameboard-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 
 const startBtn = document.querySelector('#start-game')
@@ -70,6 +70,8 @@ function addListeners(startCoord, ship) {
 		squareEl.addEventListener('click', function(e) {
 			const endCoord = e.target.dataset.coordinate
 			player1.gameboard.placeShip(ship, startCoord, endCoord)
+			resetSquareColors()
+			showShips(player1)
 		})
 	})
 	removeHandlers()
@@ -94,7 +96,7 @@ function resetSquareColors() {
 	})
 }
 
-player1.gameboard.placeShip(battleship, "A1", "A2")
+// player1.gameboard.placeShip(battleship, "A1", "A2")
 player2.gameboard.placeShip(carrier, "F1", "D1")
 
 function beginTurn() {
@@ -112,6 +114,7 @@ function addHandlers() {
 function removeHandlers() {
 	player1.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
 	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
+
 }
 
 function playerTurn(e) {
@@ -129,4 +132,4 @@ function gameOver() {
 }
 
 startBtn.addEventListener('click', beginTurn)
-beginTurn()
+// beginTurn()
