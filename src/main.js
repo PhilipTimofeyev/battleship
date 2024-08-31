@@ -91,6 +91,7 @@ function addListeners(startCoord, ship) {
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
 			resetSquareColors()
 			showShips(players[0])
+			console.log(players[0].gameboard.board)
 		})
 	})
 	removeHandlers()
@@ -135,7 +136,11 @@ function addHandlers() {
 function removeHandlers() {
 	player1.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
 	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
+}
 
+function removeAllHandlers() {
+	player1.domboard.childNodes.forEach((square) => square.replaceWith(square.cloneNode(true)))
+	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
 }
 
 function cloneShipElements() {
@@ -174,6 +179,9 @@ function removeDraggable() {
 	document.removeEventListener("drop", drop)
 }
 
+// player1.gameboard.placeShip(new Battleship, "A1", "A2")
+// player2.gameboard.placeShip(new Battleship, "A10", "A9")
+
 
 
 startBtn.addEventListener('click', beginTurn)
@@ -181,5 +189,7 @@ switchPlayerBtn.addEventListener('click', function() {
 	// players[0].domboard.style.display = "none"
 	// players[1].domboard.style.display = "grid"
 	cloneShipElements()
+	// removeHandlers()
+	removeAllHandlers() 
 	players.reverse()
 })
