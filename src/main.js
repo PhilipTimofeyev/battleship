@@ -1,15 +1,10 @@
 import { Player } from './player';
-import { setUpBoard, updatePlayerBoard, showShips, cloneShip } from './gameboard-dom';
+// import { dragStart } from './dom-handlers';
+import { setUpBoard, updatePlayerBoard, showShips, cloneShip, addNewShipSet } from './gameboard-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 
 const shipsDiv = document.querySelector('.ships')
 const boardsDiv = document.querySelector('.boards')
-
-const carrier = document.querySelector("#Carrier")
-const battleship = document.querySelector("#Battleship")
-const destroyer = document.querySelector("#Destroyer")
-const patrol = document.querySelector("#Patrol")
-const submarine = document.querySelector("#Submarine")
 
 const startBtn = document.querySelector('#start-game')
 const switchPlayerBtn = document.querySelector('#switch-player')
@@ -143,21 +138,6 @@ function removeAllHandlers() {
 	player2.domboard.childNodes.forEach((square) => square.removeEventListener('click', playerTurn))
 }
 
-function cloneShipElements() {
-	const shipsDiv = document.querySelector('.ships')
-
-	const carrierClone = carrier.cloneNode(true);
-	const battleshipClone = battleship.cloneNode(true);
-	const destroyerClone = destroyer.cloneNode(true);
-	const patrolClone = patrol.cloneNode(true);
-	const submarineClone = submarine.cloneNode(true);
-
-	const clonedShips = [carrierClone, battleshipClone, destroyerClone, patrolClone, submarineClone]
-
-	clonedShips.forEach((ship) => {
-		shipsDiv.appendChild(ship)
-	})
-}
 
 function playerTurn(e) {
 	const square = e.target.dataset.coordinate;
@@ -188,7 +168,7 @@ startBtn.addEventListener('click', beginTurn)
 switchPlayerBtn.addEventListener('click', function() {
 	// players[0].domboard.style.display = "none"
 	// players[1].domboard.style.display = "grid"
-	cloneShipElements()
+	addNewShipSet()
 	// removeHandlers()
 	removeAllHandlers() 
 	players.reverse()

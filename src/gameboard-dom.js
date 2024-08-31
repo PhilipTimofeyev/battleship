@@ -1,3 +1,4 @@
+const shipsDiv = document.querySelector('.ships')
 
 const carrier = document.querySelector("#Carrier")
 const battleship = document.querySelector("#Battleship")
@@ -59,9 +60,6 @@ export function showShips(player) {
 	})
 }
 
-function removeDraggable() {
-	
-}
 
 function squareStatus(ship, square){   
   switch(true){  
@@ -81,4 +79,13 @@ export function cloneShip(ship) {
 	case "Patrol": return patrol.cloneNode(true);
 	case "Submarine": return submarine.cloneNode(true);
 	}
+}
+
+export function addNewShipSet() {
+	const shipsDiv = document.querySelector('.ships')
+
+	let shipNames = ['Carrier', 'Battleship', 'Destroyer', 'Patrol', 'Submarine']
+
+	shipNames.forEach((ship) => shipsDiv.appendChild(cloneShip(ship)))
+
 }
