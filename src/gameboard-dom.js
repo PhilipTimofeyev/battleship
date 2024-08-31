@@ -59,6 +59,10 @@ export function showShips(player) {
 	})
 }
 
+function removeDraggable() {
+	
+}
+
 function squareStatus(ship, square){   
   switch(true){  
   	case !!square.ship && square.ship.sunk: return "Sunk!"; 

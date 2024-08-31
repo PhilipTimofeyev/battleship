@@ -2,6 +2,8 @@ import { Player } from './player';
 import { setUpBoard, updatePlayerBoard, showShips, cloneShip } from './gameboard-dom';
 import { Carrier, Battleship, Destroyer, Submarine, Patrol } from './ship';
 
+const shipsDiv = document.querySelector('.ships')
+const boardsDiv = document.querySelector('.boards')
 
 const carrier = document.querySelector("#Carrier")
 const battleship = document.querySelector("#Battleship")
@@ -36,36 +38,40 @@ function createShip(name) {
 	}
 }
 
-document.addEventListener("dragstart", function(event) {
-  event.dataTransfer.setData("Text", event.target.id);
-  const shipType = event.target.id
-  
-  draggedElement = event.target
-  dragged = createShip(shipType)
- 	players[0].gameboard.removeShips(shipType)
-});
+document.addEventListener("dragstart", dragStart);
 
-document.addEventListener("dragover", function(event) {
-  event.preventDefault();
-  if (!event.target.dataset.coordinate) return
-  const coord = event.target.dataset.coordinate
-  const squareEl = players[0].domboard.querySelector(`[data-coordinate=${coord}]`)
-  resetSquareColors()
-  markValidSquares(dragged, coord)
-});
+function dragStart(event) {
+ 	event.dataTransfer.setData("Text", event.target.id);
+ 	const shipType = event.target.id
+	 
+ 	draggedElement = event.target
+ 	dragged = createShip(shipType)
+	players[0].gameboard.removeShips(shipType)
+}
+
+document.addEventListener("dragover", dragOver);
+
+function dragOver(event) {
+	event.preventDefault();
+	if (!event.target.dataset.coordinate) return
+	const coord = event.target.dataset.coordinate
+	const squareEl = players[0].domboard.querySelector(`[data-coordinate=${coord}]`)
+	resetSquareColors()
+	markValidSquares(dragged, coord)
+}
 
 // DROP
 
-document.addEventListener("drop", function(event) {
-		const shipsDiv = document.querySelector('.ships')
-    event.preventDefault();
-    const startCoord = event.target.dataset.coordinate
-    removeHandlers() 
-    addListeners(startCoord, dragged)
-    const data = event.dataTransfer.getData("Text");
-    // event.target.appendChild(shipsDiv.querySelector(`.${data}`));
-    event.target.appendChild(draggedElement);
-});
+document.addEventListener("drop", drop);
+
+function drop(event) {
+	event.preventDefault();
+	const startCoord = event.target.dataset.coordinate
+	removeHandlers() 
+	addListeners(startCoord, dragged)
+	const data = event.dataTransfer.getData("Text");
+	event.target.appendChild(draggedElement);
+}
 
 function markValidSquares(ship, coord) {
 	const validSquares = players[0].gameboard.showValidSquares(ship, coord)
@@ -113,6 +119,7 @@ function beginTurn() {
 	players[0].domboard.style.display = "grid"
 	players[1].domboard.style.display = "grid"
 	// players.reverse()
+	removeDraggable()
 	updateBoards()
 	addHandlers()
 }
@@ -161,9 +168,13 @@ function gameOver() {
 	return players[0].gameboard.allSunk()
 }
 
-function removeShips() {
-	players[0].gameboard
+function removeDraggable() {
+	document.removeEventListener("dragstart", dragStart)
+	document.removeEventListener("dragover", dragOver)
+	document.removeEventListener("drop", drop)
 }
+
+
 
 startBtn.addEventListener('click', beginTurn)
 switchPlayerBtn.addEventListener('click', function() {
