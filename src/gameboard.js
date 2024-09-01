@@ -71,7 +71,7 @@ import { Square } from './square';
 		return result
 	}
 
-	 getRightSquares(ship, coordStart) {
+	 getRightSquares(ship, coordStart, computer) {
 		let activeSquares = []
 
 		let startLet = coordStart[0]
@@ -80,6 +80,8 @@ import { Square } from './square';
 		for (let i = startNum; i < startNum + ship.length ; i++) {
 			activeSquares.push(`${startLet}${i}`)
 		}
+
+		if (computer && this.validateSize(activeSquares)) return activeSquares
 
 		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}

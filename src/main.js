@@ -11,19 +11,27 @@ const player2 = new Computer
 
 
 const carrier = Ship.createShip('Carrier')
+const battleship = Ship.createShip('Battleship')
 const submarine = Ship.createShip('Submarine')
 
-carrier.sunk = true
+// carrier.sunk = true
 // submarine.sunk = true
 
 player1.gameboard.placeShip(carrier, "A1", "A2")
 player1.gameboard.placeShip(submarine, "D3", "E3")
+player1.gameboard.placeShip(battleship, "B1", "B2")
 
+player1.gameboard.board.A4.hit = true
+player1.gameboard.board.A2.hit = true
 player1.gameboard.board.E3.hit = true
+
+// player1.gameboard.board.B1.hit = true
+// player1.gameboard.board.B2.hit = true
+// player1.gameboard.board.B3.hit = true
 
 // player1.gameboard.board.E7.hit = true
 
-console.log(player2.sendAttack(player1.gameboard.board))
+console.log(player2.sendAttack(player1.gameboard))
 
 let players = [player1, player2]
 

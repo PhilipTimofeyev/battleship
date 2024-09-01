@@ -20,14 +20,16 @@ export class Computer extends Player {
 
 	sendAttack(opponentBoard) {
 		// return this.shipsSunk(opponentBoard)
-		return this.getHitSquares(opponentBoard) 
+		const hitSquares = this.getHitSquares(opponentBoard)
+
+		return this.determineDirection(opponentBoard, hitSquares) 
 	}
 
 	shipsSunk(opponentBoard) {
 		const sunkShip = (square) => square.ship && square.ship.sunk
 		const shipName = (square) => square.ship.name
 		
-		const sunkShips =  Object.values(opponentBoard).filter(sunkShip).map(shipName)
+		const sunkShips =  Object.values(opponentBoard,board).filter(sunkShip).map(shipName)
 
 		// Remove duplicates
 		return [...new Set(sunkShips)]
@@ -36,9 +38,36 @@ export class Computer extends Player {
 	getHitSquares(opponentBoard) {
 		const hitSquare = ([coord, square]) => square.hit && square.ship
 		const coord = (square) => square[0]
-		const hitSquares = Object.entries(opponentBoard).filter(hitSquare).map(coord)
+		const hitSquares = Object.entries(opponentBoard.board).filter(hitSquare).map(coord)
 
 		return hitSquares
+	}
+
+	determineDirection(opponentBoard, hitSquares) {
+		const ship = Ship.createShip('Carrier')
+
+		let bestOption = [1, 2, 3, 4, 5]
+
+		// const containsCoord = (coord) => 
+
+		hitSquares.forEach((coord) => {
+			let workingArr = []
+			const rightLine = opponentBoard.getRightSquares(ship, coord, true)
+			rightLine.forEach((square) => {
+				if (!hitSquares.includes(square)) workingArr.push(square)	
+			})
+
+			if (workingArr.length < bestOption.length) bestOption = workingArr
+
+			const leftLine = opponentBoard.getLeftSquares(ship, coord, true)
+			leftLine.forEach((square) => {
+				if (!hitSquares.includes(square)) workingArr.push(square)	
+			})
+
+			if (workingArr.length < bestOption.length) bestOption = workingArr
+		})
+
+		return bestOption
 	}
 
 // Placing Ships
