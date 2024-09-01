@@ -21,15 +21,26 @@ export class Computer extends Player {
 	sendAttack(opponentBoard) {
 		// return this.shipsSunk(opponentBoard)
 		const hitSquares = this.getHitSquares(opponentBoard)
+		const ship = this.determineShip(opponentBoard)
 
-		return this.determineDirection(opponentBoard, hitSquares) 
+		const attackOptions = this.determineDirection(opponentBoard, hitSquares, ship) 
+		opponentBoard.receiveAttack(attackOptions[0])
+	}
+
+	determineShip(opponentBoard) {
+		const sunkShips = this.shipsSunk(opponentBoard)
+		const ships = ['Carrier', 'Battleship', 'Destroyer', 'Submarine', 'Patrol']
+
+		const shipsLeft = ships.filter(x => !sunkShips.includes(x));
+
+		return Ship.createShip(shipsLeft[0])
 	}
 
 	shipsSunk(opponentBoard) {
 		const sunkShip = (square) => square.ship && square.ship.sunk
 		const shipName = (square) => square.ship.name
 		
-		const sunkShips =  Object.values(opponentBoard,board).filter(sunkShip).map(shipName)
+		const sunkShips =  Object.values(opponentBoard.board).filter(sunkShip).map(shipName)
 
 		// Remove duplicates
 		return [...new Set(sunkShips)]
@@ -43,9 +54,7 @@ export class Computer extends Player {
 		return hitSquares
 	}
 
-	determineDirection(opponentBoard, hitSquares) {
-		const ship = Ship.createShip('Carrier')
-
+	determineDirection(opponentBoard, hitSquares, ship) {
 		let bestOption = [1, 2, 3, 4, 5]
 
 		// const containsCoord = (coord) => 

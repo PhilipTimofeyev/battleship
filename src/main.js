@@ -14,6 +14,8 @@ const carrier = Ship.createShip('Carrier')
 const battleship = Ship.createShip('Battleship')
 const submarine = Ship.createShip('Submarine')
 
+battleship.sunk = true
+
 // carrier.sunk = true
 // submarine.sunk = true
 
@@ -21,18 +23,22 @@ player1.gameboard.placeShip(carrier, "A1", "A2")
 player1.gameboard.placeShip(carrier, "D3", "E3")
 player1.gameboard.placeShip(battleship, "B5", "B6")
 
+// console.log(player2.determineShip(player1.gameboard))
+
 // player1.gameboard.placeShip(carrier, "I2", "J2")
 
-player1.gameboard.board.A4.hit = true
-player1.gameboard.board.A2.hit = true
+// player1.gameboard.board.A4.hit = true
+// player1.gameboard.board.A3.hit = true
+// player1.gameboard.board.A2.hit = true
+// player1.gameboard.board.A1.hit = true
 
 player1.gameboard.board.B5.hit = true
 player1.gameboard.board.B6.hit = true
-player1.gameboard.board.B7.hit = true
+// player1.gameboard.board.B7.hit = true
 
 player1.gameboard.board.E3.hit = true
 player1.gameboard.board.D3.hit = true
-player1.gameboard.board.F3.hit = true
+// player1.gameboard.board.F3.hit = true
 player1.gameboard.board.G3.hit = true
 
 // player1.gameboard.board.E7.hit = true
