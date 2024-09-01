@@ -6,7 +6,7 @@ export class Player {
 	constructor() {
 		this.gameboard = new Gameboard
 		this.domboard = null
-		this.opponentBoard = null
+		// this.opponentBoard = null
 	}
 }
 
@@ -16,6 +16,12 @@ export class Human extends Player {
 }
 
 export class Computer extends Player {
+
+	constructor() {
+		super()
+		this.opponentBoard = null
+		this.workingArr = 'LOL'
+	}
 
 // Attacking
 
@@ -61,38 +67,6 @@ export class Computer extends Player {
 		return hitSquares
 	}
 
-	determineDirection(opponentBoard, hitSquares, ship) {
-		let bestOption = [1, 2, 3, 4, 5]
-
-		// const containsCoord = (coord) => 
-	// console.log(`hit squares ${hitSquares}`)
-		// console.log(hitSquares)
-		hitSquares.forEach((coord) => {
-			// let workingArr = []
-			// const rightLine = opponentBoard.getRightSquares(ship, coord, true)
-			// rightLine.forEach((square) => {
-			// 	if (!hitSquares.includes(square)) workingArr.push(square)	
-			// })
-
-			let workingArr = this.bestSquares(opponentBoard, hitSquares, coord, ship)
-
-			workingArr.forEach((option) => {
-				if (option.length < bestOption.length) bestOption = option
-			})
-
-			// if (workingArr.length < bestOption.length) bestOption = workingArr
-
-			// const leftLine = opponentBoard.getLeftSquares(ship, coord, true)
-			// leftLine.forEach((square) => {
-			// 	if (!hitSquares.includes(square)) workingArr.push(square)	
-			// })
-
-			// if (workingArr.length < bestOption.length) bestOption = workingArr
-		})
-
-		return bestOption
-	}
-
 	hitRandomSquare(opponentBoard) {
 		const validSquares = Object.entries(opponentBoard.board).filter(([coord, square]) => {
 			return !square.miss && !square.hit
@@ -101,63 +75,59 @@ export class Computer extends Player {
 		return getRandomArrElement(validSquares)[0]
 	}
 
-	bestSquares(opponentBoard, hitSquares, coord, ship, lineFunction) {
-		let workingArr = [[1, 2, 3, 4, 5]]
+	determineDirection(hitSquares, ship) {
+	 	this.bestOption = [1, 2, 3, 4, 5]
 
-		let rightLine = opponentBoard.getRightSquares(ship, coord, true)
-		let leftLine = opponentBoard.getLeftSquares(ship, coord, true)
-		let topLine = opponentBoard.getUpSquares(ship, coord, true)
-		let bottomLine = opponentBoard.getDownSquares(ship, coord, true)
-
-		// console.log(topLine)
-		// console.log(coord)
-		rightLine = rightLine.filter((coord) => !opponentBoard.board[coord].miss && !opponentBoard.board[coord].sunk )
-		leftLine = leftLine.filter((coord) => !opponentBoard.board[coord].miss && !opponentBoard.board[coord].sunk)
-		topLine = topLine.filter((coord) => !opponentBoard.board[coord].miss)
-		bottomLine = bottomLine.filter((coord) => !opponentBoard.board[coord].miss)
-
-		// console.log(rightLine)
-
-		this.checkLine(rightLine, workingArr, hitSquares, opponentBoard)
-		this.checkLine(leftLine, workingArr, hitSquares, opponentBoard)
-		this.checkLine(topLine, workingArr, hitSquares, opponentBoard)
-		this.checkLine(bottomLine, workingArr, hitSquares, opponentBoard)
-
-		// console.log(`working array${workingArr}`)
-		// this.checkLine(bottomLine, workingArr, hitSquares)
-
-		// rightLine.forEach((square) => {
-		// 	if (!hitSquares.includes(square)) workingArr.push(square)	
-		// })
-
-		// console.log(workingArr)
-
-		return workingArr
-	}
-
-	checkLine(line, workingArr, hitSquares, opponentBoard) {
-		let hmm = []
-		line.forEach((square) => {
-			// console.log(!!opponentBoard.board[square])
-			// console.log(square)
-			// if (!!opponentBoard.board[square]) {
-			// 	// if (opponentBoard.board[square].miss && !hitSquares.includes(square)) {
-			// 	// 	hmm.push(square)	
-			// 	// }
-			// }
-			if (!hitSquares.includes(square)) hmm.push(square)	
+		hitSquares.forEach((coord) => {
+			this.bestSquares(hitSquares, coord, ship)
 		})
 
-		// workingArr.push(hmm)
-		// console.log(hmm.length)
-		// console.log(hmm)
-		// console.log(workingArr[0].length)
-		// console.log(`working ${workingArr[0]}`)
-		if (0 < hmm.length && hmm.length < workingArr[0].length) {
-			workingArr.shift()
-			workingArr.push(hmm)
-			// console.log(`hmm ${hmm}`)
-		}
+		return this.bestOption
+	}
+
+	bestSquares(hitSquares, coord, ship) {
+		const bestLeft = this.bestLeftSquares(ship, coord, hitSquares) 
+		const bestRight = this.bestRightSquares(ship, coord, hitSquares)
+		const bestTop = this.bestTopSquares(ship, coord, hitSquares)
+		const bestBottom = this.bestBottomSquares(ship, coord, hitSquares) 
+
+		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
+		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
+			if (0 < option.length && option.length < this.bestOption.length) this.bestOption = option
+		})
+	}
+
+	// Functions to get best options for directional squares
+	// Passes in true to prevent computer from cheating
+
+	bestRightSquares(ship, coord, hitSquares) {
+		let rightLine = this.opponentBoard.getRightSquares(ship, coord, true)
+		return this.checkLine(rightLine, hitSquares)
+	}
+
+	bestLeftSquares(ship, coord, hitSquares) {
+		let leftLine = this.opponentBoard.getLeftSquares(ship, coord, true)
+		return this.checkLine(leftLine, hitSquares)
+	}
+
+	bestTopSquares(ship, coord, hitSquares) {
+		let topLine = this.opponentBoard.getUpSquares(ship, coord, true)
+		return this.checkLine(topLine, hitSquares)
+	}
+
+	bestBottomSquares(ship, coord, hitSquares) {
+		let bottomLine = this.opponentBoard.getDownSquares(ship, coord, true)
+		return this.checkLine(bottomLine, hitSquares)
+	}
+
+	// Checks the line against hit squares, returns squares needed to fill line
+
+	checkLine(line, hitSquares) {
+		let squaresNeeded = []
+		line.forEach((square) => {
+			if (!hitSquares.includes(square)) squaresNeeded.push(square)	
+		})
+		return squaresNeeded
 	}
 
 // Placing Ships

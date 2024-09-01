@@ -94,6 +94,12 @@ test('Returns correct hit squares when ship sunk', () => {
   expect(result).toEqual(['E4'])
 });
 
+test('Returns best squares simple', () => {
+  const result = computer.determineDirection(['A5', 'A4', 'A9'], carrier)
+
+  expect(result).toEqual(['A1', 'A2', 'A3'])
+});
+
 
 
 
