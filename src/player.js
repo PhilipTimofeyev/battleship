@@ -80,6 +80,7 @@ export class Computer extends Player {
 
 	getBestSquares(hitSquares, ship) {
 	 	this.bestOption = [1, 2, 3, 4, 5]
+	 	this.greatestDiff = 0
 
 	 	const ships = [Ship.createShip('Carrier'), Ship.createShip('Battleship'), Ship.createShip('Destroyer'), Ship.createShip('Submarine'), Ship.createShip('Patrol')]
 		
@@ -88,7 +89,14 @@ export class Computer extends Player {
 	 			this.bestSquares(hitSquares, coord, ship)
 	 		})
 	 	})
-	 	console.log(this.bestOption)
+
+	 	// hitSquares.forEach((coord) => {
+	 	// 	this.bestSquares(hitSquares, coord, Ship.createShip('Carrier'))
+	 	// })
+	 	// hitSquares.forEach((coord) => {
+	 	// 	this.bestSquares(hitSquares, coord, Ship.createShip('Battleship'))
+	 	// })
+	 	// console.log(this.bestOption)
 		return this.bestOption
 	}
 
@@ -100,8 +108,17 @@ export class Computer extends Player {
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
-			// console.log(option)
-			if (0 < option.length && option.length < this.bestOption.length) this.bestOption = option
+			console.log(`${ship.name}:${option}`)
+			// console.log(this.greatestDiff)
+			const difference = ship.length - option.length
+			console.log(difference)
+			if (0 < option.length && 
+					option.length < this.bestOption.length &&
+					this.greatestDiff <= difference
+					) {
+				this.bestOption = option;
+				this.greatestDiff = difference
+			}
 		})
 
 		// return bestLeft

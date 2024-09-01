@@ -109,13 +109,13 @@ test('Returns correct hit squares when ship sunk', () => {
 // });
 
 test('Returns best square when miss', () => {
-  computer.opponentBoard.placeShip(carrier, 'A1', 'A2')
+  computer.opponentBoard.placeShip(battleship, 'A1', 'D1')
   // computer.opponentBoard.placeShip(submarine, 'B1', 'D1')
   // computer.opponentBoard.placeShip(carrier, 'E4', 'E5')
 
-  computer.opponentBoard.board.A4.hit = true
-  computer.opponentBoard.board.A5.hit = true
-  computer.opponentBoard.board.A6.miss = true
+  computer.opponentBoard.board.A1.hit = true
+  computer.opponentBoard.board.D1.hit = true
+  // computer.opponentBoard.board.A6.miss = true
 
   // console.log(computer.opponentBoard.board)
 
