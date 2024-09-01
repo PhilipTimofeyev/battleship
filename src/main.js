@@ -7,11 +7,24 @@ import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from '.
 // Players
 
 const player1 = new Player
-const player2 = new Computer
+const player2 = new Computer(player1.gameboard)
+let players = [player1, player2]
+
+if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
+
+// player2.opponentBoard = player1.gameboard
+// console.log(player2.opponentBoard)
+// console.log(player2.sendAttack())
+
+// console.log(players[1].opponentboard)
+// console.log(players[1].sendAttack())
 
 
 const carrier2 = Ship.createShip('Carrier')
-// const battleship = Ship.createShip('Battleship')
+const battleship = Ship.createShip('Battleship')
+
+// player1.gameboard.placeShip(battleship, 'A1', "A2")
+// player1.gameboard.board.A3.hit = true
 // const submarine = Ship.createShip('Submarine')
 
 // const carrier2 = Ship.createShip('Carrier')
@@ -65,7 +78,6 @@ player2.gameboard.placeShip(carrier2, "A1", "A2")
 
 // console.log(player2.sendAttack(player1.gameboard))
 
-let players = [player1, player2]
 
 // DOM Elements
 
@@ -77,7 +89,6 @@ const switchPlayerBtn = document.querySelector('#switch-player')
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
-if (player2 instanceof Computer) player2.opponentboard = player1.gameboard
 
 // Set up board
 	

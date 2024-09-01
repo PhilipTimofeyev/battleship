@@ -66,12 +66,12 @@ test('Returns correct ships that are sunk', () => {
 
 test('Returns correct hit squares', () => {
 
-  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
-  computer.opponentBoard .placeShip(submarine, 'B1', 'D1')
-  computer.opponentBoard .placeShip(carrier, 'E4', 'E5')
+  computer.opponentBoard.placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard.placeShip(submarine, 'B1', 'D1')
+  computer.opponentBoard.placeShip(carrier, 'E4', 'E5')
 
-  computer.opponentBoard .board.A1.hit = true
-  computer.opponentBoard .board.E4.hit = true
+  computer.opponentBoard.board.A1.hit = true
+  computer.opponentBoard.board.E4.hit = true
 
   const result = computer.getHitSquares()
 
@@ -80,26 +80,49 @@ test('Returns correct hit squares', () => {
 
 test('Returns correct hit squares when ship sunk', () => {
 
-  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
-  computer.opponentBoard .placeShip(submarine, 'B1', 'D1')
-  computer.opponentBoard .placeShip(carrier, 'E4', 'E5')
+  computer.opponentBoard.placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard.placeShip(submarine, 'B1', 'D1')
+  computer.opponentBoard.placeShip(carrier, 'E4', 'E5')
 
   battleship.sunk = true
 
-  computer.opponentBoard .board.A1.hit = true
-  computer.opponentBoard .board.E4.hit = true
+  computer.opponentBoard.board.A1.hit = true
+  computer.opponentBoard.board.E4.hit = true
 
   const result = computer.getHitSquares()
 
   expect(result).toEqual(['E4'])
 });
 
-test('Returns best squares simple', () => {
-  const result = computer.determineDirection(['A5', 'A4', 'A9'], carrier)
+// test('Returns best squares simple', () => {
+//   computer.opponentBoard.board["A6"].miss = true
 
-  expect(result).toEqual(['A1', 'A2', 'A3'])
+//   computer.opponentBoard.board.A5.hit = true
+//   computer.opponentBoard.board.A4.hit = true
+
+
+//   console.log(computer.opponentBoard)
+
+//   const result = computer.getBestSquares(['A5', 'A4', 'A9'], carrier)
+
+//   expect(result).toEqual(['A1', 'A2', 'A3'])
+// });
+
+test('Returns best square when miss', () => {
+  computer.opponentBoard.placeShip(carrier, 'A1', 'A2')
+  // computer.opponentBoard.placeShip(submarine, 'B1', 'D1')
+  // computer.opponentBoard.placeShip(carrier, 'E4', 'E5')
+
+  computer.opponentBoard.board.A4.hit = true
+  computer.opponentBoard.board.A5.hit = true
+  computer.opponentBoard.board.A6.miss = true
+
+  // console.log(computer.opponentBoard.board)
+
+  const result = computer.sendAttack()
+
+  expect(result).toEqual('A3')
 });
-
 
 
 

@@ -20,22 +20,23 @@ export class Computer extends Player {
 	constructor() {
 		super()
 		this.opponentBoard = null
-		this.workingArr = 'LOL'
 	}
 
 // Attacking
 
-	sendAttack(opponentBoard) {
-		const hitSquares = this.getHitSquares(opponentBoard)
-		const ship = this.determineShip(opponentBoard)
+	sendAttack() {
+	// 	this.opponentBoard = oppBoard
+		const hitSquares = this.getHitSquares()
+		const ship = this.determineShip()
 
-		const attackOptions = this.determineDirection(opponentBoard, hitSquares, ship) 
-		// console.log(opponentBoard.board)
-		// return attackOptions[0]
+		// console.log(this.opponentBoard)
 
-		const response = hitSquares.length == 0 ? this.hitRandomSquare(opponentBoard) : attackOptions[0]
-		// console.log(attackOptions[0])
-		console.log(this.hitRandomSquare(opponentBoard))
+		const attackOptions = this.getBestSquares(hitSquares, ship) 
+
+		console.log(attackOptions)
+
+		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
+		// console.log(response)
 		return response
 
 	}
@@ -67,21 +68,27 @@ export class Computer extends Player {
 		return hitSquares
 	}
 
-	hitRandomSquare(opponentBoard) {
-		const validSquares = Object.entries(opponentBoard.board).filter(([coord, square]) => {
+	hitRandomSquare() {
+		const validSquares = Object.entries(this.opponentBoard.board).filter(([coord, square]) => {
 			return !square.miss && !square.hit
 		})
 
 		return getRandomArrElement(validSquares)[0]
 	}
 
-	determineDirection(hitSquares, ship) {
+
+
+	getBestSquares(hitSquares, ship) {
 	 	this.bestOption = [1, 2, 3, 4, 5]
 
-		hitSquares.forEach((coord) => {
-			this.bestSquares(hitSquares, coord, ship)
-		})
-
+	 	const ships = [Ship.createShip('Carrier'), Ship.createShip('Battleship'), Ship.createShip('Destroyer'), Ship.createShip('Submarine'), Ship.createShip('Patrol')]
+		
+	 	ships.forEach((ship) => {
+	 		hitSquares.forEach((coord) => {
+	 			this.bestSquares(hitSquares, coord, ship)
+	 		})
+	 	})
+	 	console.log(this.bestOption)
 		return this.bestOption
 	}
 
@@ -93,8 +100,11 @@ export class Computer extends Player {
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
+			// console.log(option)
 			if (0 < option.length && option.length < this.bestOption.length) this.bestOption = option
 		})
+
+		// return bestLeft
 	}
 
 	// Functions to get best options for directional squares
@@ -124,9 +134,19 @@ export class Computer extends Player {
 
 	checkLine(line, hitSquares) {
 		let squaresNeeded = []
+
+		// console.log(line)
+
+		const miss = (square) => this.opponentBoard.board[square].miss
+		if (line.some(miss)) return squaresNeeded
+
+		// const included = (square) => this.opponentBoard.board[square].miss
+		// if (line.some(miss)) return squaresNeeded
+
 		line.forEach((square) => {
 			if (!hitSquares.includes(square)) squaresNeeded.push(square)	
 		})
+		// console.log(squaresNeeded)
 		return squaresNeeded
 	}
 
