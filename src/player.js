@@ -19,15 +19,18 @@ export class Computer extends Player {
 // Attacking
 
 	sendAttack(opponentBoard) {
-		// return this.shipsSunk(opponentBoard)
 		const hitSquares = this.getHitSquares(opponentBoard)
 		const ship = this.determineShip(opponentBoard)
 
 		const attackOptions = this.determineDirection(opponentBoard, hitSquares, ship) 
-		// opponentBoard.receiveAttack(attackOptions[0])
-		console.log(opponentBoard.board)
-		return attackOptions[0]
-		console.log(attackOptions[0])
+		// console.log(opponentBoard.board)
+		// return attackOptions[0]
+
+		const response = hitSquares.length == 0 ? this.hitRandomSquare(opponentBoard) : attackOptions[0]
+		// console.log(attackOptions[0])
+		console.log(this.hitRandomSquare(opponentBoard))
+		return response
+
 	}
 
 	determineShip(opponentBoard) {
@@ -62,7 +65,7 @@ export class Computer extends Player {
 
 		// const containsCoord = (coord) => 
 	// console.log(`hit squares ${hitSquares}`)
-		console.log(hitSquares)
+		// console.log(hitSquares)
 		hitSquares.forEach((coord) => {
 			// let workingArr = []
 			// const rightLine = opponentBoard.getRightSquares(ship, coord, true)
@@ -89,6 +92,14 @@ export class Computer extends Player {
 		return bestOption
 	}
 
+	hitRandomSquare(opponentBoard) {
+		const validSquares = Object.entries(opponentBoard.board).filter(([coord, square]) => {
+			return !square.miss && !square.hit
+		})
+
+		return getRandomArrElement(validSquares)[0]
+	}
+
 	bestSquares(opponentBoard, hitSquares, coord, ship, lineFunction) {
 		let workingArr = [[1, 2, 3, 4, 5]]
 
@@ -104,7 +115,7 @@ export class Computer extends Player {
 		topLine = topLine.filter((coord) => !opponentBoard.board[coord].miss)
 		bottomLine = bottomLine.filter((coord) => !opponentBoard.board[coord].miss)
 
-		console.log(rightLine)
+		// console.log(rightLine)
 
 		this.checkLine(rightLine, workingArr, hitSquares, opponentBoard)
 		this.checkLine(leftLine, workingArr, hitSquares, opponentBoard)

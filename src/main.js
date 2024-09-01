@@ -10,20 +10,22 @@ const player1 = new Player
 const player2 = new Computer
 
 
-const carrier = Ship.createShip('Carrier')
-const battleship = Ship.createShip('Battleship')
-const submarine = Ship.createShip('Submarine')
-
 const carrier2 = Ship.createShip('Carrier')
+// const battleship = Ship.createShip('Battleship')
+// const submarine = Ship.createShip('Submarine')
 
-carrier.hit()
-carrier.hit()
+// const carrier2 = Ship.createShip('Carrier')
 
-battleship.hit()
-battleship.hit()
-battleship.hit()
+// console.log(player2.hitRandomSquare(player1.gameboard))
 
-submarine.hit()
+// carrier.hit()
+// carrier.hit()
+
+// battleship.hit()
+// battleship.hit()
+// battleship.hit()
+
+// submarine.hit()
 // console.log(player1.gameboard.getUpSquares(carrier, 'G3'))
 
 // battleship.sunk = true
@@ -31,33 +33,33 @@ submarine.hit()
 // carrier.sunk = true
 // submarine.sunk = true
 
-player1.gameboard.placeShip(carrier, "A1", "A2")
-player1.gameboard.placeShip(submarine, "D3", "E3")
-player1.gameboard.placeShip(battleship, "B5", "B6")
+// player1.gameboard.placeShip(carrier, "A1", "A2")
+// player1.gameboard.placeShip(submarine, "D3", "E3")
+// player1.gameboard.placeShip(battleship, "B5", "B6")
 
 
 player2.gameboard.placeShip(carrier2, "A1", "A2")
 
-// console.log(player2.determineShip(player1.gameboard))
+// // console.log(player2.determineShip(player1.gameboard))
 
-// player1.gameboard.placeShip(carrier, "I2", "J2")
+// // player1.gameboard.placeShip(carrier, "I2", "J2")
 
-player1.gameboard.board.A1.hit = true
-player1.gameboard.board.A2.hit = true
-
-player1.gameboard.board.D3.hit = true
-// player1.gameboard.board.A2.hit = true
 // player1.gameboard.board.A1.hit = true
+// player1.gameboard.board.A2.hit = true
 
-player1.gameboard.board.B5.hit = true
-player1.gameboard.board.B6.hit = true
-player1.gameboard.board.B7.hit = true
-// player1.gameboard.board.B7.hit = true
-
-// player1.gameboard.board.E3.hit = true
 // player1.gameboard.board.D3.hit = true
-// player1.gameboard.board.F3.hit = true
-player1.gameboard.board.G3.hit = true
+// // player1.gameboard.board.A2.hit = true
+// // player1.gameboard.board.A1.hit = true
+
+// player1.gameboard.board.B5.hit = true
+// player1.gameboard.board.B6.hit = true
+// player1.gameboard.board.B7.hit = true
+// // player1.gameboard.board.B7.hit = true
+
+// // player1.gameboard.board.E3.hit = true
+// // player1.gameboard.board.D3.hit = true
+// // player1.gameboard.board.F3.hit = true
+// player1.gameboard.board.G3.hit = true
 
 // player1.gameboard.board.E7.hit = true
 
@@ -216,7 +218,7 @@ function removeDraggable() {
 	document.removeEventListener("drop", drop)
 }
 
-beginTurn()
+// beginTurn()
 
 
 
