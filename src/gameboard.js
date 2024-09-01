@@ -95,8 +95,6 @@ import { Square } from './square';
 			activeSquares.push(`${startLet}${i}`)
 		}
 
-		// console.log(activeSquares)
-
 		if (computer && this.validateSize(activeSquares)) return activeSquares
 
 		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
@@ -148,7 +146,7 @@ import { Square } from './square';
 
 	 validateSize(squares) {
 		// matches only A-J and 1 digit, or A-J and 10
-		const regex = /^[A-Z][1-9]$|^[A-Z]1[0]$/
+		const regex = /^[A-J][1-9]$|^[A-J]1[0]$/
 
 		const withinBounds = (square) => !!square.match(regex)
 

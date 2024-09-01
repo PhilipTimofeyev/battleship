@@ -25,6 +25,7 @@ export class Computer extends Player {
 
 		const attackOptions = this.determineDirection(opponentBoard, hitSquares, ship) 
 		opponentBoard.receiveAttack(attackOptions[0])
+		console.log(attackOptions[0])
 	}
 
 	determineShip(opponentBoard) {
@@ -58,6 +59,7 @@ export class Computer extends Player {
 		let bestOption = [1, 2, 3, 4, 5]
 
 		// const containsCoord = (coord) => 
+	// console.log(`hit squares ${hitSquares}`)
 
 		hitSquares.forEach((coord) => {
 			// let workingArr = []
@@ -93,12 +95,15 @@ export class Computer extends Player {
 		const topLine = opponentBoard.getUpSquares(ship, coord, true)
 		const bottomLine = opponentBoard.getDownSquares(ship, coord, true)
 
-		this.checkLine(rightLine, workingArr, hitSquares)
-		this.checkLine(leftLine, workingArr, hitSquares)
-		this.checkLine(topLine, workingArr, hitSquares)
-		this.checkLine(bottomLine, workingArr, hitSquares)
+		// console.log(topLine)
+		// console.log(coord)
 
-		// console.log(workingArr)
+		this.checkLine(rightLine, workingArr, hitSquares, opponentBoard)
+		this.checkLine(leftLine, workingArr, hitSquares, opponentBoard)
+		this.checkLine(topLine, workingArr, hitSquares, opponentBoard)
+		this.checkLine(bottomLine, workingArr, hitSquares, opponentBoard)
+
+		// console.log(`working array${workingArr}`)
 		// this.checkLine(bottomLine, workingArr, hitSquares)
 
 		// rightLine.forEach((square) => {
@@ -110,10 +115,17 @@ export class Computer extends Player {
 		return workingArr
 	}
 
-	checkLine(line, workingArr, hitSquares) {
+	checkLine(line, workingArr, hitSquares, opponentBoard) {
 		let hmm = []
 		line.forEach((square) => {
-			if (!hitSquares.includes(square)) hmm.push(square)	
+			// console.log(!!opponentBoard.board[square])
+			// console.log(square)
+			// if (!!opponentBoard.board[square]) {
+			// 	// if (opponentBoard.board[square].miss && !hitSquares.includes(square)) {
+			// 	// 	hmm.push(square)	
+			// 	// }
+			// }
+			if (!hitSquares.includes(square) && !opponentBoard.board[square].miss) hmm.push(square)	
 		})
 
 		// workingArr.push(hmm)
@@ -124,6 +136,7 @@ export class Computer extends Player {
 		if (0 < hmm.length && hmm.length < workingArr[0].length) {
 			workingArr.shift()
 			workingArr.push(hmm)
+			// console.log(`hmm ${hmm}`)
 		}
 	}
 
