@@ -19,6 +19,10 @@ carrier.sunk = true
 player1.gameboard.placeShip(carrier, "A1", "A2")
 player1.gameboard.placeShip(submarine, "D3", "E3")
 
+player1.gameboard.board.E3.hit = true
+
+// player1.gameboard.board.E7.hit = true
+
 console.log(player2.sendAttack(player1.gameboard.board))
 
 let players = [player1, player2]
@@ -38,7 +42,7 @@ player2.domboard = document.querySelector(".player2")
 setUpBoard(player1, player1.domboard)
 setUpBoard(player2, player2.domboard)
 
-updateBoards(true)
+updateBoards(false)
 // Button Listeners
 
 startBtn.addEventListener('click', beginTurn)

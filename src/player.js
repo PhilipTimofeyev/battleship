@@ -19,7 +19,8 @@ export class Computer extends Player {
 // Attacking
 
 	sendAttack(opponentBoard) {
-		return this.shipsSunk(opponentBoard)
+		// return this.shipsSunk(opponentBoard)
+		return this.getHitSquares(opponentBoard) 
 	}
 
 	shipsSunk(opponentBoard) {
@@ -30,6 +31,14 @@ export class Computer extends Player {
 
 		// Remove duplicates
 		return [...new Set(sunkShips)]
+	}
+
+	getHitSquares(opponentBoard) {
+		const hitSquare = ([coord, square]) => square.hit && square.ship
+		const coord = (square) => square[0]
+		const hitSquares = Object.entries(opponentBoard).filter(hitSquare).map(coord)
+
+		return hitSquares
 	}
 
 // Placing Ships
