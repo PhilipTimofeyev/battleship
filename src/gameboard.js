@@ -86,9 +86,8 @@ import { Square } from './square';
 		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
-	 getLeftSquares(ship, coordStart) {
+	 getLeftSquares(ship, coordStart, computer) {
 		let activeSquares = []
-
 		let startLet = coordStart[0]
 		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) + 1 : 11
 
@@ -96,10 +95,14 @@ import { Square } from './square';
 			activeSquares.push(`${startLet}${i}`)
 		}
 
+		// console.log(activeSquares)
+
+		if (computer && this.validateSize(activeSquares)) return activeSquares
+
 		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
-	 getUpSquares(ship, coordStart) {
+	 getUpSquares(ship, coordStart, computer) {
 		let activeSquares = []
 
 		let startLet = coordStart[0]
@@ -110,10 +113,12 @@ import { Square } from './square';
 			startLet = this.incrementChar(startLet)
 		}
 
+		if (computer && this.validateSize(activeSquares)) return activeSquares
+
 		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
-	 getDownSquares(ship, coordStart) {
+	 getDownSquares(ship, coordStart, computer) {
 		let activeSquares = []
 
 		let startLet = coordStart[0]
@@ -123,6 +128,8 @@ import { Square } from './square';
 			activeSquares.push(`${startLet}${startNum}`)
 			startLet = this.decrementChar(startLet)
 		}
+
+		if (computer && this.validateSize(activeSquares)) return activeSquares
 
 		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}

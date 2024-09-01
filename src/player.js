@@ -51,23 +51,71 @@ export class Computer extends Player {
 		// const containsCoord = (coord) => 
 
 		hitSquares.forEach((coord) => {
-			let workingArr = []
-			const rightLine = opponentBoard.getRightSquares(ship, coord, true)
-			rightLine.forEach((square) => {
-				if (!hitSquares.includes(square)) workingArr.push(square)	
+			// let workingArr = []
+			// const rightLine = opponentBoard.getRightSquares(ship, coord, true)
+			// rightLine.forEach((square) => {
+			// 	if (!hitSquares.includes(square)) workingArr.push(square)	
+			// })
+
+			let workingArr = this.bestSquares(opponentBoard, hitSquares, coord, ship)
+
+			workingArr.forEach((option) => {
+				if (option.length < bestOption.length) bestOption = option
 			})
 
-			if (workingArr.length < bestOption.length) bestOption = workingArr
+			// if (workingArr.length < bestOption.length) bestOption = workingArr
 
-			const leftLine = opponentBoard.getLeftSquares(ship, coord, true)
-			leftLine.forEach((square) => {
-				if (!hitSquares.includes(square)) workingArr.push(square)	
-			})
+			// const leftLine = opponentBoard.getLeftSquares(ship, coord, true)
+			// leftLine.forEach((square) => {
+			// 	if (!hitSquares.includes(square)) workingArr.push(square)	
+			// })
 
-			if (workingArr.length < bestOption.length) bestOption = workingArr
+			// if (workingArr.length < bestOption.length) bestOption = workingArr
 		})
 
 		return bestOption
+	}
+
+	bestSquares(opponentBoard, hitSquares, coord, ship, lineFunction) {
+		let workingArr = [[1, 2, 3, 4, 5]]
+
+		const rightLine = opponentBoard.getRightSquares(ship, coord, true)
+		const leftLine = opponentBoard.getLeftSquares(ship, coord, true)
+		const topLine = opponentBoard.getUpSquares(ship, coord, true)
+		const bottomLine = opponentBoard.getDownSquares(ship, coord, true)
+
+		this.checkLine(rightLine, workingArr, hitSquares)
+		this.checkLine(leftLine, workingArr, hitSquares)
+		this.checkLine(topLine, workingArr, hitSquares)
+		this.checkLine(bottomLine, workingArr, hitSquares)
+
+		// console.log(workingArr)
+		// this.checkLine(bottomLine, workingArr, hitSquares)
+
+		// rightLine.forEach((square) => {
+		// 	if (!hitSquares.includes(square)) workingArr.push(square)	
+		// })
+
+		// console.log(workingArr)
+
+		return workingArr
+	}
+
+	checkLine(line, workingArr, hitSquares) {
+		let hmm = []
+		line.forEach((square) => {
+			if (!hitSquares.includes(square)) hmm.push(square)	
+		})
+
+		// workingArr.push(hmm)
+		// console.log(hmm.length)
+		// console.log(hmm)
+		// console.log(workingArr[0].length)
+		// console.log(`working ${workingArr[0]}`)
+		if (0 < hmm.length && hmm.length < workingArr[0].length) {
+			workingArr.shift()
+			workingArr.push(hmm)
+		}
 	}
 
 // Placing Ships
