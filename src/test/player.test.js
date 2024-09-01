@@ -94,34 +94,31 @@ test('Returns correct hit squares when ship sunk', () => {
   expect(result).toEqual(['E4'])
 });
 
-// test('Returns best squares simple', () => {
-//   computer.opponentBoard.board["A6"].miss = true
+test('Returns best squares simple', () => {
+  computer.opponentBoard.placeShip(battleship, 'A1', 'A2')
 
-//   computer.opponentBoard.board.A5.hit = true
-//   computer.opponentBoard.board.A4.hit = true
-
-
-//   console.log(computer.opponentBoard)
-
-//   const result = computer.getBestSquares(['A5', 'A4', 'A9'], carrier)
-
-//   expect(result).toEqual(['A1', 'A2', 'A3'])
-// });
-
-test('Returns best square when miss', () => {
-  computer.opponentBoard.placeShip(battleship, 'A1', 'D1')
-  // computer.opponentBoard.placeShip(submarine, 'B1', 'D1')
-  // computer.opponentBoard.placeShip(carrier, 'E4', 'E5')
-
-  computer.opponentBoard.board.A1.hit = true
-  computer.opponentBoard.board.D1.hit = true
-  // computer.opponentBoard.board.A6.miss = true
-
-  // console.log(computer.opponentBoard.board)
+  computer.opponentBoard.board.A4.hit = true
+  computer.opponentBoard.board.A5.miss = true
 
   const result = computer.sendAttack()
 
   expect(result).toEqual('A3')
+});
+
+test('Returns square from more filled potential line', () => {
+  computer.opponentBoard.placeShip(carrier, 'A1', 'D1')
+  computer.opponentBoard.placeShip(battleship, 'B5', 'E5')
+
+  computer.opponentBoard.board.A1.hit = true
+  computer.opponentBoard.board.B1.hit = true
+  computer.opponentBoard.board.E1.hit = true
+
+  computer.opponentBoard.board.B5.hit = true
+  computer.opponentBoard.board.E1.hit = true
+
+  const result = computer.sendAttack()
+
+  expect(result).toEqual('C1')
 });
 
 

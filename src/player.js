@@ -29,14 +29,9 @@ export class Computer extends Player {
 		const hitSquares = this.getHitSquares()
 		const ship = this.determineShip()
 
-		// console.log(this.opponentBoard)
-
 		const attackOptions = this.getBestSquares(hitSquares, ship) 
 
-		console.log(attackOptions)
-
 		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
-		// console.log(response)
 		return response
 
 	}
@@ -76,7 +71,7 @@ export class Computer extends Player {
 		return getRandomArrElement(validSquares)[0]
 	}
 
-
+	// Finding best options Algo
 
 	getBestSquares(hitSquares, ship) {
 	 	this.bestOption = [1, 2, 3, 4, 5]
@@ -90,17 +85,11 @@ export class Computer extends Player {
 	 		})
 	 	})
 
-	 	// hitSquares.forEach((coord) => {
-	 	// 	this.bestSquares(hitSquares, coord, Ship.createShip('Carrier'))
-	 	// })
-	 	// hitSquares.forEach((coord) => {
-	 	// 	this.bestSquares(hitSquares, coord, Ship.createShip('Battleship'))
-	 	// })
-	 	// console.log(this.bestOption)
 		return this.bestOption
 	}
 
 	bestSquares(hitSquares, coord, ship) {
+		// Retrieves best options for every direction.
 		const bestLeft = this.bestLeftSquares(ship, coord, hitSquares) 
 		const bestRight = this.bestRightSquares(ship, coord, hitSquares)
 		const bestTop = this.bestTopSquares(ship, coord, hitSquares)
@@ -108,20 +97,18 @@ export class Computer extends Player {
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
-			console.log(`${ship.name}:${option}`)
-			// console.log(this.greatestDiff)
+
+			// Greatest difference determines the confidence of options. The greater the difference, but better (more confident).
 			const difference = ship.length - option.length
-			console.log(difference)
+
 			if (0 < option.length && 
 					option.length < this.bestOption.length &&
-					this.greatestDiff <= difference
+					difference >= this.greatestDiff
 					) {
-				this.bestOption = option;
-				this.greatestDiff = difference
-			}
-		})
-
-		// return bestLeft
+							this.bestOption = option;
+							this.greatestDiff = difference
+						}
+			})
 	}
 
 	// Functions to get best options for directional squares
@@ -150,21 +137,18 @@ export class Computer extends Player {
 	// Checks the line against hit squares, returns squares needed to fill line
 
 	checkLine(line, hitSquares) {
-		let squaresNeeded = []
+		let potentialSquares = []
 
-		// console.log(line)
-
+		// If any of the squares in the line are miss squares, ignore the line.
 		const miss = (square) => this.opponentBoard.board[square].miss
-		if (line.some(miss)) return squaresNeeded
+		if (line.some(miss)) return potentialSquares
 
-		// const included = (square) => this.opponentBoard.board[square].miss
-		// if (line.some(miss)) return squaresNeeded
-
+		// Add whichever squares in the line that are not used(hit) to the potetial squares arr.
 		line.forEach((square) => {
-			if (!hitSquares.includes(square)) squaresNeeded.push(square)	
+			if (!hitSquares.includes(square)) potentialSquares.push(square)	
 		})
-		// console.log(squaresNeeded)
-		return squaresNeeded
+
+		return potentialSquares
 	}
 
 // Placing Ships
@@ -187,13 +171,12 @@ export class Computer extends Player {
 		const emptySquares = Object.entries(this.gameboard.board).filter(emptySquare)
 
 		const randSquare = getRandomArrElement(emptySquares)
+
 		// Returns key which is coordinate
 		return randSquare[0]
 	}
 
 	selectRandomSecondSquare(firstCoord, ship) {
-		// const firstCoord = this.selectRandomFirstSquare()
-
 		const removeFirstCoord = (square) => square != firstCoord
 		const validSquares = this.gameboard.showValidSquares(ship, firstCoord).filter(removeFirstCoord)
 
