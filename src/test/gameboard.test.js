@@ -119,10 +119,6 @@ test('returns valid squares', () => {
 
 test('returns valid squares right corner', () => {
 	const ship = new Destroyer
-	console.log(gameboard.showValidSquares(ship, "A10"))
-	// const result = gameboard.showValidSquares(ship, "A1")
-
-	// expect(result).toEqual(['A1', 'A2', 'A3', 'B1', 'C1'])
 });
 
 
