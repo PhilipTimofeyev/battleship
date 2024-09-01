@@ -10,12 +10,20 @@ const player1 = new Player
 const player2 = new Computer
 
 
-// const carrier = Ship.createShip('Carrier')
+const carrier = Ship.createShip('Carrier')
 const battleship = Ship.createShip('Battleship')
 const submarine = Ship.createShip('Submarine')
 
 const carrier2 = Ship.createShip('Carrier')
 
+carrier.hit()
+carrier.hit()
+
+battleship.hit()
+battleship.hit()
+battleship.hit()
+
+submarine.hit()
 // console.log(player1.gameboard.getUpSquares(carrier, 'G3'))
 
 // battleship.sunk = true
@@ -23,8 +31,8 @@ const carrier2 = Ship.createShip('Carrier')
 // carrier.sunk = true
 // submarine.sunk = true
 
-// player1.gameboard.placeShip(carrier, "A1", "A2")
-// player1.gameboard.placeShip(carrier, "D3", "E3")
+player1.gameboard.placeShip(carrier, "A1", "A2")
+player1.gameboard.placeShip(submarine, "D3", "E3")
 player1.gameboard.placeShip(battleship, "B5", "B6")
 
 
@@ -34,13 +42,16 @@ player2.gameboard.placeShip(carrier2, "A1", "A2")
 
 // player1.gameboard.placeShip(carrier, "I2", "J2")
 
-player1.gameboard.board.A4.hit = true
-player1.gameboard.board.A3.hit = true
+player1.gameboard.board.A1.hit = true
+player1.gameboard.board.A2.hit = true
+
+player1.gameboard.board.D3.hit = true
 // player1.gameboard.board.A2.hit = true
 // player1.gameboard.board.A1.hit = true
 
 player1.gameboard.board.B5.hit = true
 player1.gameboard.board.B6.hit = true
+player1.gameboard.board.B7.hit = true
 // player1.gameboard.board.B7.hit = true
 
 // player1.gameboard.board.E3.hit = true
@@ -180,7 +191,8 @@ function playerTurn(e) {
 	const squareToAttack = e.target.dataset.coordinate;
 
 	if (players[0] instanceof Computer) {
-		players[0].sendAttack(players[1].gameboard)
+		const attackCoord = players[0].sendAttack(players[1].gameboard)
+		players[1].gameboard.receiveAttack(attackCoord)
 	} else {
 		players[1].gameboard.receiveAttack(squareToAttack);
 	}

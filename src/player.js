@@ -24,7 +24,9 @@ export class Computer extends Player {
 		const ship = this.determineShip(opponentBoard)
 
 		const attackOptions = this.determineDirection(opponentBoard, hitSquares, ship) 
-		opponentBoard.receiveAttack(attackOptions[0])
+		// opponentBoard.receiveAttack(attackOptions[0])
+		console.log(opponentBoard.board)
+		return attackOptions[0]
 		console.log(attackOptions[0])
 	}
 
@@ -48,7 +50,7 @@ export class Computer extends Player {
 	}
 
 	getHitSquares(opponentBoard) {
-		const hitSquare = ([coord, square]) => square.hit && square.ship
+		const hitSquare = ([coord, square]) => square.hit && square.ship && !square.ship.sunk
 		const coord = (square) => square[0]
 		const hitSquares = Object.entries(opponentBoard.board).filter(hitSquare).map(coord)
 
@@ -60,7 +62,7 @@ export class Computer extends Player {
 
 		// const containsCoord = (coord) => 
 	// console.log(`hit squares ${hitSquares}`)
-
+		console.log(hitSquares)
 		hitSquares.forEach((coord) => {
 			// let workingArr = []
 			// const rightLine = opponentBoard.getRightSquares(ship, coord, true)
@@ -90,13 +92,19 @@ export class Computer extends Player {
 	bestSquares(opponentBoard, hitSquares, coord, ship, lineFunction) {
 		let workingArr = [[1, 2, 3, 4, 5]]
 
-		const rightLine = opponentBoard.getRightSquares(ship, coord, true)
-		const leftLine = opponentBoard.getLeftSquares(ship, coord, true)
-		const topLine = opponentBoard.getUpSquares(ship, coord, true)
-		const bottomLine = opponentBoard.getDownSquares(ship, coord, true)
+		let rightLine = opponentBoard.getRightSquares(ship, coord, true)
+		let leftLine = opponentBoard.getLeftSquares(ship, coord, true)
+		let topLine = opponentBoard.getUpSquares(ship, coord, true)
+		let bottomLine = opponentBoard.getDownSquares(ship, coord, true)
 
 		// console.log(topLine)
 		// console.log(coord)
+		rightLine = rightLine.filter((coord) => !opponentBoard.board[coord].miss && !opponentBoard.board[coord].sunk )
+		leftLine = leftLine.filter((coord) => !opponentBoard.board[coord].miss && !opponentBoard.board[coord].sunk)
+		topLine = topLine.filter((coord) => !opponentBoard.board[coord].miss)
+		bottomLine = bottomLine.filter((coord) => !opponentBoard.board[coord].miss)
+
+		console.log(rightLine)
 
 		this.checkLine(rightLine, workingArr, hitSquares, opponentBoard)
 		this.checkLine(leftLine, workingArr, hitSquares, opponentBoard)
@@ -125,7 +133,7 @@ export class Computer extends Player {
 			// 	// 	hmm.push(square)	
 			// 	// }
 			// }
-			if (!hitSquares.includes(square) && !opponentBoard.board[square].miss) hmm.push(square)	
+			if (!hitSquares.includes(square)) hmm.push(square)	
 		})
 
 		// workingArr.push(hmm)
