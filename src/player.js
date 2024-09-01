@@ -6,6 +6,7 @@ export class Player {
 	constructor() {
 		this.gameboard = new Gameboard
 		this.domboard = null
+		this.opponentBoard = null
 	}
 }
 
@@ -33,8 +34,8 @@ export class Computer extends Player {
 
 	}
 
-	determineShip(opponentBoard) {
-		const sunkShips = this.shipsSunk(opponentBoard)
+	determineShip() {
+		const sunkShips = this.shipsSunk(this.opponentBoard)
 		const ships = ['Carrier', 'Battleship', 'Destroyer', 'Submarine', 'Patrol']
 
 		const shipsLeft = ships.filter(x => !sunkShips.includes(x));
@@ -42,20 +43,20 @@ export class Computer extends Player {
 		return Ship.createShip(shipsLeft[0])
 	}
 
-	shipsSunk(opponentBoard) {
+	shipsSunk() {
 		const sunkShip = (square) => square.ship && square.ship.sunk
 		const shipName = (square) => square.ship.name
 		
-		const sunkShips =  Object.values(opponentBoard.board).filter(sunkShip).map(shipName)
+		const sunkShips =  Object.values(this.opponentBoard.board).filter(sunkShip).map(shipName)
 
 		// Remove duplicates
 		return [...new Set(sunkShips)]
 	}
 
-	getHitSquares(opponentBoard) {
+	getHitSquares() {
 		const hitSquare = ([coord, square]) => square.hit && square.ship && !square.ship.sunk
 		const coord = (square) => square[0]
-		const hitSquares = Object.entries(opponentBoard.board).filter(hitSquare).map(coord)
+		const hitSquares = Object.entries(this.opponentBoard.board).filter(hitSquare).map(coord)
 
 		return hitSquares
 	}

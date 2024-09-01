@@ -77,6 +77,8 @@ const switchPlayerBtn = document.querySelector('#switch-player')
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
+if (player2 instanceof Computer) player2.opponentboard = player1.gameboard
+
 // Set up board
 	
 setUpBoard(player1, player1.domboard)

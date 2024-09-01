@@ -12,6 +12,8 @@ beforeEach(() => {
   gameboard = new Gameboard;
   computer = new Computer;
 
+  computer.opponentBoard = gameboard
+
   carrier = Ship.createShip('Carrier')
   battleship = Ship.createShip('Battleship')
   submarine = Ship.createShip('Submarine')
@@ -24,10 +26,10 @@ test('Computer uses next biggest ship that is not sunk ', () => {
   battleship.sunk = true
   submarine.sunk = true
 
-  gameboard.placeShip(battleship, 'A1', 'A2')
-  gameboard.placeShip(submarine, 'B1', 'E2')
+  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard .placeShip(submarine, 'B1', 'E2')
 
-  const result = computer.determineShip(gameboard).name
+  const result = computer.determineShip().name
 
   expect(result).toBe('Carrier')
 });
@@ -38,11 +40,11 @@ test('Computer uses next biggest ship that is not sunk ', () => {
   battleship.sunk = true
   submarine.sunk = true
 
-  gameboard.placeShip(battleship, 'A1', 'A2')
-  gameboard.placeShip(submarine, 'B1', 'E2')
-  gameboard.placeShip(carrier, 'E4', 'E5')
+  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard .placeShip(submarine, 'B1', 'E2')
+  computer.opponentBoard .placeShip(carrier, 'E4', 'E5')
 
-  const result = computer.determineShip(gameboard).name
+  const result = computer.determineShip().name
 
   expect(result).toBe('Destroyer')
 });
@@ -53,14 +55,47 @@ test('Returns correct ships that are sunk', () => {
   battleship.sunk = true
   submarine.sunk = true
 
-  gameboard.placeShip(battleship, 'A1', 'A2')
-  gameboard.placeShip(submarine, 'B1', 'D1')
-  gameboard.placeShip(carrier, 'E4', 'E5')
+  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard .placeShip(submarine, 'B1', 'D1')
+  computer.opponentBoard .placeShip(carrier, 'E4', 'E5')
 
-  const result = computer.shipsSunk(gameboard)
+  const result = computer.shipsSunk()
 
   expect(result).toEqual(['Battleship', 'Submarine', 'Carrier'])
 });
+
+test('Returns correct hit squares', () => {
+
+  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard .placeShip(submarine, 'B1', 'D1')
+  computer.opponentBoard .placeShip(carrier, 'E4', 'E5')
+
+  computer.opponentBoard .board.A1.hit = true
+  computer.opponentBoard .board.E4.hit = true
+
+  const result = computer.getHitSquares()
+
+  expect(result).toEqual(['A1', 'E4'])
+});
+
+test('Returns correct hit squares when ship sunk', () => {
+
+  computer.opponentBoard .placeShip(battleship, 'A1', 'A2')
+  computer.opponentBoard .placeShip(submarine, 'B1', 'D1')
+  computer.opponentBoard .placeShip(carrier, 'E4', 'E5')
+
+  battleship.sunk = true
+
+  computer.opponentBoard .board.A1.hit = true
+  computer.opponentBoard .board.E4.hit = true
+
+  const result = computer.getHitSquares()
+
+  expect(result).toEqual(['E4'])
+});
+
+
+
 
 
 
