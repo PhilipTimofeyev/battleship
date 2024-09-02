@@ -11,14 +11,7 @@ const player1 = new Player
 const player2 = new Player
 let players = [player1, player2]
 
-if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
-
-	// player2.placeAllShips()
-
-// Gameplay
-
-
-
+// if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
 
 // DOM Elements
 
@@ -26,10 +19,56 @@ const boardsDiv = document.querySelector('.boards')
 
 const startBtn = document.querySelector('#start-game')
 const player1ReadyBtn = document.querySelector('#player1-ready')
+const passBtn = document.querySelector('#pass')
 
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
+// Gameplay
+
+	function startGame() {
+		players.reverse()
+		removeDraggable()
+		removeAllHandlers(player1, player2) 
+		updateBoards(false)
+		addPlayerTurnListener(players[1])
+	}
+
+	function setPlayer1() {
+		startBtn.style.display = "block"
+		addNewShipSet()
+		removeAllHandlers(player1, player2) 
+		switchPlayers()
+		player1ReadyBtn.style.display = 'none'
+	}
+
+	function passPlayer() {
+		switchPlayers()
+		addPlayerTurnListener(players[1])
+		passBtn.style.display = 'none'
+	}
+
+	function pvpTurn(e) {
+		const squareToAttack = e.target.dataset.coordinate;
+		players[1].gameboard.receiveAttack(squareToAttack)
+		updateBoards()
+		removeListener(players[1], pvpTurn)
+		if (gameOver()) return
+		passBtn.style.display = 'block'
+	}
+
+	function gameOver() {
+		if (players[0].gameboard.allSunk()) {
+			alert("Game Over!")
+			return true
+		}
+	}
+
+	// Button Listeners
+
+startBtn.addEventListener('click', startGame)
+player1ReadyBtn.addEventListener('click', setPlayer1)
+passBtn.addEventListener('click', passPlayer)
 
 // Set up board
 	
@@ -37,20 +76,6 @@ setUpBoard(player1, player1.domboard)
 setUpBoard(player2, player2.domboard)
 
 updateBoards(false)
-// Button Listeners
-
-startBtn.addEventListener('click', startGame)
-player1ReadyBtn.addEventListener('click', function() {
-	startBtn.style.display = "block"
-	addNewShipSet()
-	removeAllHandlers(player1, player2) 
-	switchPlayers()
-	player1ReadyBtn.style.display = 'none'
-})
-
-// player2ReadyBtn.addEventListener('click', function() {
-
-// })
 
 function alternateGridDisplay() {
 	let currentPlayerGrid = players[0].domboard.style.display
@@ -70,9 +95,11 @@ function alternateGridDisplay() {
 let draggedShip = null;
 let draggedShipElement = null;
 
-// Drag Start
-
 document.addEventListener("dragstart", dragStart);
+document.addEventListener("dragover", dragOver);
+document.addEventListener("drop", drop);
+
+// Drag Start
 
 function dragStart(event) {
  	const shipType = event.target.id
@@ -84,8 +111,6 @@ function dragStart(event) {
  	// Removes the ship objects from the player's gameboard so there are no duplicates
 	players[0].gameboard.removeShips(shipType)
 }
-
-document.addEventListener("dragover", dragOver);
 
 // Drag Over
 
@@ -108,8 +133,6 @@ function markValidSquares(ship, coord) {
 }
 
 // Drop
-
-document.addEventListener("drop", drop);
 
 function drop(event) {
 	event.preventDefault();
@@ -139,51 +162,38 @@ function updateBoards(showShips) {
 	updatePlayerBoard(player2, showShips);
 }
 
-function startGame() {
-	players.reverse()
-	removeDraggable()
-	removeAllHandlers(player1, player2) 
-	updateBoards(false)
-	addPlayerTurnListener(players[1])
-}
-
 function addPlayerTurnListener(player) {
 	Array.from(player.domboard.children).forEach((square) => {
 		// Only make non-used squares clickable
 		const playerSquare = getSquareObj(square, player) 
-		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', playerTurn)
+		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', pvpTurn)
 	})
 }
 
 // console.log(players[0])
 
-function playerTurn(e) {
-	const squareToAttack = e.target.dataset.coordinate;
+// function playerTurn(e) {
+// 	const squareToAttack = e.target.dataset.coordinate;
 
-	if (players[0] instanceof Computer) {
-		const attackCoord = players[0].sendAttack(players[1].gameboard)
-		players[1].gameboard.receiveAttack(attackCoord)
-	} else {
-		players[1].gameboard.receiveAttack(squareToAttack);
-	}
-	updateBoards()
-	removeListener(players[1], playerTurn)
-	if (gameOver()) return
-	switchPlayers()
-	addPlayerTurnListener(players[1])
-}
+// 	if (players[0] instanceof Computer) {
+// 		const attackCoord = players[0].sendAttack(players[1].gameboard)
+// 		players[1].gameboard.receiveAttack(attackCoord)
+// 	} else {
+// 		players[1].gameboard.receiveAttack(squareToAttack);
+// 	}
+// 	updateBoards()
+// 	removeListener(players[1], playerTurn)
+// 	if (gameOver()) return
+// 	switchPlayers()
+// 	addPlayerTurnListener(players[1])
+// }
+
 
 function switchPlayers() {
 	alternateGridDisplay() 
 	players.reverse()
 }
 
-function gameOver() {
-	if (players[0].gameboard.allSunk()) {
-		alert("Game Over!")
-		return true
-	}
-}
 
 function removeDraggable() {
 	document.removeEventListener("dragstart", dragStart)
