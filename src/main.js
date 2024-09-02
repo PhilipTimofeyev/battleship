@@ -6,93 +6,152 @@ import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from '.
 
 // Players
 
-const player1 = new Player
-// const player2 = new Computer(player1.gameboard)
-const player2 = new Player
-let players = [player1, player2]
+let player1
+let player2
+let players
 
-// if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
 
 // DOM Elements
 
 const boardsDiv = document.querySelector('.boards')
 
+// Buttons
+const pvpBtn = document.querySelector('#pvp')
+const pvcBtn = document.querySelector('#pvc')
 const startBtn = document.querySelector('#start-game')
 const player1ReadyBtn = document.querySelector('#player1-ready')
+const compReadyBtn = document.querySelector('#comp-ready')
 const passBtn = document.querySelector('#pass')
 
+// Containers
 const player1Container = document.querySelector('#player1Container')
 const player2Container = document.querySelector('#player2Container')
 
-player1.domboard = document.querySelector(".player1")
-player2.domboard = document.querySelector(".player2")
-
 // Gameplay
-
-	function startGame() {
-		// if (!checkAllShipsUsed()) return
-		players.reverse()
-		removeDraggable()
-		removeAllHandlers(player1, player2) 
-		updateBoards(false)
-		addPlayerTurnListener(players[1])
-		startBtn.style.display = 'none'
-	}
-
-	function setPlayer1() {
-		// if (!checkAllShipsUsed()) return
-		startBtn.style.display = "block"
-		addNewShipSet()
-		removeAllHandlers(player1, player2) 
-		switchPlayers()
-		player1ReadyBtn.style.display = 'none'
-	}
-
-	function passPlayer() {
-		switchPlayers()
-		addPlayerTurnListener(players[1])
-		passBtn.style.visibility = 'hidden'
-	}
-
-	function pvpTurn(e) {
-		const squareToAttack = e.target.dataset.coordinate;
-		players[1].gameboard.receiveAttack(squareToAttack)
-		updateBoards()
-		removeListener(players[1], pvpTurn)
-		if (gameOver()) return
-		passBtn.style.visibility = 'visible'
-	}
-
-	function gameOver() {
-		if (players[1].gameboard.allSunk()) {
-			alert("Game Over!")
-			showAllBoards()
-			return true
-		}
-	}
-
-	// Button Listeners
-
+		
+pvpBtn.addEventListener('click', pvpStart)
 startBtn.addEventListener('click', startGame)
 player1ReadyBtn.addEventListener('click', setPlayer1)
 passBtn.addEventListener('click', passPlayer)
+compReadyBtn.addEventListener('click', startGame)
+
+function pvpStart() {
+	player1 = new Human
+	player2 = new Human
+	
+	initialSetup()
+	
+	player1Container.style.display = 'block'
+	player1ReadyBtn.style.display = 'block'
+}
+
+function initialSetup() {
+	player1.domboard = document.querySelector(".player1")
+	player2.domboard = document.querySelector(".player2")
+	setUpBoard(player1, player1.domboard)
+	setUpBoard(player2, player2.domboard)
+
+	pvpBtn.style.display = "none"
+	pvcBtn.style.display = "none"
+
+	players = [player1, player2]
+
+	updateBoards(false)
+}
+
+pvcBtn.addEventListener('click', pvcStart)
+
+function pvcStart() {
+	player1 = new Human
+	player2 = new Computer
+	
+	initialSetup()
+	player2.opponentBoard = player1.gameboard
+	player2.placeAllShips()
+
+	player1Container.style.display = 'block'
+	player2Container.style.display = 'block'
+	compReadyBtn.style.display = 'block'
+}
+
+function startGame() {
+	// if (!checkAllShipsUsed()) return
+	if (player2 instanceof Human) players.reverse()
+	removeDraggable()
+	removeAllHandlers(player1, player2) 
+	updateBoards(false)
+	addPlayerTurnListener(players[1], playerType())
+	startBtn.style.display = 'none'
+}
+
+function addPlayerTurnListener(player, playerType) {
+	Array.from(player.domboard.children).forEach((square) => {
+		// Only make non-used squares clickable
+		const playerSquare = getSquareObj(square, player) 
+		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', playerType)
+	})
+}
+
+function playerType() {
+	return player2 instanceof Computer ? pvcTurn : pvpTurn
+}
+
+function setPlayer1() {
+	// if (!checkAllShipsUsed()) return
+	startBtn.style.display = "block"
+	addNewShipSet()
+	removeAllHandlers(player1, player2) 
+	switchPlayers()
+	player1ReadyBtn.style.display = 'none'
+}
+
+function passPlayer() {
+	switchPlayers()
+	addPlayerTurnListener(players[1], pvpTurn)
+	passBtn.style.visibility = 'hidden'
+}
+
+function pvcTurn(e) {
+	const squareToAttack = e.target.dataset.coordinate;
+	player2.gameboard.receiveAttack(squareToAttack)
+
+	const attackCoord = player2.sendAttack(player1.gameboard)
+	player1.gameboard.receiveAttack(attackCoord)
+
+	updateBoards()
+	if (gameOver()) return
+}
+
+function pvpTurn(e) {
+	const squareToAttack = e.target.dataset.coordinate;
+	players[1].gameboard.receiveAttack(squareToAttack)
+	updateBoards()
+	removeListener(players[1], pvpTurn)
+	if (gameOver()) return
+	passBtn.style.visibility = 'visible'
+}
+
+function gameOver() {
+	if (players[1].gameboard.allSunk()) {
+		alert("Game Over!")
+		showAllBoards()
+		return true
+	}
+}
+
 
 // Set up board
 	
-setUpBoard(player1, player1.domboard)
-setUpBoard(player2, player2.domboard)
-
-updateBoards(false)
 
 function alternateGridDisplay() {
 	let currentPlayerGrid = player1Container.style.display
 
 	if (currentPlayerGrid == 'none') {
-		player1Container.style.display = 'grid';
+		player1Container.style.display = 'block';
 		player2Container.style.display = 'none'
 	} else {
 		player1Container.style.display = 'none';
-		player2Container.style.display = 'grid'
+		player2Container.style.display = 'block'
 	}
 }
 
@@ -169,33 +228,6 @@ function updateBoards(showShips) {
 	updatePlayerBoard(player2, showShips);
 }
 
-function addPlayerTurnListener(player) {
-	Array.from(player.domboard.children).forEach((square) => {
-		// Only make non-used squares clickable
-		const playerSquare = getSquareObj(square, player) 
-		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', pvpTurn)
-	})
-}
-
-// console.log(players[0])
-
-// function playerTurn(e) {
-// 	const squareToAttack = e.target.dataset.coordinate;
-
-// 	if (players[0] instanceof Computer) {
-// 		const attackCoord = players[0].sendAttack(players[1].gameboard)
-// 		players[1].gameboard.receiveAttack(attackCoord)
-// 	} else {
-// 		players[1].gameboard.receiveAttack(squareToAttack);
-// 	}
-// 	updateBoards()
-// 	removeListener(players[1], playerTurn)
-// 	if (gameOver()) return
-// 	switchPlayers()
-// 	addPlayerTurnListener(players[1])
-// }
-
-
 function switchPlayers() {
 	alternateGridDisplay() 
 	players.reverse()
@@ -214,8 +246,6 @@ function showAllBoards() {
 	player1Container.style.display = 'grid'
 	player2Container.style.display = 'grid'
 }
-
-// console.log(checkAllShipsUsed())
 
 function removeDraggable() {
 	document.removeEventListener("dragstart", dragStart)
