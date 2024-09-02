@@ -131,7 +131,7 @@ function pvpTurn(e) {
 	updateBoards()
 	removeListener(players[1], pvpTurn)
 	if (gameOver()) return
-	passBtn.style.visibility = 'visible'
+	passBtn.style.dispay = 'block'
 }
 
 function passPlayer() {

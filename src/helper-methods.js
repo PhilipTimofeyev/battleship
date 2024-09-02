@@ -24,3 +24,11 @@ export function getRandomArrElement(array) {
 export function removeAllChildren(element) {
 	while (element.firstChild) {element.removeChild(element.lastChild);}
 }
+
+export function selectRandomSecondSquare(firstCoord, ship) {
+	console.log(this)
+	const removeFirstCoord = (square) => square != firstCoord
+	const validSquares = this.gameboard.showValidSquares(ship, firstCoord).filter(removeFirstCoord)
+
+	return getRandomArrElement(validSquares)
+}
