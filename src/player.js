@@ -141,7 +141,7 @@ export class Computer extends Player {
 		let potentialSquares = []
 
 		// If any of the squares in the line are miss squares, ignore the line.
-		const miss = (square) => this.opponentBoard.board[square].miss
+		const miss = (square) => this.opponentBoard.board[square].miss || (this.opponentBoard.board[square].ship && this.opponentBoard.board[square].ship.sunk)
 		if (line.some(miss)) return potentialSquares
 
 		// Add whichever squares in the line that are not used(hit) to the potetial squares arr.
