@@ -80,6 +80,7 @@ function initialSetup() {
 	removeAllChildren(player2.domboard)
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
+	playerOneShips.style.display = 'flex'
 
 	pvpBtn.style.display = "none"
 	pvcBtn.style.display = "none"
@@ -230,7 +231,7 @@ function addSecondCoordListeners(startCoord, ship) {
 
 function updateBoards(showShips) {
 	updatePlayerBoard(player1, showShips);
-	updatePlayerBoard(player2, showShips);
+	updatePlayerBoard(player2, false);
 }
 
 function switchPlayers() {
