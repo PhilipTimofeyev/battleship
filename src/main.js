@@ -2,12 +2,13 @@ import { Player, Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet, checkAllShipsUsed } from './ship-dom';
 import { Ship } from './ship';
-import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from './helper-methods';
+import { getSquareDom, getSquareObj, removeListener, removeAllHandlers, removeAllChildren } from './helper-methods';
 
 // Players
 
 let player1
 let player2
+
 let players
 
 
@@ -47,7 +48,7 @@ function pvpStart() {
 }
 
 function prepPlayerTwo() {
-	if (!checkAllShipsUsed()) return
+	// if (!checkAllShipsUsed()) return
 	startBtn.style.display = "block"
 	addNewShipSet()
 	removeAllHandlers(player1, player2) 
@@ -71,6 +72,10 @@ function pvcStart() {
 function initialSetup() {
 	player1.domboard = document.querySelector(".player1")
 	player2.domboard = document.querySelector(".player2")
+	removeAllHandlers(player1, player2) 
+	addDraggable()
+	removeAllChildren(player1.domboard)
+	removeAllChildren(player2.domboard)
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
 
@@ -83,7 +88,8 @@ function initialSetup() {
 }
 
 function startGame() {
-	if (!checkAllShipsUsed()) return
+	// if (!checkAllShipsUsed()) return
+	compReadyBtn.style.display = 'none'
 	if (player2 instanceof Human) players.reverse()
 	removeDraggable()
 	removeAllHandlers(player1, player2) 
@@ -134,6 +140,8 @@ function gameOver() {
 	if (players[0].gameboard.allSunk() || players[1].gameboard.allSunk() ) {
 		alert("Game Over!")
 		showAllBoards()
+		pvpBtn.style.display = "block"
+		pvcBtn.style.display = "block"
 		return true
 	}
 }
@@ -236,4 +244,10 @@ function removeDraggable() {
 	document.removeEventListener("dragstart", dragStart)
 	document.removeEventListener("dragover", dragOver)
 	document.removeEventListener("drop", drop)
+}
+
+function addDraggable() {
+	document.addEventListener("dragstart", dragStart)
+	document.addEventListener("dragover", dragOver)
+	document.addEventListener("drop", drop)
 }

@@ -1,5 +1,5 @@
 import { cloneShip } from './ship-dom';
-import { getSquareDom } from './helper-methods';
+import { getSquareDom, removeAllChildren } from './helper-methods';
 // Create Board
 
 function createSquare(coord, square) {
@@ -49,10 +49,6 @@ function getSquareStatus(square, squareElement, showShips) {
 	} else {
 		return  squareNoShipStatus(square)
 	}
-}
-
-function removeAllChildren(element) {
-	while (element.firstChild) {element.removeChild(element.lastChild);}
 }
 
 function squareNoShipStatus(square){  

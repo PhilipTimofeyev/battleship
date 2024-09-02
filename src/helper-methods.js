@@ -20,3 +20,7 @@ export function removeAllHandlers(player1, player2) {
 export function getRandomArrElement(array) {
 	return array[Math.floor(Math.random() * array.length)]
 }
+
+export function removeAllChildren(element) {
+	while (element.firstChild) {element.removeChild(element.lastChild);}
+}
