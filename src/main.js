@@ -91,8 +91,8 @@ function initialSetup() {
 }
 
 function startGame() {
-	if (!checkAllShipsUsed(playerOneShips)) return
-	if (!checkAllShipsUsed(playerTwoShips)) return
+	// if (!checkAllShipsUsed(playerOneShips)) return
+	// if (!checkAllShipsUsed(playerTwoShips)) return
 	compReadyBtn.style.display = 'none'
 	if (player2 instanceof Human) players.reverse()
 	removeDraggable()
@@ -120,7 +120,7 @@ function pvcTurn(e) {
 
 	const attackCoord = player2.sendAttack(player1.gameboard)
 	player1.gameboard.receiveAttack(attackCoord)
-
+	updateSquareListeners()
 	updateBoards()
 	gameOver()
 }
@@ -226,6 +226,19 @@ function addSecondCoordListeners(startCoord, ship) {
 			resetSquareColors(players[0])
 			updateBoards(true)
 		})
+	})
+}
+
+
+function updateSquareListeners() {
+	const removeClick = (square) => square.removeEventListener('click', pvcTurn)
+	const addClick = (square, playerSquare) => {if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', pvcTurn);}
+	
+	Array.from(player2.domboard.children).forEach((square) => {
+		const coord = square.dataset.coordinate
+		const playerSquare = player2.gameboard.board[coord]
+		removeClick(square);
+		addClick(square, playerSquare)
 	})
 }
 
