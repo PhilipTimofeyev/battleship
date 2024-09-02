@@ -12,6 +12,8 @@ let players = [player1, player2]
 
 if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
 
+	player2.placeAllShips()
+
 // player2.opponentBoard = player1.gameboard
 // console.log(player2.opponentBoard)
 // console.log(player2.sendAttack())
@@ -19,23 +21,23 @@ if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
 // console.log(players[1].opponentboard)
 // console.log(players[1].sendAttack())
 
-const carrier = Ship.createShip('Carrier')
-const patrol = Ship.createShip('Patrol')
-const carrier2 = Ship.createShip('Carrier')
-const battleship = Ship.createShip('Battleship')
+// const carrier = Ship.createShip('Carrier')
+// const patrol = Ship.createShip('Patrol')
+// const carrier2 = Ship.createShip('Carrier')
+// const battleship = Ship.createShip('Battleship')
 
-player1.gameboard.placeShip(carrier, 'A1', "D1")
-player1.gameboard.placeShip(battleship, 'B5', "D5")
-// player1.gameboard.placeShip(patrol, 'A6', "B6")
-player1.gameboard.board.A1.hit = true
-player1.gameboard.board.B1.hit = true
-player1.gameboard.board.E1.hit = true
+// player1.gameboard.placeShip(carrier, 'A1', "D1")
+// player1.gameboard.placeShip(battleship, 'B5', "D5")
+// // player1.gameboard.placeShip(patrol, 'A6', "B6")
+// player1.gameboard.board.A1.hit = true
+// player1.gameboard.board.B1.hit = true
+// player1.gameboard.board.E1.hit = true
 
-battleship.hit()
-battleship.hit()
+// battleship.hit()
+// battleship.hit()
 
-player1.gameboard.board.B5.hit = true
-player1.gameboard.board.E5.hit = true
+// player1.gameboard.board.B5.hit = true
+// player1.gameboard.board.E5.hit = true
 // const submarine = Ship.createShip('Submarine')
 
 // const carrier2 = Ship.createShip('Carrier')
@@ -62,7 +64,7 @@ player1.gameboard.board.E5.hit = true
 // player1.gameboard.placeShip(battleship, "B5", "B6")
 
 
-player2.gameboard.placeShip(carrier2, "A1", "A2")
+// player2.gameboard.placeShip(carrier2, "A1", "A2")
 
 // // console.log(player2.determineShip(player1.gameboard))
 
@@ -199,6 +201,7 @@ function beginTurn() {
 	// players[1].domboard.style.display = "grid"
 	// players.reverse()
 	removeDraggable()
+	removeAllHandlers(player1, player2) 
 	updateBoards(false)
 	addPlayerTurnListener(players[1])
 }
