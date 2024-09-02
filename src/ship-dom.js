@@ -26,6 +26,13 @@ export function addNewShipSet() {
 	shipNames.forEach((ship) => shipsDiv.appendChild(cloneShip(ship)))
 }
 
+export function checkAllShipsUsed() {
+	if(shipsDiv.children.length != 0) {
+		alert("Please place all ships")
+		return false
+	}
+	return true
+}
 
 
 

@@ -1,6 +1,6 @@
 import { Player, Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
-import { addNewShipSet } from './ship-dom';
+import { addNewShipSet, checkAllShipsUsed } from './ship-dom';
 import { Ship } from './ship';
 import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from './helper-methods';
 
@@ -29,11 +29,12 @@ const player2Container = document.querySelector('#player2Container')
 
 // Gameplay
 		
-pvpBtn.addEventListener('click', pvpStart)
 startBtn.addEventListener('click', startGame)
-player1ReadyBtn.addEventListener('click', setPlayer1)
+player1ReadyBtn.addEventListener('click', prepPlayerTwo)
 passBtn.addEventListener('click', passPlayer)
 compReadyBtn.addEventListener('click', startGame)
+pvcBtn.addEventListener('click', pvcStart)
+pvpBtn.addEventListener('click', pvpStart)
 
 function pvpStart() {
 	player1 = new Human
@@ -43,6 +44,28 @@ function pvpStart() {
 	
 	player1Container.style.display = 'block'
 	player1ReadyBtn.style.display = 'block'
+}
+
+function prepPlayerTwo() {
+	if (!checkAllShipsUsed()) return
+	startBtn.style.display = "block"
+	addNewShipSet()
+	removeAllHandlers(player1, player2) 
+	switchPlayers()
+	player1ReadyBtn.style.display = 'none'
+}
+
+function pvcStart() {
+	player1 = new Human
+	player2 = new Computer
+	
+	initialSetup()
+	player2.opponentBoard = player1.gameboard
+	player2.placeAllShips()
+
+	player1Container.style.display = 'block'
+	player2Container.style.display = 'block'
+	compReadyBtn.style.display = 'block'
 }
 
 function initialSetup() {
@@ -59,56 +82,26 @@ function initialSetup() {
 	updateBoards(false)
 }
 
-pvcBtn.addEventListener('click', pvcStart)
-
-function pvcStart() {
-	player1 = new Human
-	player2 = new Computer
-	
-	initialSetup()
-	player2.opponentBoard = player1.gameboard
-	player2.placeAllShips()
-
-	player1Container.style.display = 'block'
-	player2Container.style.display = 'block'
-	compReadyBtn.style.display = 'block'
-}
-
 function startGame() {
-	// if (!checkAllShipsUsed()) return
+	if (!checkAllShipsUsed()) return
 	if (player2 instanceof Human) players.reverse()
 	removeDraggable()
 	removeAllHandlers(player1, player2) 
 	updateBoards(false)
-	addPlayerTurnListener(players[1], playerType())
+	addPlayerTurnListener(players[1], turnType())
 	startBtn.style.display = 'none'
 }
 
-function addPlayerTurnListener(player, playerType) {
+function addPlayerTurnListener(player, turnType) {
 	Array.from(player.domboard.children).forEach((square) => {
 		// Only make non-used squares clickable
 		const playerSquare = getSquareObj(square, player) 
-		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', playerType)
+		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', turnType)
 	})
 }
 
-function playerType() {
+function turnType() {
 	return player2 instanceof Computer ? pvcTurn : pvpTurn
-}
-
-function setPlayer1() {
-	// if (!checkAllShipsUsed()) return
-	startBtn.style.display = "block"
-	addNewShipSet()
-	removeAllHandlers(player1, player2) 
-	switchPlayers()
-	player1ReadyBtn.style.display = 'none'
-}
-
-function passPlayer() {
-	switchPlayers()
-	addPlayerTurnListener(players[1], pvpTurn)
-	passBtn.style.visibility = 'hidden'
 }
 
 function pvcTurn(e) {
@@ -131,19 +124,21 @@ function pvpTurn(e) {
 	passBtn.style.visibility = 'visible'
 }
 
+function passPlayer() {
+	switchPlayers()
+	addPlayerTurnListener(players[1], pvpTurn)
+	passBtn.style.visibility = 'hidden'
+}
+
 function gameOver() {
-	if (players[1].gameboard.allSunk()) {
+	if (players[0].gameboard.allSunk() || players[1].gameboard.allSunk() ) {
 		alert("Game Over!")
 		showAllBoards()
 		return true
 	}
 }
 
-
-// Set up board
-	
-
-function alternateGridDisplay() {
+function alternateBoardDisplay() {
 	let currentPlayerGrid = player1Container.style.display
 
 	if (currentPlayerGrid == 'none') {
@@ -154,7 +149,6 @@ function alternateGridDisplay() {
 		player2Container.style.display = 'block'
 	}
 }
-
 
 // Drag and Drop
 
@@ -229,17 +223,8 @@ function updateBoards(showShips) {
 }
 
 function switchPlayers() {
-	alternateGridDisplay() 
+	alternateBoardDisplay() 
 	players.reverse()
-}
-
-function checkAllShipsUsed() {
-	const ships = document.querySelector('.ships')
-	if(ships.children.length != 0) {
-		alert("Please place all ships")
-		return false
-	}
-	return true
 }
 
 function showAllBoards() {
