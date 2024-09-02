@@ -21,22 +21,26 @@ const startBtn = document.querySelector('#start-game')
 const player1ReadyBtn = document.querySelector('#player1-ready')
 const passBtn = document.querySelector('#pass')
 
+const player1Container = document.querySelector('#player1Container')
+const player2Container = document.querySelector('#player2Container')
+
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
 
 // Gameplay
 
 	function startGame() {
-		if (!checkAllShipsUsed()) return
+		// if (!checkAllShipsUsed()) return
 		players.reverse()
 		removeDraggable()
 		removeAllHandlers(player1, player2) 
 		updateBoards(false)
 		addPlayerTurnListener(players[1])
+		startBtn.style.display = 'none'
 	}
 
 	function setPlayer1() {
-		if (!checkAllShipsUsed()) return
+		// if (!checkAllShipsUsed()) return
 		startBtn.style.display = "block"
 		addNewShipSet()
 		removeAllHandlers(player1, player2) 
@@ -47,7 +51,7 @@ player2.domboard = document.querySelector(".player2")
 	function passPlayer() {
 		switchPlayers()
 		addPlayerTurnListener(players[1])
-		passBtn.style.display = 'none'
+		passBtn.style.visibility = 'hidden'
 	}
 
 	function pvpTurn(e) {
@@ -56,7 +60,7 @@ player2.domboard = document.querySelector(".player2")
 		updateBoards()
 		removeListener(players[1], pvpTurn)
 		if (gameOver()) return
-		passBtn.style.display = 'block'
+		passBtn.style.visibility = 'visible'
 	}
 
 	function gameOver() {
@@ -80,14 +84,14 @@ setUpBoard(player2, player2.domboard)
 updateBoards(false)
 
 function alternateGridDisplay() {
-	let currentPlayerGrid = players[0].domboard.style.display
+	let currentPlayerGrid = player1Container.style.display
 
 	if (currentPlayerGrid == 'none') {
-		players[0].domboard.style.display = 'grid';
-		players[1].domboard.style.display= 'none'
+		player1Container.style.display = 'grid';
+		player2Container.style.display = 'none'
 	} else {
-		players[0].domboard.style.display = 'none';
-		players[1].domboard.style.display= 'grid'
+		player1Container.style.display = 'none';
+		player2Container.style.display = 'grid'
 	}
 }
 
