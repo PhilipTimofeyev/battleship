@@ -15,6 +15,8 @@ let players
 // DOM Elements
 
 const boardsDiv = document.querySelector('.boards')
+const playerOneShips = document.querySelector('#player-one-ships')
+let playerTwoShips = document.querySelector('#player-two-ships')
 
 // Buttons
 const pvpBtn = document.querySelector('#pvp')
@@ -48,9 +50,9 @@ function pvpStart() {
 }
 
 function prepPlayerTwo() {
-	// if (!checkAllShipsUsed()) return
+	if (!checkAllShipsUsed(playerOneShips)) return
 	startBtn.style.display = "block"
-	addNewShipSet()
+	addNewShipSet(playerTwoShips)
 	removeAllHandlers(player1, player2) 
 	switchPlayers()
 	player1ReadyBtn.style.display = 'none'
@@ -88,7 +90,8 @@ function initialSetup() {
 }
 
 function startGame() {
-	// if (!checkAllShipsUsed()) return
+	if (!checkAllShipsUsed(playerOneShips)) return
+	if (!checkAllShipsUsed(playerTwoShips)) return
 	compReadyBtn.style.display = 'none'
 	if (player2 instanceof Human) players.reverse()
 	removeDraggable()
@@ -118,7 +121,7 @@ function pvcTurn(e) {
 	player1.gameboard.receiveAttack(attackCoord)
 
 	updateBoards()
-	if (gameOver()) return
+	gameOver()
 }
 
 function pvpTurn(e) {

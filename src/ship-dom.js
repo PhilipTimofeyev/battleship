@@ -1,6 +1,3 @@
-
-const shipsDiv = document.querySelector('.ships')
-
 // Ship Elements
 
 const carrier = document.querySelector("#Carrier")
@@ -21,13 +18,13 @@ export function cloneShip(ship) {
 	}
 }
 
-export function addNewShipSet() {
+export function addNewShipSet(playerTwoShips) {
 	const shipNames = ['Carrier', 'Battleship', 'Destroyer', 'Patrol', 'Submarine']
-	shipNames.forEach((ship) => shipsDiv.appendChild(cloneShip(ship)))
+	shipNames.forEach((ship) => playerTwoShips.appendChild(cloneShip(ship)))
 }
 
-export function checkAllShipsUsed() {
-	if(shipsDiv.children.length != 0) {
+export function checkAllShipsUsed(shipContainer) {
+	if (shipContainer.children.length != 0) {
 		alert("Please place all ships")
 		return false
 	}

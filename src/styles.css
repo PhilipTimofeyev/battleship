@@ -1,4 +1,10 @@
 
+body {
+	 background-image: url("./assets/epic-sea.jpeg");
+	 background-size: cover;
+	 background-repeat: no-repeat;
+}
+
 h1 {
 	text-align: center;
 }
@@ -22,18 +28,23 @@ button {
 
 .board {
   display: grid;
+  box-sizing: border-box;
   grid-template-columns: repeat(10, 80px);
-  grid-gap: 5px;
+  grid-gap: 4px;
   background-color: #fff;
   color: lightgray;
-  width: 800px;
+  width: 836px;
+/*  border: solid darkblue 10px;*/
 }
 
-.ships {
+.ships,
+.ships2 {
 /*	margin-top: 30px;*/
 	display: flex;
 	gap: 50px;
 	justify-content: center;
+	background-color: rgb(255, 0, 0, .7);
+/*	width: 300px;*/
 }
 
 .square {
