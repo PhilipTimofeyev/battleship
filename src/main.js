@@ -7,89 +7,17 @@ import { getSquareDom, getSquareObj, removeListener, removeAllHandlers } from '.
 // Players
 
 const player1 = new Player
-const player2 = new Computer(player1.gameboard)
+// const player2 = new Computer(player1.gameboard)
+const player2 = new Player
 let players = [player1, player2]
 
 if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
 
-	player2.placeAllShips()
+	// player2.placeAllShips()
 
-// player2.opponentBoard = player1.gameboard
-// console.log(player2.opponentBoard)
-// console.log(player2.sendAttack())
-
-// console.log(players[1].opponentboard)
-// console.log(players[1].sendAttack())
-
-// const carrier = Ship.createShip('Carrier')
-// const patrol = Ship.createShip('Patrol')
-// const carrier2 = Ship.createShip('Carrier')
-// const battleship = Ship.createShip('Battleship')
-
-// player1.gameboard.placeShip(carrier, 'A1', "D1")
-// player1.gameboard.placeShip(battleship, 'B5', "D5")
-// // player1.gameboard.placeShip(patrol, 'A6', "B6")
-// player1.gameboard.board.A1.hit = true
-// player1.gameboard.board.B1.hit = true
-// player1.gameboard.board.E1.hit = true
-
-// battleship.hit()
-// battleship.hit()
-
-// player1.gameboard.board.B5.hit = true
-// player1.gameboard.board.E5.hit = true
-// const submarine = Ship.createShip('Submarine')
-
-// const carrier2 = Ship.createShip('Carrier')
-
-// console.log(player2.hitRandomSquare(player1.gameboard))
-
-// carrier.hit()
-// carrier.hit()
-
-// battleship.hit()
-// battleship.hit()
-// battleship.hit()
-
-// submarine.hit()
-// console.log(player1.gameboard.getUpSquares(carrier, 'G3'))
-
-// battleship.sunk = true
-
-// carrier.sunk = true
-// submarine.sunk = true
-
-// player1.gameboard.placeShip(carrier, "A1", "A2")
-// player1.gameboard.placeShip(submarine, "D3", "E3")
-// player1.gameboard.placeShip(battleship, "B5", "B6")
+// Gameplay
 
 
-// player2.gameboard.placeShip(carrier2, "A1", "A2")
-
-// // console.log(player2.determineShip(player1.gameboard))
-
-// // player1.gameboard.placeShip(carrier, "I2", "J2")
-
-// player1.gameboard.board.A1.hit = true
-// player1.gameboard.board.A2.hit = true
-
-// player1.gameboard.board.D3.hit = true
-// // player1.gameboard.board.A2.hit = true
-// // player1.gameboard.board.A1.hit = true
-
-// player1.gameboard.board.B5.hit = true
-// player1.gameboard.board.B6.hit = true
-// player1.gameboard.board.B7.hit = true
-// // player1.gameboard.board.B7.hit = true
-
-// // player1.gameboard.board.E3.hit = true
-// // player1.gameboard.board.D3.hit = true
-// // player1.gameboard.board.F3.hit = true
-// player1.gameboard.board.G3.hit = true
-
-// player1.gameboard.board.E7.hit = true
-
-// console.log(player2.sendAttack(player1.gameboard))
 
 
 // DOM Elements
@@ -97,7 +25,7 @@ if (player2 instanceof Computer) player2.opponentBoard = player1.gameboard
 const boardsDiv = document.querySelector('.boards')
 
 const startBtn = document.querySelector('#start-game')
-const switchPlayerBtn = document.querySelector('#switch-player')
+const player1ReadyBtn = document.querySelector('#player1-ready')
 
 player1.domboard = document.querySelector(".player1")
 player2.domboard = document.querySelector(".player2")
@@ -111,15 +39,30 @@ setUpBoard(player2, player2.domboard)
 updateBoards(false)
 // Button Listeners
 
-startBtn.addEventListener('click', beginTurn)
-switchPlayerBtn.addEventListener('click', function() {
-	// players[0].domboard.style.display = "none"
-	// players[1].domboard.style.display = "grid"
+startBtn.addEventListener('click', startGame)
+player1ReadyBtn.addEventListener('click', function() {
+	startBtn.style.display = "block"
 	addNewShipSet()
-	// removePlayerTurnListener()
 	removeAllHandlers(player1, player2) 
-	players.reverse()
+	switchPlayers()
+	player1ReadyBtn.style.display = 'none'
 })
+
+// player2ReadyBtn.addEventListener('click', function() {
+
+// })
+
+function alternateGridDisplay() {
+	let currentPlayerGrid = players[0].domboard.style.display
+
+	if (currentPlayerGrid == 'none') {
+		players[0].domboard.style.display = 'grid';
+		players[1].domboard.style.display= 'none'
+	} else {
+		players[0].domboard.style.display = 'none';
+		players[1].domboard.style.display= 'grid'
+	}
+}
 
 
 // Drag and Drop
@@ -196,10 +139,8 @@ function updateBoards(showShips) {
 	updatePlayerBoard(player2, showShips);
 }
 
-function beginTurn() {
-	// players[0].domboard.style.display = "grid"
-	// players[1].domboard.style.display = "grid"
-	// players.reverse()
+function startGame() {
+	players.reverse()
 	removeDraggable()
 	removeAllHandlers(player1, player2) 
 	updateBoards(false)
@@ -228,8 +169,13 @@ function playerTurn(e) {
 	updateBoards()
 	removeListener(players[1], playerTurn)
 	if (gameOver()) return
-	players.reverse()
+	switchPlayers()
 	addPlayerTurnListener(players[1])
+}
+
+function switchPlayers() {
+	alternateGridDisplay() 
+	players.reverse()
 }
 
 function gameOver() {
