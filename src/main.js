@@ -64,8 +64,9 @@ player2.domboard = document.querySelector(".player2")
 	}
 
 	function gameOver() {
-		if (players[0].gameboard.allSunk()) {
+		if (players[1].gameboard.allSunk()) {
 			alert("Game Over!")
+			showAllBoards()
 			return true
 		}
 	}
@@ -209,6 +210,11 @@ function checkAllShipsUsed() {
 	return true
 }
 
+function showAllBoards() {
+	player1Container.style.display = 'grid'
+	player2Container.style.display = 'grid'
+}
+
 // console.log(checkAllShipsUsed())
 
 function removeDraggable() {
@@ -216,8 +222,3 @@ function removeDraggable() {
 	document.removeEventListener("dragover", dragOver)
 	document.removeEventListener("drop", drop)
 }
-
-// beginTurn()
-
-
-
