@@ -27,6 +27,7 @@ player2.domboard = document.querySelector(".player2")
 // Gameplay
 
 	function startGame() {
+		if (!checkAllShipsUsed()) return
 		players.reverse()
 		removeDraggable()
 		removeAllHandlers(player1, player2) 
@@ -35,6 +36,7 @@ player2.domboard = document.querySelector(".player2")
 	}
 
 	function setPlayer1() {
+		if (!checkAllShipsUsed()) return
 		startBtn.style.display = "block"
 		addNewShipSet()
 		removeAllHandlers(player1, player2) 
@@ -194,6 +196,16 @@ function switchPlayers() {
 	players.reverse()
 }
 
+function checkAllShipsUsed() {
+	const ships = document.querySelector('.ships')
+	if(ships.children.length != 0) {
+		alert("Please place all ships")
+		return false
+	}
+	return true
+}
+
+// console.log(checkAllShipsUsed())
 
 function removeDraggable() {
 	document.removeEventListener("dragstart", dragStart)
