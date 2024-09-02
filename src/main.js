@@ -50,7 +50,7 @@ function pvpStart() {
 }
 
 function prepPlayerTwo() {
-	if (!checkAllShipsUsed(playerOneShips)) return
+	// if (!checkAllShipsUsed(playerOneShips)) return
 	startBtn.style.display = "block"
 	addNewShipSet(playerTwoShips)
 	removeAllHandlers(player1, player2) 
@@ -224,7 +224,7 @@ function addSecondCoordListeners(startCoord, ship) {
 			const endCoord = e.target.dataset.coordinate
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
 			resetSquareColors(players[0])
-			updateBoards(true)
+			player2 instanceof Human ? updateBoards(true) : updatePlayerBoard(player1, true)
 		})
 	})
 }
@@ -244,7 +244,7 @@ function updateSquareListeners() {
 
 function updateBoards(showShips) {
 	updatePlayerBoard(player1, showShips);
-	updatePlayerBoard(player2, false);
+	updatePlayerBoard(player2, showShips);
 }
 
 function switchPlayers() {
