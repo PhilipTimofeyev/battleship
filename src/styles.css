@@ -16,8 +16,24 @@ h1 {
 /*	justify-content: center;*/
 	margin: auto;
 	gap: 20px;
-	margin-bottom: 100px;
+	margin-bottom: 50px;
 	width: 500px;
+}
+
+.current-player {
+  color: #fff;
+  display: flex;
+  gap: 3rem;
+  justify-content: space-around;
+  /* background-color: darkblue; */
+  max-width: 30%;
+  margin: auto;
+}
+
+.current-player h2 {
+  background-color: darkblue;
+  padding: 1rem 3rem;
+  border-radius: 10px;
 }
 
 .boards {

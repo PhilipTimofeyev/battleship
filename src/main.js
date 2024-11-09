@@ -11,11 +11,12 @@ let player2
 
 let players
 
-
 // DOM Elements
 
 const boardsDiv = document.querySelector('.boards')
 const playerOneShips = document.querySelector('#player-one-ships')
+const playerOneDisplay = document.querySelector('#player-one-display')
+const playerTwoDisplay = document.querySelector('#player-two-display')
 let playerTwoShips = document.querySelector('#player-two-ships')
 
 // Buttons
@@ -100,6 +101,7 @@ function startGame() {
 	updateBoards(false)
 	addPlayerTurnListener(players[1], turnType())
 	startBtn.style.display = 'none'
+	playerOneDisplay.style.visibility = 'visible'
 }
 
 function addPlayerTurnListener(player, turnType) {
@@ -128,14 +130,27 @@ function pvcTurn(e) {
 function pvpTurn(e) {
 	const squareToAttack = e.target.dataset.coordinate;
 	players[1].gameboard.receiveAttack(squareToAttack)
-	updateBoards()
+	updateBoards()	
 	removeListener(players[1], pvpTurn)
 	if (gameOver()) return
-	passBtn.style.visibility = 'visible'
+	passBtn.style.visibility = 'visible';
+}
+
+// alternatePlayerDisplay()
+
+function alternatePlayerDisplay() {
+	if (playerOneDisplay.style.visibility === 'hidden') {
+		playerOneDisplay.style.visibility = 'visible'
+		playerTwoDisplay.style.visibility = 'hidden'
+	} else {
+		playerOneDisplay.style.visibility = 'hidden'
+		playerTwoDisplay.style.visibility = 'visible'
+	}
 }
 
 function passPlayer() {
 	switchPlayers()
+	alternatePlayerDisplay()
 	addPlayerTurnListener(players[1], pvpTurn)
 	passBtn.style.visibility = 'hidden'
 }
