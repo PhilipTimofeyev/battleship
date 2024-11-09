@@ -32,6 +32,9 @@ const passBtn = document.querySelector('#pass')
 const player1Container = document.querySelector('#player1Container')
 const player2Container = document.querySelector('#player2Container')
 
+const playerOneBoard = document.querySelector('#player1Board')
+const playerTwoBoard = document.querySelector('#player2Board')
+
 // Gameplay
 		
 startBtn.addEventListener('click', startGame)
@@ -287,8 +290,8 @@ function switchPlayers() {
 }
 
 function showAllBoards() {
-	player1Container.style.display = 'grid'
-	player2Container.style.display = 'grid'
+	playerOneBoard.style.display = 'grid'
+	playerTwoBoard.style.display = 'grid'
 }
 
 function removeDraggable() {

@@ -33,7 +33,6 @@ export class Computer extends Player {
 		const attackOptions = this.getBestSquares(hitSquares, ship) 
 
 		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
-		console.log(response)
 		return response
 
 	}
