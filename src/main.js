@@ -61,7 +61,6 @@ function prepPlayerTwo() {
 	// if (!checkAllShipsUsed(playerOneShips)) return
 
 	startBtn.style.display = "block"
-	announceBox.innerText = players[1].name
 	addNewShipSet(playerTwoShips)
 	removeAllHandlers(player1, player2) 
 	switchPlayers()
@@ -155,7 +154,7 @@ function alternatePlayerDisplay() {
 
 function passPlayer() {
 	switchPlayers()
-	alternatePlayerDisplay()
+	// alternatePlayerDisplay()
 	addPlayerTurnListener(players[1], pvpTurn)
 	passBtn.style.visibility = 'hidden'
 }
@@ -288,6 +287,7 @@ function updateBoards(showShips) {
 }
 
 function switchPlayers() {
+	alternatePlayerDisplay()
 	alternateBoardDisplay() 
 	players.reverse()
 }
