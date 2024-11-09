@@ -53,6 +53,7 @@ function pvpStart() {
 	player1Container.style.display = 'block'
 	player2Container.style.display = 'none'
 	player1ReadyBtn.style.display = 'block'
+	compReadyBtn.style.display = 'none'
 	announceBox.style.visibility = 'visible'
 	announceBox.innerText = players[0].name
 }
@@ -78,6 +79,7 @@ function pvcStart() {
 	player1Container.style.display = 'block'
 	player2Container.style.display = 'block'
 	compReadyBtn.style.display = 'block'
+	player1ReadyBtn.style.display = 'none'
 }
 
 function initialSetup() {
@@ -85,14 +87,15 @@ function initialSetup() {
 	player2.domboard = document.querySelector(".player2")
 	addNewShipSet(playerOneShips)
 	removeAllHandlers(player1, player2) 
+	playerOneShips.style.display = 'flex'
 	addDraggable()
 	removeAllChildren(player1.domboard)
 	removeAllChildren(player2.domboard)
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
 
-	pvpBtn.style.display = "none"
-	pvcBtn.style.display = "none"
+	// pvpBtn.style.display = "none"
+	// pvcBtn.style.display = "none"
 
 	players = [player1, player2]
 
@@ -104,6 +107,8 @@ function startGame() {
 	// if (!checkAllShipsUsed(playerTwoShips)) return
 	compReadyBtn.style.display = 'none'
 	if (player2 instanceof Human) players.reverse()
+	playerOneShips.style.display = 'none'
+	playerTwoShips.style.display = 'none'
 	removeDraggable()
 	removeAllHandlers(player1, player2) 
 	updateBoards(false)
