@@ -11,15 +11,12 @@ let player2
 
 let players
 
-// let winner
-
 // DOM Elements
 
 const boardsDiv = document.querySelector('.boards')
 const playerOneShips = document.querySelector('#player-one-ships')
 const playerTwoShips = document.querySelector('#player-two-ships')
-const playerOneDisplay = document.querySelector('#announceBox')
-// const playerTwoDisplay = document.querySelector('#player-two-display')
+const announceBox = document.querySelector('#announceBox')
 
 // Buttons
 
@@ -52,11 +49,13 @@ function pvpStart() {
 	
 	player1Container.style.display = 'block'
 	player1ReadyBtn.style.display = 'block'
+	announceBox.style.visibility = 'visible'
 }
 
 function prepPlayerTwo() {
 	// if (!checkAllShipsUsed(playerOneShips)) return
 	startBtn.style.display = "block"
+	announceBox.innerText = players[1].name
 	addNewShipSet(playerTwoShips)
 	removeAllHandlers(player1, player2) 
 	switchPlayers()
@@ -103,9 +102,9 @@ function startGame() {
 	removeDraggable()
 	removeAllHandlers(player1, player2) 
 	updateBoards(false)
+	announceBox.innerText = players[0].name
 	addPlayerTurnListener(players[1], turnType())
 	startBtn.style.display = 'none'
-	playerOneDisplay.style.visibility = 'visible'
 }
 
 function addPlayerTurnListener(player, turnType) {
@@ -141,10 +140,10 @@ function pvpTurn(e) {
 }
 
 function alternatePlayerDisplay() {
-	if (playerOneDisplay.innerText === players[0].name) {
-		playerOneDisplay.innerText = players[1].name
+	if (announceBox.innerText === players[0].name) {
+		announceBox.innerText = players[1].name
 	} else {
-		playerOneDisplay.innerText = players[0].name
+		announceBox.innerText = players[0].name
 	}
 }
 
@@ -161,7 +160,6 @@ function gameOver() {
 		pvpBtn.style.display = "block"
 		pvcBtn.style.display = "block"
 		displayWinner()
-		// console.log(winner)
 		return true
 	}
 }
@@ -173,7 +171,8 @@ function determineWinner() {
 function displayWinner() {
 	const winner = determineWinner()
 
-	playerOneDisplay.innerText = `${winner} wins!`
+	announceBox.style.visibility = 'visible'
+	announceBox.innerText = `${winner} wins!`
 }
 
 function alternateBoardDisplay() {
@@ -234,8 +233,10 @@ function markValidSquares(ship, coord) {
 
 function drop(event) {
 	event.preventDefault();
+
 	// Only allow dropping ship on board
 	if (!(event.toElement.className == 'square')) return
+
 	const startCoord = event.target.dataset.coordinate
 	addSecondCoordListeners(startCoord, draggedShip)
 	event.target.appendChild(draggedShipElement);
@@ -256,6 +257,7 @@ function addSecondCoordListeners(startCoord, ship) {
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
 			resetSquareColors(players[0])
 			player2 instanceof Human ? updateBoards(true) : updatePlayerBoard(player1, true)
+			// Add ability to drag ships once player fully places ship
 			addDraggable()
 		})
 	})

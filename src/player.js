@@ -18,8 +18,8 @@ export class Human extends Player {
 
 export class Computer extends Player {
 
-	constructor() {
-		super()
+	constructor(name) {
+		super(name)
 		this.opponentBoard = null
 	}
 
