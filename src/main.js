@@ -223,6 +223,9 @@ function markValidSquares(ship, coord) {
 
 function drop(event) {
 	event.preventDefault();
+	// Only allow dropping ship on board
+	if (!(event.toElement.className == 'square')) return
+	console.log("HMMM")
 	const startCoord = event.target.dataset.coordinate
 	addSecondCoordListeners(startCoord, draggedShip)
 	event.target.appendChild(draggedShipElement);
