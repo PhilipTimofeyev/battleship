@@ -15,9 +15,9 @@ let players
 
 const boardsDiv = document.querySelector('.boards')
 const playerOneShips = document.querySelector('#player-one-ships')
+const playerTwoShips = document.querySelector('#player-two-ships')
 const playerOneDisplay = document.querySelector('#player-one-display')
 const playerTwoDisplay = document.querySelector('#player-two-display')
-let playerTwoShips = document.querySelector('#player-two-ships')
 
 // Buttons
 const pvpBtn = document.querySelector('#pvp')
@@ -190,7 +190,7 @@ document.addEventListener("drop", drop);
 
 function dragStart(event) {
  	const shipType = event.target.id
-	
+
 	// Captures Ship element for future use
  	draggedShipElement = event.target
  	draggedShip = Ship.createShip(shipType)
@@ -225,10 +225,12 @@ function drop(event) {
 	event.preventDefault();
 	// Only allow dropping ship on board
 	if (!(event.toElement.className == 'square')) return
-	console.log("HMMM")
 	const startCoord = event.target.dataset.coordinate
 	addSecondCoordListeners(startCoord, draggedShip)
 	event.target.appendChild(draggedShipElement);
+	
+	// Remove ability to drag other ships until selected ship is fully placed
+	removeDraggable()
 }
 
 function addSecondCoordListeners(startCoord, ship) {
@@ -243,6 +245,7 @@ function addSecondCoordListeners(startCoord, ship) {
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
 			resetSquareColors(players[0])
 			player2 instanceof Human ? updateBoards(true) : updatePlayerBoard(player1, true)
+			addDraggable()
 		})
 	})
 }
