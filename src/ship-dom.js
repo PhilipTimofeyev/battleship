@@ -18,9 +18,12 @@ export function cloneShip(ship) {
 	}
 }
 
-export function addNewShipSet(playerTwoShips) {
+export function addNewShipSet(playerShips) {
+	while (playerShips.firstChild) {
+		playerShips.removeChild(playerShips.lastChild);
+	}
 	const shipNames = ['Carrier', 'Battleship', 'Destroyer', 'Patrol', 'Submarine']
-	shipNames.forEach((ship) => playerTwoShips.appendChild(cloneShip(ship)))
+	shipNames.forEach((ship) => playerShips.appendChild(cloneShip(ship)))
 }
 
 export function checkAllShipsUsed(shipContainer) {

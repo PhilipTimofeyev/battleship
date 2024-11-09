@@ -14,8 +14,8 @@ let players
 // DOM Elements
 
 const boardsDiv = document.querySelector('.boards')
-const playerOneShips = document.querySelector('#player-one-ships')
-const playerTwoShips = document.querySelector('#player-two-ships')
+let playerOneShips = document.querySelector('#player-one-ships')
+let playerTwoShips = document.querySelector('#player-two-ships')
 const announceBox = document.querySelector('#announceBox')
 
 // Buttons
@@ -32,8 +32,8 @@ const passBtn = document.querySelector('#pass')
 const player1Container = document.querySelector('#player1Container')
 const player2Container = document.querySelector('#player2Container')
 
-const playerOneBoard = document.querySelector('#player1Board')
-const playerTwoBoard = document.querySelector('#player2Board')
+// const playerOneBoard = document.querySelector('#player1Board')
+// const playerTwoBoard = document.querySelector('#player2Board')
 
 // Gameplay
 		
@@ -51,12 +51,15 @@ function pvpStart() {
 	initialSetup()
 	
 	player1Container.style.display = 'block'
+	player2Container.style.display = 'none'
 	player1ReadyBtn.style.display = 'block'
 	announceBox.style.visibility = 'visible'
+	announceBox.innerText = players[0].name
 }
 
 function prepPlayerTwo() {
 	// if (!checkAllShipsUsed(playerOneShips)) return
+
 	startBtn.style.display = "block"
 	announceBox.innerText = players[1].name
 	addNewShipSet(playerTwoShips)
@@ -81,13 +84,13 @@ function pvcStart() {
 function initialSetup() {
 	player1.domboard = document.querySelector(".player1")
 	player2.domboard = document.querySelector(".player2")
+	addNewShipSet(playerOneShips)
 	removeAllHandlers(player1, player2) 
 	addDraggable()
 	removeAllChildren(player1.domboard)
 	removeAllChildren(player2.domboard)
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
-	playerOneShips.style.display = 'flex'
 
 	pvpBtn.style.display = "none"
 	pvcBtn.style.display = "none"
@@ -290,8 +293,10 @@ function switchPlayers() {
 }
 
 function showAllBoards() {
-	playerOneBoard.style.display = 'grid'
-	playerTwoBoard.style.display = 'grid'
+	player1Container.style.display = 'grid'
+	player2Container.style.display = 'grid'
+	playerOneShips.style.display = 'none'
+	playerTwoShips.style.display = 'none'
 }
 
 function removeDraggable() {
