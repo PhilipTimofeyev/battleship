@@ -3,9 +3,10 @@ import { Ship } from './ship';
 import { getRandomArrElement } from './helper-methods';
 
 export class Player {
-	constructor() {
+	constructor(name) {
 		this.gameboard = new Gameboard
 		this.domboard = null
+		this.name = name
 		// this.opponentBoard = null
 	}
 }

@@ -11,15 +11,18 @@ let player2
 
 let players
 
+// let winner
+
 // DOM Elements
 
 const boardsDiv = document.querySelector('.boards')
 const playerOneShips = document.querySelector('#player-one-ships')
 const playerTwoShips = document.querySelector('#player-two-ships')
-const playerOneDisplay = document.querySelector('#player-one-display')
-const playerTwoDisplay = document.querySelector('#player-two-display')
+const playerOneDisplay = document.querySelector('#announceBox')
+// const playerTwoDisplay = document.querySelector('#player-two-display')
 
 // Buttons
+
 const pvpBtn = document.querySelector('#pvp')
 const pvcBtn = document.querySelector('#pvc')
 const startBtn = document.querySelector('#start-game')
@@ -28,6 +31,7 @@ const compReadyBtn = document.querySelector('#comp-ready')
 const passBtn = document.querySelector('#pass')
 
 // Containers
+
 const player1Container = document.querySelector('#player1Container')
 const player2Container = document.querySelector('#player2Container')
 
@@ -41,8 +45,8 @@ pvcBtn.addEventListener('click', pvcStart)
 pvpBtn.addEventListener('click', pvpStart)
 
 function pvpStart() {
-	player1 = new Human
-	player2 = new Human
+	player1 = new Human('Player 1')
+	player2 = new Human('Player 2')
 	
 	initialSetup()
 	
@@ -60,8 +64,8 @@ function prepPlayerTwo() {
 }
 
 function pvcStart() {
-	player1 = new Human
-	player2 = new Computer
+	player1 = new Human ('Player')
+	player2 = new Computer ('Computer')
 	
 	initialSetup()
 	player2.opponentBoard = player1.gameboard
@@ -136,15 +140,11 @@ function pvpTurn(e) {
 	passBtn.style.visibility = 'visible';
 }
 
-// alternatePlayerDisplay()
-
 function alternatePlayerDisplay() {
-	if (playerOneDisplay.style.visibility === 'hidden') {
-		playerOneDisplay.style.visibility = 'visible'
-		playerTwoDisplay.style.visibility = 'hidden'
+	if (playerOneDisplay.innerText === players[0].name) {
+		playerOneDisplay.innerText = players[1].name
 	} else {
-		playerOneDisplay.style.visibility = 'hidden'
-		playerTwoDisplay.style.visibility = 'visible'
+		playerOneDisplay.innerText = players[0].name
 	}
 }
 
@@ -157,12 +157,23 @@ function passPlayer() {
 
 function gameOver() {
 	if (players[0].gameboard.allSunk() || players[1].gameboard.allSunk() ) {
-		alert("Game Over!")
 		showAllBoards()
 		pvpBtn.style.display = "block"
 		pvcBtn.style.display = "block"
+		displayWinner()
+		// console.log(winner)
 		return true
 	}
+}
+
+function determineWinner() {
+	return players[0].gameboard.allSunk() ? players[1].name : players[0].name
+}
+
+function displayWinner() {
+	const winner = determineWinner()
+
+	playerOneDisplay.innerText = `${winner} wins!`
 }
 
 function alternateBoardDisplay() {
@@ -205,7 +216,7 @@ function dragOver(event) {
 	event.preventDefault();
 	if (!event.target.dataset.coordinate) return
 	const coord = event.target.dataset.coordinate
-	const squareEl = getSquareDom(coord, players[0])
+	// const squareEl = getSquareDom(coord, players[0])
 	resetSquareColors(players[0])
 	markValidSquares(draggedShip, coord)
 }
@@ -228,7 +239,7 @@ function drop(event) {
 	const startCoord = event.target.dataset.coordinate
 	addSecondCoordListeners(startCoord, draggedShip)
 	event.target.appendChild(draggedShipElement);
-	
+
 	// Remove ability to drag other ships until selected ship is fully placed
 	removeDraggable()
 }
