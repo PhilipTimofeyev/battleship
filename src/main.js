@@ -278,6 +278,7 @@ function addSecondCoordListeners(startCoord, ship) {
 	const squares = players[0].gameboard.showValidSquares(ship, startCoord)
 
 	squares.forEach((square) => {
+		if (square === startCoord) return
 		const squareEl = getSquareDom(square, players[0])
 		squareEl.addEventListener('click', function(e) {
 
