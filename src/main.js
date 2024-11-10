@@ -71,6 +71,9 @@ function pvcStart() {
 	player2Container.style.display = 'none'
 	compReadyBtn.style.display = 'block'
 	player1ReadyBtn.style.display = 'none'
+
+	announceBox.style.visibility = 'visible'
+	announceBox.innerText = players[0].name
 }
 
 function initialSetup() {
@@ -84,8 +87,8 @@ function initialSetup() {
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
 
-	pvpBtn.style.display = "none"
-	pvcBtn.style.display = "none"
+	// pvpBtn.style.display = "none"
+	// pvcBtn.style.display = "none"
 
 	players = [player1, player2]
 

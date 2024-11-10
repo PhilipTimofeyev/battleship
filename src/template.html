@@ -12,36 +12,36 @@
 				<h1> Battleship </h1>
 				<button id="pvc"> Player vs </br> Computer </button>
 			</div>
+			<div class="current-player">
+				<h2 id="announceBox" style="visibility:hidden">Player 1</h2>
+			</div>
+			<div class="boards">
+				<div id = "player1Container" class="playerContainer">
+					<div id = "player1Board" class="player1 board">
+					</div>
+					<div id= "player-one-ships" class="ships" >
+					</div>
+				</div>
+				<div id="player2Container" class="playerContainer" style="display:none;">
+					<div id = "player2Board" class="player2 board" >
+					</div>
+					<div id= "player-two-ships" class="ships">
+					</div>
+				</div>
+				<div id="all-ships" class="ships" style="display: none;">
+					<img id='Battleship' class='Battleship ship' draggable="true" src="./assets/battleship.png" alt="battleship">
+					<img id='Carrier' class="Carrier ship" draggable="true" src="./assets/carrier.png" alt="carrier">
+					<img id='Destroyer' class="Destroyer ship" draggable="true" src="./assets/destroyer.png" alt="destroyer">
+					<img id='Patrol' class="Patrol ship" draggable="true" src="./assets/patrol.png" alt="patrol">
+					<img id='Submarine' class="Submarine ship" draggable="true" src="./assets/submarine.png" alt="submarine">
+				</div>
+			</div>
 			<div class="btns">
-			<button id="start-game" style="display:none;"> Start Game</button>
-			<button id="player1-ready" style="display:none;">Ready</button>
-			<button id="comp-ready" style="display:none;">Ready</button>
-			<button id="pass" style="visibility:hidden;">Pass To Player</button>
-		</div>
-		<div class="current-player">
-			<h2 id="announceBox" style="visibility:hidden">Player 1</h2>
-		</div>
-		<div class="boards">
-			<div id = "player1Container" class="playerContainer">
-			<div id = "player1Board" class="player1 board">
-			</div>
-			<div id= "player-one-ships" class="ships" >
+				<button id="start-game" style="display:none;"> Start Game</button>
+				<button id="player1-ready" style="display:none;">Ready</button>
+				<button id="comp-ready" style="display:none;">Ready</button>
+				<button id="pass" style="visibility:hidden; display: none;">Pass To Player</button>
 			</div>
 		</div>
-		<div id="player2Container" class="playerContainer" style="display:none;">
-			<div id = "player2Board" class="player2 board" >
-			</div>
-			<div id= "player-two-ships" class="ships">
-			</div>
-		</div>
-			<div id="all-ships" class="ships" style="display: none;">
-				<img id='Battleship' class='Battleship ship' draggable="true" src="./assets/battleship.png" alt="battleship">
-				<img id='Carrier' class="Carrier ship" draggable="true" src="./assets/carrier.png" alt="carrier">
-				<img id='Destroyer' class="Destroyer ship" draggable="true" src="./assets/destroyer.png" alt="destroyer">
-				<img id='Patrol' class="Patrol ship" draggable="true" src="./assets/patrol.png" alt="patrol">
-				<img id='Submarine' class="Submarine ship" draggable="true" src="./assets/submarine.png" alt="submarine">
-			</div>
-	</div>
-	</div>
 	</body>
 </html>

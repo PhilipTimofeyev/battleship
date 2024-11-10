@@ -29,7 +29,6 @@ body {
   background-position: center;
   margin: 0;
   padding: 0;
-  /* box-sizing: border-box; */
 }
 
 .main-container {
@@ -56,21 +55,16 @@ h1 {
 	display: flex;
 	justify-content: center;
   align-items: center;
-	/* margin: auto; */
+  margin-top: var(--space-s);
 	gap: var(--space-xs);
-	/* margin-bottom: var(--space-s); */
 }
 
 .current-player {
   color: #fff;
   font-size: var(--step--2);
-  /* display: flex; */
-  /* gap: 3rem; */
-  /* justify-content: space-around; */
-  /* background-color: darkblue; */
   max-width: fit-content;
   margin: 0 auto;
-  margin-bottom: 5px;
+  margin-bottom: var(--space-2xl);
 }
 
 .current-player h2 {
@@ -84,8 +78,6 @@ h1 {
 	display: flex;
 	gap: var(--space-s);
 	justify-content: center;
-  /* width: 80%; */
-  /* margin: 0 100px; */
 }
 
 .board {
@@ -96,16 +88,13 @@ h1 {
   background-color: #fff;
   color: lightgray;
   width: fit-content;
-/*  border: solid darkblue 10px;*/
 }
 
 .ships {
-/*	margin-top: 30px;*/
 	display: flex;
 	gap: 50px;
 	justify-content: center;
 	background-color: rgb(255, 0, 0, .7);
-	/* width: 300px; */
 }
 
 img {
@@ -114,18 +103,12 @@ img {
 
 .square {
 	display: flex;
-	/* box-sizing: border-box; */
   background-color: lightblue;
   color: #fff;
-  /* padding: var(--space-m); */
-  /* font-size: 1em; */
-  /* width: var(--space-xl); */
   width: var(--space-xl);
   height: var(--space-xl);
-  /* height: var(--space-xl); */
   justify-content: center;
   align-items: center;
-  /* text-align: center; */
 }
 
 .ship {
@@ -175,5 +158,9 @@ button:hover {
   button {
     font-size: var(--step--2);
     padding: 10px 6px;
+  }
+
+  .current-player {
+    margin-bottom: var(--space-2xs);
   }
 }
