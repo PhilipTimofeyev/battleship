@@ -6,18 +6,21 @@
 		<title>Battleship</title>
 	</head>
 	<body>
-		<h1> Battleship </h1>
-		<div class="btns">
-			<button id="pvp"> Player vs Player </button>
-			<button id="pvc"> Player vs Computer </button>
+		<div class="main-container">
+			<div class="nav-btns">
+				<button id="pvp"> Player vs Player </button>
+				<h1> Battleship </h1>
+				<button id="pvc"> Player vs Computer </button>
+			</div>
+			<div class="btns">
 			<button id="start-game" style="display:none;"> Start Game</button>
 			<button id="player1-ready" style="display:none;">Ready</button>
 			<button id="comp-ready" style="display:none;">Ready</button>
 			<button id="pass" style="visibility:hidden;">Pass To Player</button>
 		</div>
-		<div class="current-player">
-			<h2 id="announceBox" style="visibility:hidden">Player 1</h2>
-		</div>
+								<div class="current-player">
+							<h2 id="announceBox" style="visibility:hidden">Player 1</h2>
+						</div>
 		<div class="boards">
 			<div id = "player1Container" class="playerContainer">
 			<div id = "player1Board" class="player1 board">
@@ -38,6 +41,7 @@
 				<img id='Patrol' class="Patrol ship" draggable="true" src="./assets/patrol.png" alt="patrol">
 				<img id='Submarine' class="Submarine ship" draggable="true" src="./assets/submarine.png" alt="submarine">
 			</div>
+	</div>
 	</div>
 	</body>
 </html>

@@ -140,6 +140,7 @@ function pvpTurn(e) {
 	players[1].gameboard.receiveAttack(squareToAttack)
 
 	passBtn.style.visibility = 'visible';
+	passBtn.style.display = 'block';
 
 	updateBoards()
 	removeAllHandlers(players[1])
@@ -183,6 +184,7 @@ function gameOver() {
 		pvpBtn.style.display = "block"
 		pvcBtn.style.display = "block"
 		passBtn.style.visibility = 'hidden';
+		passBtn.style.display = 'none';
 		removeAllHandlers(player1)
 		removeAllHandlers(player2)
 		return true
@@ -296,9 +298,9 @@ function alternateBoardDisplay() {
 
 	if (currentPlayerGrid == 'none') {
 		player1Container.style.display = 'block';
-		player2Container.style.display = 'block'
+		player2Container.style.display = 'none'
 	} else {
-		player1Container.style.display = 'block';
+		player1Container.style.display = 'none';
 		player2Container.style.display = 'block'
 	}
 }
