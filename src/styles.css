@@ -35,8 +35,7 @@ body {
 .main-container {
     display: flex;
     flex-direction: column;
-    justify-items: center;
-    align-items: center;
+    height: 70%;
 }
 
 .nav-btns {
@@ -57,7 +56,7 @@ h1 {
 	display: flex;
 	justify-content: center;
   align-items: center;
-	margin: auto;
+	/* margin: auto; */
 	gap: var(--space-xs);
 	/* margin-bottom: var(--space-s); */
 }
@@ -70,7 +69,7 @@ h1 {
   /* justify-content: space-around; */
   /* background-color: darkblue; */
   max-width: fit-content;
-  margin: auto;
+  margin: 0 auto;
   margin-bottom: 5px;
 }
 
@@ -169,5 +168,12 @@ button:hover {
   .square {
     width: var(--space-l);
     height: var(--space-l);
+  }
+}
+
+@media (max-width: 500px) {
+  button {
+    font-size: var(--step--2);
+    padding: 10px 6px;
   }
 }

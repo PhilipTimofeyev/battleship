@@ -68,7 +68,7 @@ function pvcStart() {
 	player2.placeAllShips()
 
 	player1Container.style.display = 'block'
-	player2Container.style.display = 'block'
+	player2Container.style.display = 'none'
 	compReadyBtn.style.display = 'block'
 	player1ReadyBtn.style.display = 'none'
 }
@@ -112,7 +112,11 @@ function setUpPlayerTwo() {
 function startGame() {
 	// if (!checkAllShipsUsed(playerOneShips)) return
 	// if (!checkAllShipsUsed(playerTwoShips)) return
-	if (player2 instanceof Human) players.reverse()
+	if (player2 instanceof Human) {	
+		players.reverse()
+	} else {
+		player2Container.style.display = 'block'
+	}
 
 	startGameDom()
 	removeDraggable()
