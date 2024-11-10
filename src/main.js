@@ -1,4 +1,4 @@
-import { Player, Human, Computer } from './player';
+import { Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet, checkAllShipsUsed } from './ship-dom';
 import { Ship } from './ship';
@@ -32,18 +32,16 @@ const passBtn = document.querySelector('#pass')
 const player1Container = document.querySelector('#player1Container')
 const player2Container = document.querySelector('#player2Container')
 
-// const playerOneBoard = document.querySelector('#player1Board')
-// const playerTwoBoard = document.querySelector('#player2Board')
-
 // Gameplay
 		
 startBtn.addEventListener('click', startGame)
-player1ReadyBtn.addEventListener('click', prepPlayerTwo)
+player1ReadyBtn.addEventListener('click', setUpPlayerTwo)
 passBtn.addEventListener('click', passPlayer)
 compReadyBtn.addEventListener('click', startGame)
 pvcBtn.addEventListener('click', pvcStart)
 pvpBtn.addEventListener('click', pvpStart)
 
+// Player vs Player
 function pvpStart() {
 	player1 = new Human('Player 1')
 	player2 = new Human('Player 2')
@@ -54,25 +52,18 @@ function pvpStart() {
 	player2Container.style.display = 'none'
 	player1ReadyBtn.style.display = 'block'
 	compReadyBtn.style.display = 'none'
+
 	announceBox.style.visibility = 'visible'
 	announceBox.innerText = players[0].name
 }
 
-function prepPlayerTwo() {
-	// if (!checkAllShipsUsed(playerOneShips)) return
-
-	startBtn.style.display = "block"
-	addNewShipSet(playerTwoShips)
-	removeAllHandlers(player1, player2) 
-	switchPlayers()
-	player1ReadyBtn.style.display = 'none'
-}
-
+// Player vs Computer
 function pvcStart() {
-	player1 = new Human ('Player')
-	player2 = new Computer ('Computer')
-	
+	player1 = new Human('Player')
+	player2 = new Computer('Computer')
+
 	initialSetup()
+
 	player2.opponentBoard = player1.gameboard
 	player2.placeAllShips()
 
@@ -82,12 +73,30 @@ function pvcStart() {
 	player1ReadyBtn.style.display = 'none'
 }
 
+function setUpPlayerOne() {
+	addNewShipSet(playerOneShips)
+	playerOneShips.style.display = 'flex'
+}
+
+function setUpPlayerTwo() {
+	// if (!checkAllShipsUsed(playerOneShips)) return
+	switchPlayers()
+	
+	addNewShipSet(playerTwoShips)
+	playerTwoShips.style.display = "flex"
+	
+	player1ReadyBtn.style.display = "none"
+	startBtn.style.display = "block"
+
+	// Clears out event listeners on squares
+	// removeAllHandlers(player1, player2) 
+}
+
 function initialSetup() {
 	player1.domboard = document.querySelector(".player1")
 	player2.domboard = document.querySelector(".player2")
-	addNewShipSet(playerOneShips)
-	removeAllHandlers(player1, player2) 
-	playerOneShips.style.display = 'flex'
+	setUpPlayerOne()
+	// removeAllHandlers(player1, player2) 
 	addDraggable()
 	removeAllChildren(player1.domboard)
 	removeAllChildren(player2.domboard)
@@ -99,6 +108,7 @@ function initialSetup() {
 
 	players = [player1, player2]
 
+	//false passed to not show ships
 	updateBoards(false)
 }
 
@@ -110,7 +120,7 @@ function startGame() {
 	playerOneShips.style.display = 'none'
 	playerTwoShips.style.display = 'none'
 	removeDraggable()
-	removeAllHandlers(player1, player2) 
+	// removeAllHandlers(player1, player2) 
 	updateBoards(false)
 	announceBox.innerText = players[0].name
 	addPlayerTurnListener(players[1], turnType())
