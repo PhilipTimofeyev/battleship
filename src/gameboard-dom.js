@@ -75,7 +75,7 @@ function squareShipStatus(square, ship, showShips){
 
 export function resetSquareColors(player) {
 	Array.from(player.domboard.children).forEach((square) => {
-    	square.setAttribute("style", "background-color: lightblue;")
+		square.setAttribute("style", "background-color: #dbdd6e;")
 	})
 }
 

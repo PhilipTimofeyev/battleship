@@ -10,7 +10,6 @@ export function getSquareObj(square, player) {
 
 export function removeAllHandlers(player) {
 	player.domboard.childNodes.forEach((square) => square.replaceWith(square.cloneNode(true)))
-	// player2.domboard.childNodes.forEach((square) => square.replaceWith(square.cloneNode(true)))
 }
 
 export function getRandomArrElement(array) {

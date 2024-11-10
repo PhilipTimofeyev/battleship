@@ -49,6 +49,12 @@ h1 {
 	color: white;
 	font-size: var(--step-5);
   margin: 0 0 10px 0;
+  color: #dbdd6e;
+  background-image: linear-gradient(45deg, #dbdd6e 41%, #0a8f86 54%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
 }
 
 .btns {
@@ -63,8 +69,7 @@ h1 {
   color: #fff;
   font-size: var(--step--2);
   max-width: fit-content;
-  margin: 0 auto;
-  margin-bottom: var(--space-2xl);
+  margin: var(--space-3xs) auto;
 }
 
 .current-player h2 {
@@ -92,9 +97,9 @@ h1 {
 
 .ships {
 	display: flex;
-	gap: 50px;
+	gap: var(--space-l);
 	justify-content: center;
-	background-color: rgb(255, 0, 0, .7);
+	background-color: #0a8f86;
 }
 
 img {
@@ -103,7 +108,7 @@ img {
 
 .square {
 	display: flex;
-  background-color: lightblue;
+  background-color: #dbdd6e;
   color: #fff;
   width: var(--space-xl);
   height: var(--space-xl);
@@ -119,13 +124,12 @@ img {
 
 /* CSS */
 button {
-  background-image: linear-gradient(-180deg, #37AEE2 0%, #1E96C8 100%);
+  background-color: darkblue;
   border-radius: .5rem;
   box-sizing: border-box;
   color: #FFFFFF;
   display: flex;
   font-size: var(--step--1);
-  /* justify-content: center; */
   padding: var(--space-2xs) var(--space-s);
   text-decoration: none;
   width: fit-content;

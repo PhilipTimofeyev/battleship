@@ -1,2 +1,2 @@
 import "./styles.css";
-import { main, hmm } from './main';
+import { main } from './main';

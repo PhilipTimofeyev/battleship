@@ -6,7 +6,6 @@ import { Square } from './square';
 
 	constructor() {
 		this.board = this.createSquares()
-		// this.opponentBoard = this.createSquares()
 	}
 
 	createSquares() {
