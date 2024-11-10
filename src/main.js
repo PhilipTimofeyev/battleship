@@ -2,7 +2,7 @@ import { Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet, checkAllShipsUsed } from './ship-dom';
 import { Ship } from './ship';
-import { getSquareDom, getSquareObj, removeAllHandlers, removeAllChildren } from './helper-methods';
+import { getSquareDom, getSquareObj, removeAllHandlers, removeAllChildren, alternatePlayerDisplay } from './helper-methods';
 
 // Players
 
@@ -73,25 +73,6 @@ function pvcStart() {
 	player1ReadyBtn.style.display = 'none'
 }
 
-function setUpPlayerOne() {
-	addNewShipSet(playerOneShips)
-	playerOneShips.style.display = 'flex'
-}
-
-function setUpPlayerTwo() {
-	// if (!checkAllShipsUsed(playerOneShips)) return
-	switchPlayers()
-	
-	addNewShipSet(playerTwoShips)
-	playerTwoShips.style.display = "flex"
-	
-	player1ReadyBtn.style.display = "none"
-	startBtn.style.display = "block"
-
-	// Clears out event listeners on squares
-	// removeAllHandlers(player1, player2) 
-}
-
 function initialSetup() {
 	player1.domboard = document.querySelector(".player1")
 	player2.domboard = document.querySelector(".player2")
@@ -110,6 +91,22 @@ function initialSetup() {
 
 	//false passed to update boards without showing ships
 	updateBoards(false)
+}
+
+function setUpPlayerOne() {
+	addNewShipSet(playerOneShips)
+	playerOneShips.style.display = 'flex'
+}
+
+function setUpPlayerTwo() {
+	// if (!checkAllShipsUsed(playerOneShips)) return
+	switchPlayers()
+
+	addNewShipSet(playerTwoShips)
+	playerTwoShips.style.display = "flex"
+
+	player1ReadyBtn.style.display = "none"
+	startBtn.style.display = "block"
 }
 
 function startGame() {
@@ -135,23 +132,29 @@ function startGameDom() {
 	announceBox.innerText = players[0].name
 }
 
-// Players Turns
+// Players' Turns
 
 function pvpTurn(e) {
+	// player attacks player
 	const squareToAttack = e.target.dataset.coordinate;
 	players[1].gameboard.receiveAttack(squareToAttack)
+
+	passBtn.style.visibility = 'visible';
+
 	updateBoards()
 	removeAllHandlers(players[1])
-	if (gameOver()) return
-	passBtn.style.visibility = 'visible';
+	gameOver()
 }
 
 function pvcTurn(e) {
+	// players attacks computer
 	const squareToAttack = e.target.dataset.coordinate;
 	player2.gameboard.receiveAttack(squareToAttack)
 
+	// computer attacks player
 	const attackCoord = player2.sendAttack(player1.gameboard)
 	player1.gameboard.receiveAttack(attackCoord)
+
 	updateSquareListeners()
 	updateBoards()
 	gameOver()
@@ -169,38 +172,34 @@ function turnType() {
 	return player2 instanceof Computer ? pvcTurn : pvpTurn
 }
 
-
-function alternatePlayerDisplay() {
-	if (announceBox.innerText === players[0].name) {
-		announceBox.innerText = players[1].name
-	} else {
-		announceBox.innerText = players[0].name
-	}
-}
-
 function passPlayer() {
 	switchPlayers()
-	// alternatePlayerDisplay()
 	addPlayerTurnListener(players[1], pvpTurn)
-	passBtn.style.visibility = 'hidden'
 }
 
 function gameOver() {
-	if (players[0].gameboard.allSunk() || players[1].gameboard.allSunk() ) {
+	if (displayWinner()) {
 		showAllBoards()
 		pvpBtn.style.display = "block"
 		pvcBtn.style.display = "block"
-		displayWinner()
+		passBtn.style.visibility = 'hidden';
 		return true
 	}
 }
 
 function determineWinner() {
-	return players[0].gameboard.allSunk() ? players[1].name : players[0].name
+	if (players[0].gameboard.allSunk()) {
+		return players[1].name
+	} else if (players[1].gameboard.allSunk()) {
+		return players[0].name
+	}
+
+	return false
 }
 
 function displayWinner() {
 	const winner = determineWinner()
+	if (!winner) return false
 
 	announceBox.style.visibility = 'visible'
 	announceBox.innerText = `${winner} wins!`
@@ -317,9 +316,10 @@ function updateBoards(showShips) {
 }
 
 function switchPlayers() {
-	alternatePlayerDisplay()
+	alternatePlayerDisplay(announceBox, players)
 	alternateBoardDisplay() 
 	players.reverse()
+	passBtn.style.visibility = 'hidden'
 }
 
 function showAllBoards() {

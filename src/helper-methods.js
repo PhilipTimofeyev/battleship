@@ -28,3 +28,11 @@ export function selectRandomSecondSquare(firstCoord, ship) {
 
 	return getRandomArrElement(validSquares)
 }
+
+export function alternatePlayerDisplay(announceBox, players) {
+	if (announceBox.innerText === players[0].name) {
+		announceBox.innerText = players[1].name
+	} else {
+		announceBox.innerText = players[0].name
+	}
+}
