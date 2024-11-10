@@ -203,6 +203,8 @@ function displayWinner() {
 
 	announceBox.style.visibility = 'visible'
 	announceBox.innerText = `${winner} wins!`
+
+	return true
 }
 
 function alternateBoardDisplay() {
@@ -217,7 +219,7 @@ function alternateBoardDisplay() {
 	}
 }
 
-// Drag and Drop
+// Drag and Drop Ships
 
 let draggedShip = null;
 let draggedShipElement = null;
@@ -245,7 +247,6 @@ function dragOver(event) {
 	event.preventDefault();
 	if (!event.target.dataset.coordinate) return
 	const coord = event.target.dataset.coordinate
-	// const squareEl = getSquareDom(coord, players[0])
 	resetSquareColors(players[0])
 	markValidSquares(draggedShip, coord)
 }
@@ -275,6 +276,7 @@ function drop(event) {
 	removeDraggable()
 }
 
+// Set up clickable squares for horizontal vs vertical ship placement
 function addSecondCoordListeners(startCoord, ship) {
 	const squares = players[0].gameboard.showValidSquares(ship, startCoord)
 
@@ -296,7 +298,6 @@ function addSecondCoordListeners(startCoord, ship) {
 		})
 	})
 }
-
 
 function updateSquareListeners() {
 	const removeClick = (square) => square.removeEventListener('click', pvcTurn)
