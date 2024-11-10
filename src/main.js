@@ -72,7 +72,7 @@ function pvcStart() {
 	compReadyBtn.style.display = 'block'
 	player1ReadyBtn.style.display = 'none'
 
-	announceBox.style.visibility = 'visible'
+	announceBox.style.visibility = 'visib'
 	announceBox.innerText = players[0].name
 }
 
@@ -80,15 +80,11 @@ function initialSetup() {
 	player1.domboard = document.querySelector(".player1")
 	player2.domboard = document.querySelector(".player2")
 	setUpPlayerOne()
-	// removeAllHandlers(player1, player2) 
 	addDraggable()
 	removeAllChildren(player1.domboard)
 	removeAllChildren(player2.domboard)
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
-
-	// pvpBtn.style.display = "none"
-	// pvcBtn.style.display = "none"
 
 	players = [player1, player2]
 
@@ -102,7 +98,7 @@ function setUpPlayerOne() {
 }
 
 function setUpPlayerTwo() {
-	// if (!checkAllShipsUsed(playerOneShips)) return
+	if (!checkAllShipsUsed(playerOneShips)) return
 	switchPlayers()
 
 	addNewShipSet(playerTwoShips)
@@ -113,8 +109,8 @@ function setUpPlayerTwo() {
 }
 
 function startGame() {
-	// if (!checkAllShipsUsed(playerOneShips)) return
-	// if (!checkAllShipsUsed(playerTwoShips)) return
+	if (!checkAllShipsUsed(playerOneShips)) return
+	if (!checkAllShipsUsed(playerTwoShips)) return
 	if (player2 instanceof Human) {	
 		players.reverse()
 	} else {
