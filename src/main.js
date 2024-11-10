@@ -2,7 +2,7 @@ import { Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet, checkAllShipsUsed } from './ship-dom';
 import { Ship } from './ship';
-import { getSquareDom, getSquareObj, removeAllHandlers, removeAllChildren, alternatePlayerDisplay } from './helper-methods';
+import { getSquareDom, getSquareObj, removeAllHandlers, removeAllChildren, alternatePlayerDisplay, playAudio } from './helper-methods';
 
 // Players
 
@@ -116,11 +116,12 @@ function startGame() {
 	} else {
 		player2Container.style.display = 'block'
 	}
-
+	
 	startGameDom()
 	removeDraggable()
 	updateBoards(false)
 	addPlayerTurnListener(players[1], turnType())
+	playAudio()
 }
 
 function startGameDom() {

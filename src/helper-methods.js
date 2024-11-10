@@ -35,3 +35,8 @@ export function alternatePlayerDisplay(announceBox, players) {
 		announceBox.innerText = players[0].name
 	}
 }
+
+export function playAudio() {
+	var music = document.getElementById("audio");
+	music.play();
+}
