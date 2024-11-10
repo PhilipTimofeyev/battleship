@@ -114,13 +114,33 @@ test('Returns square from more filled potential line', () => {
   computer.opponentBoard.board.E1.hit = true
 
   computer.opponentBoard.board.B5.hit = true
-  computer.opponentBoard.board.E1.hit = true
+  computer.opponentBoard.board.E5.hit = true
 
   const result = computer.sendAttack()
 
   expect(result).toEqual('C1')
 });
 
+test('If largest ship is sunk, will remove that line as an option', () => {
+  computer.opponentBoard.placeShip(carrier, 'A1', 'D1')
+  computer.opponentBoard.placeShip(battleship, 'B5', 'E5')
+
+  computer.opponentBoard.board.A1.hit = true
+  computer.opponentBoard.board.B1.hit = true
+  computer.opponentBoard.board.C1.hit = true
+  computer.opponentBoard.board.D1.hit = true
+  computer.opponentBoard.board.E1.hit = true
+
+  computer.opponentBoard.board.B1.ship.sunk = true
+
+  computer.opponentBoard.board.B5.hit = true
+  computer.opponentBoard.board.F5.hit = true
+
+
+  const result = computer.sendAttack()
+
+  expect(result).toEqual('B4')
+});
 
 
 
