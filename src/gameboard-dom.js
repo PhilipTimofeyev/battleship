@@ -1,5 +1,8 @@
 import { cloneShip } from './ship-dom';
 import { getSquareDom, removeAllChildren } from './helper-methods';
+import sunkShip from "./assets/sunk-ship.png";
+import miss from "./assets/miss.png";
+
 // Create Board
 
 function createSquare(coord, square) {
@@ -47,26 +50,32 @@ function getSquareStatus(square, squareElement, showShips) {
 		removeAllChildren(squareElement)  
 		return squareShipStatus(square, shipClone, showShips)
 	} else {
+		removeAllChildren(squareElement)  
 		return  squareNoShipStatus(square)
 	}
 }
 
 function squareNoShipStatus(square){  
-	return square.miss ? "Miss!" : ""
+	const missImg = document.createElement('img');
+	missImg.src = miss;
+
+	return square.miss ? missImg : ""
 }
 
 function squareShipStatus(square, ship, showShips){ 
-  switch(true){  
-  	case square.ship.sunk: return "Sunk!"; 
-    case square.hit: return ship;
-    case showShips: return ship  
-    default: return "SHIP"
+	const sunkImg = document.createElement('img');
+	sunkImg.src = sunkShip;
+  	switch(true){  
+	  case square.ship.sunk: return sunkImg; 
+		case square.hit: return ship;
+		case showShips: return ship  
+    	default: return ""
   }
 }
 
 export function resetSquareColors(player) {
 	Array.from(player.domboard.children).forEach((square) => {
-    square.setAttribute("style", "background-color: lightblue;")
+    	square.setAttribute("style", "background-color: lightblue;")
 	})
 }
 

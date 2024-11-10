@@ -155,8 +155,8 @@ import { Square } from './square';
 
 	checkIfEmptySquares(squares) {
 		const  ifEmpty = (square) => this.board[square] != null && 
-																 this.board[square].ship == null && 
-																 this.board[square].miss == false
+								this.board[square].ship == null && 
+								this.board[square].miss == false
 		
 		return squares.every(ifEmpty)
 	}

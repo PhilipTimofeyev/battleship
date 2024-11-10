@@ -161,11 +161,11 @@ function pvcTurn(e) {
 }
 
 function addPlayerTurnListener(player, turnType) {
-	// Array.from(player.domboard.children).forEach((square) => {
-	// 	// Only make non-used squares clickable
-	// 	const playerSquare = getSquareObj(square, player) 
-	// 	if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', turnType)
-	// })
+	Array.from(player.domboard.children).forEach((square) => {
+		// Only make non-used squares clickable
+		const playerSquare = getSquareObj(square, player) 
+		if (playerSquare.miss == false && playerSquare.hit == false) square.addEventListener('click', turnType)
+	})
 }
 
 function turnType() {
