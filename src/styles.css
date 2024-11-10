@@ -168,3 +168,15 @@ button:hover {
     margin-bottom: var(--space-2xs);
   }
 }
+
+@media (max-width: 1100px) {
+  
+    .board {
+      grid-template-columns: repeat(10, var(--space-l));
+    }
+  
+    .square {
+      width: var(--space-l);
+      height: var(--space-l);
+    }
+}
