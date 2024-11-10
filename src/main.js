@@ -2,7 +2,7 @@ import { Human, Computer } from './player';
 import { setUpBoard, updatePlayerBoard, resetSquareColors } from './gameboard-dom';
 import { addNewShipSet, checkAllShipsUsed } from './ship-dom';
 import { Ship } from './ship';
-import { getSquareDom, getSquareObj, removeListener, removeAllHandlers, removeAllChildren } from './helper-methods';
+import { getSquareDom, getSquareObj, removeAllHandlers, removeAllChildren } from './helper-methods';
 
 // Players
 
@@ -108,23 +108,53 @@ function initialSetup() {
 
 	players = [player1, player2]
 
-	//false passed to not show ships
+	//false passed to update boards without showing ships
 	updateBoards(false)
 }
 
 function startGame() {
 	// if (!checkAllShipsUsed(playerOneShips)) return
 	// if (!checkAllShipsUsed(playerTwoShips)) return
-	compReadyBtn.style.display = 'none'
 	if (player2 instanceof Human) players.reverse()
+
+	startGameDom()
+	removeDraggable()
+	updateBoards(false)
+	addPlayerTurnListener(players[1], turnType())
+}
+
+function startGameDom() {
+	// hide ready/start buttons and ships
+	compReadyBtn.style.display = 'none'
+	startBtn.style.display = 'none'
+
 	playerOneShips.style.display = 'none'
 	playerTwoShips.style.display = 'none'
-	removeDraggable()
-	// removeAllHandlers(player1, player2) 
-	updateBoards(false)
+
+	// Display player 1 name
 	announceBox.innerText = players[0].name
-	addPlayerTurnListener(players[1], turnType())
-	startBtn.style.display = 'none'
+}
+
+// Players Turns
+
+function pvpTurn(e) {
+	const squareToAttack = e.target.dataset.coordinate;
+	players[1].gameboard.receiveAttack(squareToAttack)
+	updateBoards()
+	removeAllHandlers(players[1])
+	if (gameOver()) return
+	passBtn.style.visibility = 'visible';
+}
+
+function pvcTurn(e) {
+	const squareToAttack = e.target.dataset.coordinate;
+	player2.gameboard.receiveAttack(squareToAttack)
+
+	const attackCoord = player2.sendAttack(player1.gameboard)
+	player1.gameboard.receiveAttack(attackCoord)
+	updateSquareListeners()
+	updateBoards()
+	gameOver()
 }
 
 function addPlayerTurnListener(player, turnType) {
@@ -139,25 +169,6 @@ function turnType() {
 	return player2 instanceof Computer ? pvcTurn : pvpTurn
 }
 
-function pvcTurn(e) {
-	const squareToAttack = e.target.dataset.coordinate;
-	player2.gameboard.receiveAttack(squareToAttack)
-
-	const attackCoord = player2.sendAttack(player1.gameboard)
-	player1.gameboard.receiveAttack(attackCoord)
-	updateSquareListeners()
-	updateBoards()
-	gameOver()
-}
-
-function pvpTurn(e) {
-	const squareToAttack = e.target.dataset.coordinate;
-	players[1].gameboard.receiveAttack(squareToAttack)
-	updateBoards()	
-	removeListener(players[1], pvpTurn)
-	if (gameOver()) return
-	passBtn.style.visibility = 'visible';
-}
 
 function alternatePlayerDisplay() {
 	if (announceBox.innerText === players[0].name) {
@@ -200,9 +211,9 @@ function alternateBoardDisplay() {
 
 	if (currentPlayerGrid == 'none') {
 		player1Container.style.display = 'block';
-		player2Container.style.display = 'none'
+		player2Container.style.display = 'block'
 	} else {
-		player1Container.style.display = 'none';
+		player1Container.style.display = 'block';
 		player2Container.style.display = 'block'
 	}
 }
@@ -277,6 +288,10 @@ function addSecondCoordListeners(startCoord, ship) {
 			players[0].gameboard.placeShip(ship, startCoord, endCoord)
 			resetSquareColors(players[0])
 			player2 instanceof Human ? updateBoards(true) : updatePlayerBoard(player1, true)
+
+			// Clears out event listeners on squares
+			removeAllHandlers(player1) 
+			removeAllHandlers(player2) 
 			// Add ability to drag ships once player fully places ship
 			addDraggable()
 		})
