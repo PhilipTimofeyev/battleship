@@ -84,8 +84,8 @@ function initialSetup() {
 	setUpBoard(player1, player1.domboard)
 	setUpBoard(player2, player2.domboard)
 
-	// pvpBtn.style.display = "none"
-	// pvcBtn.style.display = "none"
+	pvpBtn.style.display = "none"
+	pvcBtn.style.display = "none"
 
 	players = [player1, player2]
 
@@ -183,6 +183,8 @@ function gameOver() {
 		pvpBtn.style.display = "block"
 		pvcBtn.style.display = "block"
 		passBtn.style.visibility = 'hidden';
+		removeAllHandlers(player1)
+		removeAllHandlers(player2)
 		return true
 	}
 }
@@ -205,18 +207,6 @@ function displayWinner() {
 	announceBox.innerText = `${winner} wins!`
 
 	return true
-}
-
-function alternateBoardDisplay() {
-	let currentPlayerGrid = player1Container.style.display
-
-	if (currentPlayerGrid == 'none') {
-		player1Container.style.display = 'block';
-		player2Container.style.display = 'block'
-	} else {
-		player1Container.style.display = 'block';
-		player2Container.style.display = 'block'
-	}
 }
 
 // Drag and Drop Ships
@@ -297,6 +287,20 @@ function addSecondCoordListeners(startCoord, ship) {
 			addDraggable()
 		})
 	})
+}
+
+// Misc.
+
+function alternateBoardDisplay() {
+	let currentPlayerGrid = player1Container.style.display
+
+	if (currentPlayerGrid == 'none') {
+		player1Container.style.display = 'block';
+		player2Container.style.display = 'block'
+	} else {
+		player1Container.style.display = 'block';
+		player2Container.style.display = 'block'
+	}
 }
 
 function updateSquareListeners() {
