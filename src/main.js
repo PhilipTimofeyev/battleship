@@ -48,8 +48,6 @@ function pvpStart() {
 	
 	initialSetup()
 	
-	player1Container.style.display = 'block'
-	player2Container.style.display = 'none'
 	player1ReadyBtn.style.display = 'block'
 	compReadyBtn.style.display = 'none'
 
@@ -67,8 +65,6 @@ function pvcStart() {
 	player2.opponentBoard = player1.gameboard
 	player2.placeAllShips()
 
-	player1Container.style.display = 'block'
-	player2Container.style.display = 'none'
 	compReadyBtn.style.display = 'block'
 	player1ReadyBtn.style.display = 'none'
 
@@ -79,6 +75,11 @@ function pvcStart() {
 function initialSetup() {
 	player1.domboard = document.querySelector(".player1")
 	player2.domboard = document.querySelector(".player2")
+
+	player1Container.style.display = 'block'
+	player2Container.style.display = 'none'
+	startBtn.style.display = "none"
+
 	setUpPlayerOne()
 	addDraggable()
 	removeAllChildren(player1.domboard)
