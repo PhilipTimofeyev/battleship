@@ -7,11 +7,10 @@ export class Player {
 		this.gameboard = new Gameboard
 		this.domboard = null
 		this.name = name
-		// this.opponentBoard = null
 	}
 }
 
-
+// Can modify if needed
 export class Human extends Player {
 
 }
@@ -26,24 +25,24 @@ export class Computer extends Player {
 // Attacking
 
 	sendAttack() {
-	// 	this.opponentBoard = oppBoard
 		const hitSquares = this.getHitSquares()
-		const ship = this.determineShip()
+		const ships = this.determineShips()
 
-		const attackOptions = this.getBestSquares(hitSquares, ship) 
+		const attackOptions = this.getBestSquares(hitSquares, ships) 
 
 		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
 		return response
 
 	}
 
-	determineShip() {
+	determineShips() {
 		const sunkShips = this.shipsSunk(this.opponentBoard)
 		const ships = ['Carrier', 'Battleship', 'Destroyer', 'Submarine', 'Patrol']
 
 		const shipsLeft = ships.filter(x => !sunkShips.includes(x));
+		const shipsLeftArr = shipsLeft.map(ship => Ship.createShip(ship))
 
-		return Ship.createShip(shipsLeft[0])
+		return shipsLeftArr
 	}
 
 	shipsSunk() {
@@ -74,11 +73,9 @@ export class Computer extends Player {
 
 	// Finding best options Algo
 
-	getBestSquares(hitSquares, ship) {
+	getBestSquares(hitSquares, ships) {
 	 	this.bestOption = [1, 2, 3, 4, 5]
 	 	this.greatestDiff = 0
-
-	 	const ships = [Ship.createShip('Carrier'), Ship.createShip('Battleship'), Ship.createShip('Destroyer'), Ship.createShip('Submarine'), Ship.createShip('Patrol')]
 		
 	 	ships.forEach((ship) => {
 	 		hitSquares.forEach((coord) => {
