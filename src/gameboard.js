@@ -57,20 +57,20 @@ import { Square } from './square';
 		}
 	}
 
-	 showValidSquares(ship, coordStart) {
+	 showValidSquares(ship, coordStart, computer, random) {
 		let allSquares = []
 
-		allSquares.push(this.getRightSquares(ship, coordStart))
-		allSquares.push(this.getLeftSquares(ship, coordStart))
-		allSquares.push(this.getUpSquares(ship, coordStart))
-		allSquares.push(this.getDownSquares(ship, coordStart))
+		 allSquares.push(this.getRightSquares(ship, coordStart, computer, random))
+		 allSquares.push(this.getLeftSquares(ship, coordStart, computer, random))
+		 allSquares.push(this.getUpSquares(ship, coordStart, computer, random))
+		 allSquares.push(this.getDownSquares(ship, coordStart, computer, random))
 
 		// Remove duplicates and falsy
 		const result = [...new Set(allSquares.flat().filter(Boolean))]
 		return result
 	}
 
-	 getRightSquares(ship, coordStart, computer) {
+	 getRightSquares(ship, coordStart, computer, random) {
 		let activeSquares = []
 
 		let startLet = coordStart[0]
@@ -80,12 +80,17 @@ import { Square } from './square';
 			activeSquares.push(`${startLet}${i}`)
 		}
 
-		if (computer && this.validateSize(activeSquares)) return activeSquares
+		if (random) {
+			return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
+		} else if (computer) {
+			return this.validateSize(activeSquares) ? activeSquares : []
+		} else {
+			return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
+		}
 
-		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
-	 getLeftSquares(ship, coordStart, computer) {
+	 getLeftSquares(ship, coordStart, computer, random) {
 		let activeSquares = []
 		let startLet = coordStart[0]
 		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) + 1 : 11
@@ -94,12 +99,17 @@ import { Square } from './square';
 			activeSquares.push(`${startLet}${i}`)
 		}
 
-		if (computer && this.validateSize(activeSquares)) return activeSquares
+		 if (random) {
+			 return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
+		 } else if (computer) {
+			 return this.validateSize(activeSquares) ? activeSquares : []
+		 } else {
+			 return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
+		 }
 
-		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 	}
 
-	 getUpSquares(ship, coordStart, computer) {
+	 getUpSquares(ship, coordStart, computer, random) {
 		let activeSquares = []
 
 		let startLet = coordStart[0]
@@ -110,12 +120,16 @@ import { Square } from './square';
 			startLet = this.incrementChar(startLet)
 		}
 
-		if (computer && this.validateSize(activeSquares)) return activeSquares
-
-		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
+		 if (random) {
+			 return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
+		 } else if (computer) {
+			 return this.validateSize(activeSquares) ? activeSquares : []
+		 } else {
+			 return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
+		 }
 	}
 
-	 getDownSquares(ship, coordStart, computer) {
+	 getDownSquares(ship, coordStart, computer, random) {
 		let activeSquares = []
 
 		let startLet = coordStart[0]
@@ -126,9 +140,13 @@ import { Square } from './square';
 			startLet = this.decrementChar(startLet)
 		}
 
-		if (computer && this.validateSize(activeSquares)) return activeSquares
-
-		return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
+		 if (random) {
+			 return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
+		 } else if (computer) {
+			 return this.validateSize(activeSquares) ? activeSquares : []
+		 } else {
+			 return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
+		 }
 	}
 
 	 incrementChar(char) {
@@ -157,6 +175,14 @@ import { Square } from './square';
 								this.board[square].ship == null && 
 								this.board[square].miss == false
 		
+		return squares.every(ifEmpty)
+	}
+
+	checkIfEmptySquaresComputer(squares) {
+		const ifEmpty = (square) => this.board[square] != null &&
+			this.board[square].hit == false &&
+			this.board[square].miss == false
+
 		return squares.every(ifEmpty)
 	}
 

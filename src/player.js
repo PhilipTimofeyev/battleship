@@ -68,7 +68,24 @@ export class Computer extends Player {
 			return !square.miss && !square.hit
 		})
 
-		return getRandomArrElement(validSquares)[0]
+		console.log('VALID', validSquares)
+
+		let allValidSquares = []
+
+		const ships = this.determineShips()
+
+		validSquares.forEach((square) => {
+			ships.forEach((ship) => {
+				allValidSquares.push(this.opponentBoard.showValidSquares(ship, square[0], false, true))
+			})
+		})
+
+		const flattenedValidSquares = allValidSquares.flat(Infinity)
+		const uniqValidSquares = [...new Set(flattenedValidSquares)]
+		
+
+		console.log('uniq', uniqValidSquares)
+		return getRandomArrElement(uniqValidSquares)
 	}
 
 	// Finding best options Algo
@@ -89,9 +106,13 @@ export class Computer extends Player {
 	bestSquares(hitSquares, coord, ship) {
 		// Retrieves best options for every direction.
 		const bestLeft = this.bestLeftSquares(ship, coord, hitSquares) 
+		// console.log('best left', bestLeft)
 		const bestRight = this.bestRightSquares(ship, coord, hitSquares)
+		// console.log('best right', bestRight)
 		const bestTop = this.bestTopSquares(ship, coord, hitSquares)
+		// console.log('best top', bestTop)
 		const bestBottom = this.bestBottomSquares(ship, coord, hitSquares) 
+		// console.log('best bottom', bestBottom)
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
@@ -145,6 +166,8 @@ export class Computer extends Player {
 		line.forEach((square) => {
 			if (!hitSquares.includes(square)) potentialSquares.push(square)	
 		})
+
+		console.log('checkline', potentialSquares)
 
 		return potentialSquares
 	}

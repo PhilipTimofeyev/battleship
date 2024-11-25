@@ -13,7 +13,7 @@ let players
 
 // DOM Elements
 
-const boardsDiv = document.querySelector('.boards')
+// const boardsDiv = document.querySelector('.boards')
 let playerOneShips = document.querySelector('#player-one-ships')
 let playerTwoShips = document.querySelector('#player-two-ships')
 const announceBox = document.querySelector('#announceBox')
@@ -110,7 +110,7 @@ function setUpPlayerTwo() {
 }
 
 function startGame() {
-	if (!checkAllShipsUsed(playerOneShips)) return
+	// if (!checkAllShipsUsed(playerOneShips)) return
 	if (!checkAllShipsUsed(playerTwoShips)) return
 	if (player2 instanceof Human) {	
 		players.reverse()
