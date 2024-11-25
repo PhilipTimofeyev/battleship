@@ -41,11 +41,6 @@ export class Computer extends Player {
 			attackOptions = this.getBestSquares(hitSquares, shipsHit)
 		}
 
-		// this.getBestSquares(hitSquares, ships).length > 4 ? this.getBestSquares(hitSquares, shipsLeft) : 
-
-		// const attackOptions = this.getBestSquares(hitSquares, ships) 
-
-
 		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
 		return response
 
@@ -74,8 +69,6 @@ export class Computer extends Player {
 
 		const hitShips = Object.values(this.opponentBoard.board).filter(hitShip).map(shipName)
 
-		console.log('HIT', hitShips)
-
 		// Remove duplicates
 		return [...new Set(hitShips)]
 	}
@@ -103,8 +96,6 @@ export class Computer extends Player {
 			return !square.miss && !square.hit
 		})
 
-		console.log('VALID', validSquares)
-
 		let allValidSquares = []
 
 		const ships = this.determineShips()
@@ -118,8 +109,6 @@ export class Computer extends Player {
 		const flattenedValidSquares = allValidSquares.flat(Infinity)
 		const uniqValidSquares = [...new Set(flattenedValidSquares)]
 		
-
-		console.log('uniq', uniqValidSquares)
 		return getRandomArrElement(uniqValidSquares)
 	}
 
@@ -135,7 +124,6 @@ export class Computer extends Player {
 	 		})
 	 	})
 
-		console.log('BEST OPTION', this.bestOption)
 		return this.bestOption
 	}
 
@@ -148,8 +136,6 @@ export class Computer extends Player {
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
-
-			console.log(option)
 
 			// Greatest difference determines the confidence of options. The greater the difference, but better (more confident).
 			const difference = ship.length - option.length
@@ -200,8 +186,6 @@ export class Computer extends Player {
 		line.forEach((square) => {
 			if (!hitSquares.includes(square)) potentialSquares.push(square)	
 		})
-
-		// console.log('checkline', potentialSquares)
 
 		return potentialSquares
 	}
