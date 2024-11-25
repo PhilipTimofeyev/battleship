@@ -70,16 +70,7 @@ import { Square } from './square';
 		return result
 	}
 
-	 getRightSquares(ship, coordStart, computer, random) {
-		let activeSquares = []
-
-		let startLet = coordStart[0]
-		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) : 10
-
-		for (let i = startNum; i < startNum + ship.length ; i++) {
-			activeSquares.push(`${startLet}${i}`)
-		}
-
+	validationOptions(activeSquares, computer, random) {
 		if (random) {
 			return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
 		} else if (computer) {
@@ -87,6 +78,18 @@ import { Square } from './square';
 		} else {
 			return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
 		}
+	}
+
+	 getRightSquares(ship, coordStart, computer, random) {
+		let activeSquares = []
+		let startLet = coordStart[0]
+		let startNum = coordStart.length == 2 ? parseInt(coordStart[1]) : 10
+
+		for (let i = startNum; i < startNum + ship.length ; i++) {
+			activeSquares.push(`${startLet}${i}`)
+		}
+
+		return this.validationOptions(activeSquares, computer, random)
 
 	}
 
@@ -99,13 +102,7 @@ import { Square } from './square';
 			activeSquares.push(`${startLet}${i}`)
 		}
 
-		 if (random) {
-			 return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
-		 } else if (computer) {
-			 return this.validateSize(activeSquares) ? activeSquares : []
-		 } else {
-			 return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
-		 }
+		return this.validationOptions(activeSquares, computer, random)
 
 	}
 
@@ -120,13 +117,7 @@ import { Square } from './square';
 			startLet = this.incrementChar(startLet)
 		}
 
-		 if (random) {
-			 return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
-		 } else if (computer) {
-			 return this.validateSize(activeSquares) ? activeSquares : []
-		 } else {
-			 return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
-		 }
+		return this.validationOptions(activeSquares, computer, random)
 	}
 
 	 getDownSquares(ship, coordStart, computer, random) {
@@ -140,13 +131,7 @@ import { Square } from './square';
 			startLet = this.decrementChar(startLet)
 		}
 
-		 if (random) {
-			 return this.validateSize(activeSquares) && this.checkIfEmptySquaresComputer(activeSquares) ? activeSquares : []
-		 } else if (computer) {
-			 return this.validateSize(activeSquares) ? activeSquares : []
-		 } else {
-			 return this.validateSize(activeSquares) && this.checkIfEmptySquares(activeSquares) ? activeSquares : []
-		 }
+		return this.validationOptions(activeSquares, computer, random)
 	}
 
 	 incrementChar(char) {
