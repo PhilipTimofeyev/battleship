@@ -26,9 +26,25 @@ export class Computer extends Player {
 
 	sendAttack() {
 		const hitSquares = this.getHitSquares()
-		const ships = this.determineShips()
+		let ships
 
-		const attackOptions = this.getBestSquares(hitSquares, ships) 
+		const shipsLeft = this.determineShips()
+		const shipsHit = this.determineShipsHit()
+
+		ships = shipsHit.length > 0 ? shipsHit : shipsLeft
+
+		let attackOptions
+
+		if (this.getBestSquares(hitSquares, ships).length > 4) {
+			attackOptions = this.getBestSquares(hitSquares, shipsLeft)
+		} else {
+			attackOptions = this.getBestSquares(hitSquares, shipsHit)
+		}
+
+		// this.getBestSquares(hitSquares, ships).length > 4 ? this.getBestSquares(hitSquares, shipsLeft) : 
+
+		// const attackOptions = this.getBestSquares(hitSquares, ships) 
+
 
 		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
 		return response
@@ -43,6 +59,25 @@ export class Computer extends Player {
 		const shipsLeftArr = shipsLeft.map(ship => Ship.createShip(ship))
 
 		return shipsLeftArr
+	}
+
+	determineShipsHit() {
+		const hitShips = this.shipsHit()
+
+		const hitShipsObj = hitShips.map(ship => Ship.createShip(ship))
+		return hitShipsObj
+	}
+
+	shipsHit() {
+		const hitShip = (square) => square.ship && !square.ship.sunk && square.ship.hits > 0
+		const shipName = (square) => square.ship.name
+
+		const hitShips = Object.values(this.opponentBoard.board).filter(hitShip).map(shipName)
+
+		console.log('HIT', hitShips)
+
+		// Remove duplicates
+		return [...new Set(hitShips)]
 	}
 
 	shipsSunk() {
@@ -100,22 +135,21 @@ export class Computer extends Player {
 	 		})
 	 	})
 
+		console.log('BEST OPTION', this.bestOption)
 		return this.bestOption
 	}
 
 	bestSquares(hitSquares, coord, ship) {
 		// Retrieves best options for every direction.
 		const bestLeft = this.bestLeftSquares(ship, coord, hitSquares) 
-		// console.log('best left', bestLeft)
 		const bestRight = this.bestRightSquares(ship, coord, hitSquares)
-		// console.log('best right', bestRight)
 		const bestTop = this.bestTopSquares(ship, coord, hitSquares)
-		// console.log('best top', bestTop)
 		const bestBottom = this.bestBottomSquares(ship, coord, hitSquares) 
-		// console.log('best bottom', bestBottom)
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
+
+			console.log(option)
 
 			// Greatest difference determines the confidence of options. The greater the difference, but better (more confident).
 			const difference = ship.length - option.length
@@ -123,10 +157,10 @@ export class Computer extends Player {
 			if (0 < option.length && 
 					option.length < this.bestOption.length &&
 					difference >= this.greatestDiff
-					) {
-							this.bestOption = option;
-							this.greatestDiff = difference
-						}
+				) {
+						this.bestOption = option;
+						this.greatestDiff = difference
+					}
 			})
 	}
 
@@ -167,7 +201,7 @@ export class Computer extends Player {
 			if (!hitSquares.includes(square)) potentialSquares.push(square)	
 		})
 
-		console.log('checkline', potentialSquares)
+		// console.log('checkline', potentialSquares)
 
 		return potentialSquares
 	}
