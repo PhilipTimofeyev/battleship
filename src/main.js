@@ -67,6 +67,7 @@ function pvcStart() {
 
 	compReadyBtn.style.display = 'block'
 	player1ReadyBtn.style.display = 'none'
+	passBtn.style.display = 'none';
 
 	announceBox.style.visibility = 'visib'
 	announceBox.innerText = players[0].name
@@ -110,7 +111,7 @@ function setUpPlayerTwo() {
 }
 
 function startGame() {
-	// if (!checkAllShipsUsed(playerOneShips)) return
+	if (!checkAllShipsUsed(playerOneShips)) return
 	if (!checkAllShipsUsed(playerTwoShips)) return
 	if (player2 instanceof Human) {	
 		players.reverse()
