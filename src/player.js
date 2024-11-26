@@ -26,24 +26,16 @@ export class Computer extends Player {
 
 	sendAttack() {
 		const hitSquares = this.getHitSquares()
-		let ships
 
 		const shipsLeft = this.determineShips()
 		const shipsHit = this.determineShipsHit()
 
-		ships = shipsHit.length > 0 ? shipsHit : shipsLeft
-
-		let attackOptions
-
-		if (this.getBestSquares(hitSquares, ships).length > 4) {
-			attackOptions = this.getBestSquares(hitSquares, shipsLeft)
-		} else {
-			attackOptions = this.getBestSquares(hitSquares, shipsHit)
-		}
+		const attackOptions = 	this.getBestSquares(hitSquares, shipsHit) ||
+								this.getBestSquares(hitSquares, shipsLeft)
 
 		const response = hitSquares.length == 0 ? this.hitRandomSquare() : attackOptions[0]
-		return response
 
+		return response
 	}
 
 	determineShips() {
@@ -124,7 +116,8 @@ export class Computer extends Player {
 	 		})
 	 	})
 
-		return this.bestOption
+		// Return null if no bestOption
+		return this.bestOption.length > 4 ? null : this.bestOption
 	}
 
 	bestSquares(hitSquares, coord, ship) {
