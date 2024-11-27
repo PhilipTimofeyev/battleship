@@ -111,7 +111,7 @@ function setUpPlayerTwo() {
 }
 
 function startGame() {
-	// if (!checkAllShipsUsed(playerOneShips)) return
+	if (!checkAllShipsUsed(playerOneShips)) return
 	if (!checkAllShipsUsed(playerTwoShips)) return
 	if (player2 instanceof Human) {	
 		players.reverse()

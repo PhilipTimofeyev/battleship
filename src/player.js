@@ -129,17 +129,16 @@ export class Computer extends Player {
 
 		// Iterates through each line updating bestOption to whichever has the least amount of squares to fill out.
 		const optionArrays = [bestLeft, bestRight, bestTop, bestBottom].forEach((option) => {
-
 			// Greatest difference determines the confidence of options. The greater the difference, but better (more confident).
 			const difference = ship.length - option.length
-
+			
 			if (0 < option.length && 
-					option.length < this.bestOption.length &&
-					difference >= this.greatestDiff
-				) {
-						this.bestOption = option;
-						this.greatestDiff = difference
-					}
+				option.length < this.bestOption.length &&
+				difference >= this.greatestDiff
+			) 	{
+					this.bestOption = option;
+					this.greatestDiff = difference
+				}
 			})
 	}
 
@@ -167,19 +166,20 @@ export class Computer extends Player {
 	}
 
 	// Checks the line against hit squares, returns squares needed to fill line
+	// The less potential squares, the better
 
 	checkLine(line, hitSquares) {
 		let potentialSquares = []
-
-		// If any of the squares in the line are miss squares, ignore the line.
+		
+		// If any of the squares in the line are miss or sunk squares, ignore the line.
 		const miss = (square) => this.opponentBoard.board[square].miss || (this.opponentBoard.board[square].ship && this.opponentBoard.board[square].ship.sunk)
 		if (line.some(miss)) return potentialSquares
-
-		// Add whichever squares in the line that are not used(hit) to the potetial squares arr.
+		
+		// Add whichever squares in the line that are not used(hit) to the potential squares arr.
 		line.forEach((square) => {
 			if (!hitSquares.includes(square)) potentialSquares.push(square)	
 		})
-
+		
 		return potentialSquares
 	}
 
@@ -214,6 +214,4 @@ export class Computer extends Player {
 
 		return getRandomArrElement(validSquares)
 	}
-
-
 }
